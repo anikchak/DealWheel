@@ -2,6 +2,7 @@ package services;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -12,6 +13,7 @@ import javax.persistence.Query;
 
 import services.security.SecurePassword;
 import model.Persondetails;
+import model.Providerdetail;
 
 
 public class TestService {
@@ -99,6 +101,8 @@ public class TestService {
 		}
 	}catch(Exception e){
 		System.out.println("Exception while password verification");
+	}finally{
+		em.close();
 	}
 	System.out.println("validationStatus = "+validationStatus);
 	if(validationStatus){
@@ -107,4 +111,30 @@ public class TestService {
 		return false;
 	}
 	
+	@SuppressWarnings({"unchecked" })
+	public List<Providerdetail> fetchSearchResult(Date from, Date to){
+		System.out.println("Inside Fetch Search Result");
+		List<Providerdetail> searchResultSet = null;
+		try{
+			if(em!=null){
+				Query q  = em.createNativeQuery("select p.*,b.* from providerdetails p, bikelookup b "+
+							"where b.bikeseq = p.vehicleId and p.vehicleNumber not in (select bd.allottedVehicleNo from bookingdetails bd where bookingfromdate between ? and ? and bookingtodate between ? and ?)"+
+							" and p.LockStatus = 0" , Providerdetail.class);
+				q.setParameter(1, from);
+				q.setParameter(2, to);
+				q.setParameter(3, from);
+				q.setParameter(4, to);
+				System.out.println("Execution successful");
+				searchResultSet = (List<Providerdetail>)q.getResultList();
+				if(searchResultSet!=null && searchResultSet.size()>0){
+					return searchResultSet;
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			em.close();
+		}
+		return searchResultSet;
+	}
 }

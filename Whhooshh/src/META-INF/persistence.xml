@@ -3,9 +3,9 @@
 	 
 	<persistence-unit name="Whhooshh" transaction-type="RESOURCE_LOCAL">
 		<class>model.Persondetails</class>
-		<class>model.Bikelookup</class>
 		<class>model.Bookingdetail</class>
 		<class>model.Providerdetail</class>
+		<class>model.Bikelookup</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mydb"/>
 			<property name="javax.persistence.jdbc.user" value="anikchak"/>

@@ -35,7 +35,7 @@
 	</table>
 	<form method="post" id="searchFormId" action="${pageContext.request.contextPath}/Search">
 	<div>
-   		Space allocated for Search  - Enter Date here
+   		Space allocated for Search  - Enter Date here in yyyy-MMM-dd format
    		<br>
    		From Date:<input type="text" name="fromDate"/><br>
    		To Date: <input type="text" name="toDate"/><br>
