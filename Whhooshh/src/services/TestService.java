@@ -3,8 +3,9 @@ package services;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -111,23 +112,24 @@ public class TestService {
 		return false;
 	}
 	
-	@SuppressWarnings({"unchecked" })
-	public List<Providerdetail> fetchSearchResult(Date from, Date to){
+	@SuppressWarnings({"unchecked", "rawtypes" })
+	public Map fetchSearchResult(Date from, Date to){
 		System.out.println("Inside Fetch Search Result");
-		List<Providerdetail> searchResultSet = null;
+		Map displayResultMap = null;
 		try{
 			if(em!=null){
-				Query q  = em.createNativeQuery("select p.*,b.* from providerdetails p, bikelookup b "+
+				Query q  = em.createNativeQuery("select p.seq,p.pickuplocation,b.bikeseq,b.bikename,b.company from providerdetails p, bikelookup b "+
 							"where b.bikeseq = p.vehicleId and p.vehicleNumber not in (select bd.allottedVehicleNo from bookingdetails bd where bookingfromdate between ? and ? and bookingtodate between ? and ?)"+
-							" and p.LockStatus = 0" , Providerdetail.class);
+							" and p.LockStatus = 0 group by p.pickuplocation" , Providerdetail.class);
 				q.setParameter(1, from);
 				q.setParameter(2, to);
 				q.setParameter(3, from);
 				q.setParameter(4, to);
 				System.out.println("Execution successful");
-				searchResultSet = (List<Providerdetail>)q.getResultList();
+				List<Providerdetail> searchResultSet = (List<Providerdetail>)q.getResultList();
 				if(searchResultSet!=null && searchResultSet.size()>0){
-					return searchResultSet;
+					displayResultMap = prepareSearchResultDisplay(searchResultSet);
+					
 				}
 			}
 		}catch(Exception e){
@@ -135,6 +137,29 @@ public class TestService {
 		}finally{
 			em.close();
 		}
-		return searchResultSet;
+		return displayResultMap;
 	}
+	 @SuppressWarnings({ "unchecked", "rawtypes" })
+	public Map prepareSearchResultDisplay(List searchResultSet){
+		System.out.println("prepareSearchResultDisplay method invoked");
+		
+		Map displaySearchResultMap =  new HashMap();
+		 int len = searchResultSet.size();
+		 for(int i = 0;i<len;i++){
+			 Providerdetail pd = (Providerdetail)searchResultSet.get(i);
+			if(displaySearchResultMap!=null){
+				if(displaySearchResultMap.containsKey(pd.getBikeName()+"$"+pd.getCompany())){
+					String locationValue = (String) displaySearchResultMap.get(pd.getBikeName()+"$"+pd.getCompany());
+					locationValue = locationValue +"$"+ pd.getPickupLocation();
+					displaySearchResultMap.put(pd.getBikeName()+"$"+pd.getCompany(), locationValue);
+				 }else{
+					 displaySearchResultMap.put(pd.getBikeName()+"$"+pd.getCompany(), pd.getPickupLocation());
+				 }
+			}
+			 
+		 }
+		 System.out.println("Map Values= "+displaySearchResultMap);
+		
+		 return displaySearchResultMap;
+	 }
 }

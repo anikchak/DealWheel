@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import services.TestService;
 
@@ -43,6 +45,7 @@ public class Search extends HttpServlet {
 		// TODO Auto-generated method stub
 		System.out.println("Post method hit for Search");
 		TestService s = new TestService();
+		Map displaySearchResultMap = null;
 		try{
 			String fromDateString = request.getParameter("fromDate");
 			String toDateString = request.getParameter("toDate");
@@ -52,12 +55,20 @@ public class Search extends HttpServlet {
 				Date fromDate = sdf.parse(fromDateString);
 				Date toDate = sdf.parse(toDateString);
 				System.out.println("Date:"+fromDate+"....."+toDate);
-				List searchResultList = s.fetchSearchResult(fromDate, toDate);
-				prepareDisplay(searchResultList);
+				displaySearchResultMap = s.fetchSearchResult(fromDate, toDate);
+				
 			}
 			
 		}catch(Exception e){
 			System.out.println("Exception while searching vehicles");
+		}
+		if(displaySearchResultMap !=null){
+			HttpSession session = request.getSession();
+			if(session !=null){
+				session.setAttribute("displaySearchResultMap", displaySearchResultMap);
+				RequestDispatcher rd = request.getRequestDispatcher("/SearchResult.jsp");
+				rd.forward(request, response);
+			}
 		}
 		//RequestDispatcher rd = request.getRequestDispatcher("/SearchResult.jsp");
 		//rd.forward(request, response);
