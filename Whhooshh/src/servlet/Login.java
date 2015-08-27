@@ -1,6 +1,9 @@
 package servlet;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import services.TestService;
+import services.utility.CommonUtility;
 
 /**
  * Servlet implementation class Login
@@ -58,14 +62,19 @@ public class Login extends HttpServlet {
 			Boolean validUser = s.validateUser(uName, pwd);
 			if (validUser) {
 				session = generateSession(request, uName);
-				pageNavigation(pagecontext, comingFromPage, request, response);
-			}
+				session.setAttribute("LOGIN_ERROR",null );
+				new CommonUtility().pageNavigation(pagecontext, comingFromPage, request, response);
+			}else{
+				System.out.println("Invalid username or password");
+				request.getSession().setAttribute("LOGIN_ERROR","Invalid username or password" );
+				response.sendRedirect(pagecontext + "/Login.jsp");
+				}
 		} else if ("newRegistration".equalsIgnoreCase(optionSelected)) {
 			Boolean status = s.inserNewUser(uName, pwd);
 			System.out.println("status post registration=" + status);
 			if (status) {
 				session = generateSession(request, uName);
-				pageNavigation(pagecontext, comingFromPage, request, response);
+				new CommonUtility().pageNavigation(pagecontext, comingFromPage, request, response);
 			}
 		}
 	}
@@ -80,17 +89,7 @@ public class Login extends HttpServlet {
 		return session;
 	}
 
-	private void pageNavigation(String pagecontext, String comingFromPage,
-			HttpServletRequest request, HttpServletResponse response) {
-		try {
-			if (comingFromPage != null && "Booking".equals(comingFromPage)) {
-				response.sendRedirect(pagecontext + "/ConfirmBooking.jsp");
-			} else if (comingFromPage == null) {
-				response.sendRedirect(pagecontext + "/LandingPage.jsp");
-			}
-		} catch (Exception e) {
-			System.out.println("Exception occured while navigating=");
-			e.printStackTrace();
-		}
-	}
+	
+	
+	
 }

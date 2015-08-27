@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import services.utility.CommonUtility;
+
 /**
  * Servlet implementation class Booking
  */
@@ -43,9 +45,13 @@ public class Booking extends HttpServlet {
 		
 		HttpSession session = request.getSession();
 		System.out.println("session while booking="+session);
+		String selectedVehicleDetails = request.getParameter("selectedVehicleDetails");
+		System.out.println("selectedVehicleDetails = "+selectedVehicleDetails);
+		session.setAttribute("selectedVehicleDetails",selectedVehicleDetails);
 		
 		if(session!=null && session.getAttribute("username") != null){
 			System.out.println("Proceed with booking");
+			request.getSession().setAttribute("tempBookingSeq", new CommonUtility().lockRecord(request));
 			
 			RequestDispatcher rd = request.getRequestDispatcher("/ConfirmBooking.jsp");
 			rd.forward(request, response);
@@ -56,6 +62,7 @@ public class Booking extends HttpServlet {
 			//RequestDispatcher rd = request.getRequestDispatcher("/Login.jsp");
 			//rd.forward(request, response);
 		}
+		
 	}
 
 }

@@ -118,15 +118,18 @@ public class TestService {
 		Map displayResultMap = null;
 		try{
 			if(em!=null){
-				Query q  = em.createNativeQuery("select p.seq,p.pickuplocation,b.bikeseq,b.bikename,b.company from providerdetails p, bikelookup b "+
-							"where b.bikeseq = p.vehicleId and p.vehicleNumber not in (select bd.allottedVehicleNo from bookingdetails bd where bookingfromdate between ? and ? and bookingtodate between ? and ?)"+
-							" and p.LockStatus = 0 group by p.pickuplocation" , Providerdetail.class);
+				Query q  = em.createNativeQuery("select p.seq,p.pickuplocation,b.bikename,b.company,b.bikeseq from providerdetails p, bikelookup b "+
+							"where b.bikeseq = p.vehicleId "+
+						    "and p.seq not in (select bd.vehicleprovider from bookingdetails bd where bookingfromdate between ? and ? "+
+						    "and bookingtodate between ? and ? and bd.bookingstatus in ('VIEWING','CONFIRMED')) "+
+							" group by p.pickuplocation,b.bikename,b.company order by b.bikename" , Providerdetail.class);
 				q.setParameter(1, from);
 				q.setParameter(2, to);
 				q.setParameter(3, from);
 				q.setParameter(4, to);
 				System.out.println("Execution successful");
 				List<Providerdetail> searchResultSet = (List<Providerdetail>)q.getResultList();
+				
 				if(searchResultSet!=null && searchResultSet.size()>0){
 					displayResultMap = prepareSearchResultDisplay(searchResultSet);
 					
@@ -148,18 +151,78 @@ public class TestService {
 		 for(int i = 0;i<len;i++){
 			 Providerdetail pd = (Providerdetail)searchResultSet.get(i);
 			if(displaySearchResultMap!=null){
-				if(displaySearchResultMap.containsKey(pd.getBikeName()+"$"+pd.getCompany())){
-					String locationValue = (String) displaySearchResultMap.get(pd.getBikeName()+"$"+pd.getCompany());
+				String locationValue = null;
+				if(displaySearchResultMap.containsKey(pd.getBikeName()+"$"+pd.getCompany()+"$"+pd.getBikeSeq())){
+					locationValue = (String) displaySearchResultMap.get(pd.getBikeName()+"$"+pd.getCompany()+"$"+pd.getBikeSeq());
 					locationValue = locationValue +"$"+ pd.getPickupLocation();
-					displaySearchResultMap.put(pd.getBikeName()+"$"+pd.getCompany(), locationValue);
+					//displaySearchResultMap.put(pd.getBikeName()+"$"+pd.getCompany(), locationValue);
 				 }else{
-					 displaySearchResultMap.put(pd.getBikeName()+"$"+pd.getCompany(), pd.getPickupLocation());
+					// displaySearchResultMap.put(pd.getBikeName()+"$"+pd.getCompany(), pd.getPickupLocation());
+					 locationValue = pd.getPickupLocation();
 				 }
+				displaySearchResultMap.put(pd.getBikeName()+"$"+pd.getCompany()+"$"+pd.getBikeSeq(), locationValue);
 			}
 			 
 		 }
 		 System.out.println("Map Values= "+displaySearchResultMap);
 		
 		 return displaySearchResultMap;
+	 }
+	 
+	 public int updateBooking(String lockingcode,Date fromDate,Date toDate,String pickupLocation, int vehicleId,String usernm){
+		 System.out.println("fromDate="+fromDate+"\ntoDate="+toDate+"\npickupLocation="+pickupLocation+"\nvehicleId="+vehicleId+"\nusernm="+usernm);
+		 Integer lastRowId = 0;
+		 try{
+				if(em!=null)
+				{
+					et.begin();
+					Query q = em.createNativeQuery("insert into bookingdetails "+""
+							+ "(bookingStatus,BookingFromDate,BookingToDate,pickupLocation,username,vehicleId,vehicleprovider)"
+							+ " select ?,?,?,?,?,?,p.seq from providerdetails p"
+							+" where p.vehicleid=? and p.pickuplocation = ? and"
+							+" p.seq not in (select bd.vehicleprovider from bookingdetails bd where bookingfromdate between ? and ?"
+							+" and bookingtodate between ? and ? and bd.bookingstatus = ? and bd.pickuplocation = ?)"
+							+" limit 1");
+					q.setParameter(1, lockingcode);
+					q.setParameter(2, fromDate);
+					q.setParameter(3, toDate);
+					q.setParameter(4, pickupLocation);
+					q.setParameter(5, usernm);
+					q.setParameter(6, vehicleId);
+					q.setParameter(7, vehicleId);
+					q.setParameter(8, pickupLocation);
+					q.setParameter(9, fromDate);
+					q.setParameter(10, toDate);
+					q.setParameter(11, fromDate);
+					q.setParameter(12, toDate);
+					q.setParameter(13, lockingcode);
+					q.setParameter(14, pickupLocation);
+					int x = q.executeUpdate();
+					System.out.println("value="+x);
+					et.commit();
+					
+					Query seqQuery = em.createNativeQuery("select bookingseq from bookingdetails order by bookingseq DESC limit 1;"); 
+					lastRowId = (Integer)seqQuery.getSingleResult();
+					System.out.println("Last Row="+lastRowId);
+				}
+		 }catch(Exception e){
+			 System.out.println("Exception occured while inserting record in updateBooking()");
+			 e.printStackTrace();
+		 }finally{
+			 em.close();
+		 }
+		return lastRowId; 
+	 }
+	 
+	 public void cleanBookings(){
+		try{
+			if(em!=null)
+			{
+				et.begin();
+				Query q = em.createNativeQuery("");
+			}
+		}catch(Exception e){
+			
+		}
 	 }
 }

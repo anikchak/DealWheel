@@ -66,6 +66,9 @@
 </script>
 </head>
 <body>
+<%
+String errormsg = (String)session.getAttribute("LOGIN_ERROR");
+%>
 <h1>Welcome Guest</h1>
 	<br>
 	<h3>Select any option</h3>
@@ -77,6 +80,12 @@
 		User? Sign Up<input type="radio" value="newRegistration" id="radId2" name="option"
 			onclick="newUserFunc()" /><br> <br> <br>
 		<div>
+		<%if(errormsg!=null){ %>
+			<span style="color: RED; font-weight:bold;font-size: 16px;"><%=errormsg %></span>
+			<br/>
+			<%
+			session.removeAttribute("LOGIN_ERROR");
+		} %>
 			Username: <input type="text" name="username" id="userId"><br>
 			Password: <input type="password" name="password" id="pswdId"><br>
 			<span style="display: none;" id="confirmPswdSpan">Confirm
@@ -86,6 +95,8 @@
 		</div>
 		<input type="button" value="click me" onclick="verifyPswd()"
 			id="submitBtnId" />
+			
+			
 	</form>
 </body>
 </html>

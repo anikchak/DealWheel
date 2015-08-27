@@ -14,21 +14,38 @@ import java.util.Date;
 @NamedQuery(name="Bookingdetail.findAll", query="SELECT b FROM Bookingdetail b")
 public class Bookingdetail implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	@Id
+	@SequenceGenerator(name="BOOKINGDETAILS_BOOKINGSEQ_GENERATOR", sequenceName="KEYSEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="BOOKINGDETAILS_BOOKINGSEQ_GENERATOR")
 	private int bookingSeq;
+
 	private String allottedVehicleNo;
+
+	@Temporal(TemporalType.DATE)
 	private Date bookingFromDate;
-	private String bookingId;
+
+	private String bookingid;
+
 	private String bookingStatus;
+
+	@Temporal(TemporalType.DATE)
 	private Date bookingToDate;
-	private int personId;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date lastUpdated;
+
+	private String pickupLocation;
+
+	private String username;
+
+	private int vehicleId;
+
+	private int vehicleprovider;
 
 	public Bookingdetail() {
 	}
 
-
-	@Id
-	@SequenceGenerator(name="BOOKINGDETAILS_BOOKINGSEQ_GENERATOR", sequenceName="KEYGEN")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="BOOKINGDETAILS_BOOKINGSEQ_GENERATOR")
 	public int getBookingSeq() {
 		return this.bookingSeq;
 	}
@@ -36,7 +53,6 @@ public class Bookingdetail implements Serializable {
 	public void setBookingSeq(int bookingSeq) {
 		this.bookingSeq = bookingSeq;
 	}
-
 
 	public String getAllottedVehicleNo() {
 		return this.allottedVehicleNo;
@@ -46,8 +62,6 @@ public class Bookingdetail implements Serializable {
 		this.allottedVehicleNo = allottedVehicleNo;
 	}
 
-
-	@Temporal(TemporalType.DATE)
 	public Date getBookingFromDate() {
 		return this.bookingFromDate;
 	}
@@ -56,15 +70,13 @@ public class Bookingdetail implements Serializable {
 		this.bookingFromDate = bookingFromDate;
 	}
 
-
-	public String getBookingId() {
-		return this.bookingId;
+	public String getBookingid() {
+		return this.bookingid;
 	}
 
-	public void setBookingId(String bookingId) {
-		this.bookingId = bookingId;
+	public void setBookingid(String bookingid) {
+		this.bookingid = bookingid;
 	}
-
 
 	public String getBookingStatus() {
 		return this.bookingStatus;
@@ -74,8 +86,6 @@ public class Bookingdetail implements Serializable {
 		this.bookingStatus = bookingStatus;
 	}
 
-
-	@Temporal(TemporalType.DATE)
 	public Date getBookingToDate() {
 		return this.bookingToDate;
 	}
@@ -84,13 +94,44 @@ public class Bookingdetail implements Serializable {
 		this.bookingToDate = bookingToDate;
 	}
 
-
-	public int getPersonId() {
-		return this.personId;
+	public Date getLastUpdated() {
+		return this.lastUpdated;
 	}
 
-	public void setPersonId(int personId) {
-		this.personId = personId;
+	public void setLastUpdated(Date lastUpdated) {
+		this.lastUpdated = lastUpdated;
+	}
+
+	public String getPickupLocation() {
+		return this.pickupLocation;
+	}
+
+	public void setPickupLocation(String pickupLocation) {
+		this.pickupLocation = pickupLocation;
+	}
+
+	public String getUsername() {
+		return this.username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public int getVehicleId() {
+		return this.vehicleId;
+	}
+
+	public void setVehicleId(int vehicleId) {
+		this.vehicleId = vehicleId;
+	}
+
+	public int getVehicleprovider() {
+		return this.vehicleprovider;
+	}
+
+	public void setVehicleprovider(int vehicleprovider) {
+		this.vehicleprovider = vehicleprovider;
 	}
 
 }

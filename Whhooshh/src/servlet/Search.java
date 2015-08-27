@@ -44,11 +44,13 @@ public class Search extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		System.out.println("Post method hit for Search");
+		
 		TestService s = new TestService();
 		Map displaySearchResultMap = null;
+		String fromDateString = request.getParameter("fromDate");
+		String toDateString = request.getParameter("toDate");
 		try{
-			String fromDateString = request.getParameter("fromDate");
-			String toDateString = request.getParameter("toDate");
+			
 			System.out.println("fromDate = "+fromDateString+" endDate="+toDateString);
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd");
 			if(fromDateString!=null && toDateString!=null){
@@ -66,6 +68,8 @@ public class Search extends HttpServlet {
 			HttpSession session = request.getSession();
 			if(session !=null){
 				session.setAttribute("displaySearchResultMap", displaySearchResultMap);
+				session.setAttribute("fromDateString", fromDateString);
+				session.setAttribute("toDateString", toDateString);
 				RequestDispatcher rd = request.getRequestDispatcher("/SearchResult.jsp");
 				rd.forward(request, response);
 			}

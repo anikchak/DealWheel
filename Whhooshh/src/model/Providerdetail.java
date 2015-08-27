@@ -1,7 +1,6 @@
 package model;
 
 import java.io.Serializable;
-
 import javax.persistence.*;
 
 
@@ -13,7 +12,9 @@ import javax.persistence.*;
 @Table(name="providerdetails")
 @SecondaryTables({
     @SecondaryTable(name="bikelookup", 
-        pkJoinColumns=@PrimaryKeyJoinColumn(name="bikeSeq"))
+        pkJoinColumns=@PrimaryKeyJoinColumn(name="bikeSeq")),
+        @SecondaryTable(name="bookingdetails", 
+        pkJoinColumns=@PrimaryKeyJoinColumn(name="bookingSeq"))    
 })
 public class Providerdetail implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -22,8 +23,6 @@ public class Providerdetail implements Serializable {
 	@SequenceGenerator(name="PROVIDERDETAILS_SEQ_GENERATOR", sequenceName="KEYSEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PROVIDERDETAILS_SEQ_GENERATOR")
 	private int seq;
-
-	private String lockStatus;
 
 	private String pickupLocation;
 
@@ -39,13 +38,18 @@ public class Providerdetail implements Serializable {
 
 	private String vehicleRegistrationNumber;
 	
+	//Bike lookup
 	@Column(table="bikelookup")
 	private int bikeSeq;
 	@Column(table="bikelookup")
 	private String bikeName;
 	@Column(table="bikelookup")
 	private String company;
-
+	
+	//Booking Details
+	@Column(table="bookingdetails")
+	private int bookingSeq;
+	
 	public Providerdetail() {
 	}
 
@@ -55,14 +59,6 @@ public class Providerdetail implements Serializable {
 
 	public void setSeq(int seq) {
 		this.seq = seq;
-	}
-
-	public String getLockStatus() {
-		return this.lockStatus;
-	}
-
-	public void setLockStatus(String lockStatus) {
-		this.lockStatus = lockStatus;
 	}
 
 	public String getPickupLocation() {
@@ -143,6 +139,14 @@ public class Providerdetail implements Serializable {
 
 	public void setCompany(String company) {
 		this.company = company;
+	}
+
+	public int getBookingSeq() {
+		return bookingSeq;
+	}
+
+	public void setBookingSeq(int bookingSeq) {
+		this.bookingSeq = bookingSeq;
 	}
 
 }
