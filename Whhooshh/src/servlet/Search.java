@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import services.TestService;
+import services.utility.GenericConstant;
 
 /**
  * Servlet implementation class Search
@@ -47,12 +48,14 @@ public class Search extends HttpServlet {
 		
 		TestService s = new TestService();
 		Map displaySearchResultMap = null;
-		String fromDateString = request.getParameter("fromDate");
-		String toDateString = request.getParameter("toDate");
+		String pagecontext = request.getContextPath();
+		String fromDateString = request.getParameter(GenericConstant.FROMDATE);
+		String toDateString = request.getParameter(GenericConstant.TODATE);
+		
 		try{
 			
 			System.out.println("fromDate = "+fromDateString+" endDate="+toDateString);
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd");
+			SimpleDateFormat sdf = new SimpleDateFormat(GenericConstant.DATEFORMAT);
 			if(fromDateString!=null && toDateString!=null){
 				Date fromDate = sdf.parse(fromDateString);
 				Date toDate = sdf.parse(toDateString);
@@ -67,11 +70,12 @@ public class Search extends HttpServlet {
 		if(displaySearchResultMap !=null){
 			HttpSession session = request.getSession();
 			if(session !=null){
-				session.setAttribute("displaySearchResultMap", displaySearchResultMap);
-				session.setAttribute("fromDateString", fromDateString);
-				session.setAttribute("toDateString", toDateString);
-				RequestDispatcher rd = request.getRequestDispatcher("/SearchResult.jsp");
-				rd.forward(request, response);
+				session.setAttribute(GenericConstant.DISPLAYSEARCHRESULTMAP, displaySearchResultMap);
+				session.setAttribute(GenericConstant.FROMDATESTRING, fromDateString);
+				session.setAttribute(GenericConstant.TODATESTRING, toDateString);
+				response.sendRedirect(pagecontext+GenericConstant.NAV_TO_SEARCHRESULT_PAGE);
+				//RequestDispatcher rd = request.getRequestDispatcher(GenericConstant.NAV_TO_SEARCHRESULT_PAGE);
+				//rd.forward(request, response);
 			}
 		}
 		//RequestDispatcher rd = request.getRequestDispatcher("/SearchResult.jsp");

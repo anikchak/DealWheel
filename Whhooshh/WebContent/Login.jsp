@@ -1,3 +1,4 @@
+<%@page import="services.utility.GenericConstant"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -84,7 +85,7 @@ String errormsg = (String)session.getAttribute("LOGIN_ERROR");
 			<span style="color: RED; font-weight:bold;font-size: 16px;"><%=errormsg %></span>
 			<br/>
 			<%
-			session.removeAttribute("LOGIN_ERROR");
+			session.removeAttribute(GenericConstant.LOGINERROR);
 		} %>
 			Username: <input type="text" name="username" id="userId"><br>
 			Password: <input type="password" name="password" id="pswdId"><br>

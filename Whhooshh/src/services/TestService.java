@@ -215,14 +215,20 @@ public class TestService {
 	 }
 	 
 	 public void cleanBookings(){
+		 System.out.println("cleanBookings called..!!!");
 		try{
 			if(em!=null)
 			{
 				et.begin();
-				Query q = em.createNativeQuery("");
+				Query q = em.createNativeQuery("update bookingdetails b set b.bookingStatus = 'TIMEDOUT' where TIME_TO_SEC(TIMEDIFF(NOW(),LastUpdated))>? and bookingstatus not in ('CLOSED','UPCOMING')");
+				q.setParameter(1, 100);
+				q.executeUpdate();
+				et.commit();
 			}
 		}catch(Exception e){
-			
+			e.printStackTrace();
+		}finally{
+			em.close();
 		}
 	 }
 }

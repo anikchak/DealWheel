@@ -10,7 +10,7 @@
 </head>
 <body>
 <%
-//new TestService()
+new TestService().cleanBookings();
 %>
 	
 	<table border=1 width="100%">

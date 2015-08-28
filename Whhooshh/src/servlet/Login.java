@@ -14,6 +14,8 @@ import javax.servlet.http.HttpSession;
 
 import services.TestService;
 import services.utility.CommonUtility;
+import services.utility.GenericConstant;
+import services.utility.MessageBundle;
 
 /**
  * Servlet implementation class Login
@@ -49,27 +51,26 @@ public class Login extends HttpServlet {
 		TestService s = new TestService();
 		
 		String pagecontext = request.getContextPath();
-		String uName = request.getParameter("username");
-		String pwd = request.getParameter("password");
-		String optionSelected = request.getParameter("option");
-		String comingFromPage = (String) request.getSession().getAttribute(
-				"comingFromPage");
+		String uName = request.getParameter(GenericConstant.USERNAME);
+		String pwd = request.getParameter(GenericConstant.PASSWORD);
+		String optionSelected = request.getParameter(GenericConstant.OPTION);
+		String comingFromPage = (String) request.getSession().getAttribute(GenericConstant.COMINGFROMPAGE);
 		HttpSession session = null;
 		System.out.println("option selected=" + optionSelected);
 		System.out.println("Coming from page = " + comingFromPage);
 
-		if ("oldRegistration".equalsIgnoreCase(optionSelected)) {
+		if (GenericConstant.OLDREGISTRATION.equalsIgnoreCase(optionSelected)) {
 			Boolean validUser = s.validateUser(uName, pwd);
 			if (validUser) {
 				session = generateSession(request, uName);
-				session.setAttribute("LOGIN_ERROR",null );
+				session.setAttribute(GenericConstant.LOGINERROR,null );
 				new CommonUtility().pageNavigation(pagecontext, comingFromPage, request, response);
 			}else{
 				System.out.println("Invalid username or password");
-				request.getSession().setAttribute("LOGIN_ERROR","Invalid username or password" );
-				response.sendRedirect(pagecontext + "/Login.jsp");
+				request.getSession().setAttribute(GenericConstant.LOGINERROR,MessageBundle.LOGIN_ERROR_MSG);
+				response.sendRedirect(pagecontext + GenericConstant.NAV_TO_LOGIN_PAGE);
 				}
-		} else if ("newRegistration".equalsIgnoreCase(optionSelected)) {
+		} else if (GenericConstant.NEWREGISTRATION.equalsIgnoreCase(optionSelected)) {
 			Boolean status = s.inserNewUser(uName, pwd);
 			System.out.println("status post registration=" + status);
 			if (status) {
@@ -82,10 +83,8 @@ public class Login extends HttpServlet {
 	private HttpSession generateSession(HttpServletRequest request, String uName) {
 		HttpSession session = request.getSession();
 		System.out.println("New Session created=" + session.getId());
-		session.setAttribute("username", uName.toUpperCase());
-		session.setAttribute("sessionID", session.getId());
-		// setting session to expiry in 30 mins
-		session.setMaxInactiveInterval(30 * 60);
+		session.setAttribute(GenericConstant.USERNAME, uName.toUpperCase());
+		session.setAttribute(GenericConstant.SESSIONID, session.getId());
 		return session;
 	}
 
