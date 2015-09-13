@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import services.TestService;
+import services.CustomerControllerService;
 import services.utility.CommonUtility;
 import services.utility.GenericConstant;
 import services.utility.MessageBundle;
@@ -48,7 +48,7 @@ public class Login extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		TestService s = new TestService();
+		CustomerControllerService s = new CustomerControllerService();
 		
 		String pagecontext = request.getContextPath();
 		String uName = request.getParameter(GenericConstant.USERNAME);

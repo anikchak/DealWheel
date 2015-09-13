@@ -13,6 +13,9 @@ import java.math.BigInteger;
 @Entity
 @Table(name="vehicles")
 @NamedQuery(name="Vehicle.findAll", query="SELECT v FROM Vehicle v")
+@SecondaryTables({
+@SecondaryTable(name = "ADDRESS", pkJoinColumns = @PrimaryKeyJoinColumn(name = "ADDR_ID"))
+})
 public class Vehicle implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -52,6 +55,18 @@ public class Vehicle implements Serializable {
 
 	@Column(name="VHCL_YEAR_OF_MANUFACTURE")
 	private String vhclYearOfManufacture;
+	
+	
+	@Column(table="ADDRESS",name="ADDR_LOCALITY")
+	private String addrLocality;
+		
+	public String getAddrLocality() {
+		return addrLocality;
+	}
+
+	public void setAddrLocality(String addrLocality) {
+		this.addrLocality = addrLocality;
+	}
 
 	public Vehicle() {
 	}

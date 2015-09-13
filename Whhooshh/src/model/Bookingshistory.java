@@ -11,7 +11,6 @@ import java.math.BigInteger;
  * 
  */
 @Entity
-@NamedQuery(name="Bookingshistory.findAll", query="SELECT b FROM Bookingshistory b")
 public class Bookingshistory implements Serializable {
 	private static final long serialVersionUID = 1L;
 

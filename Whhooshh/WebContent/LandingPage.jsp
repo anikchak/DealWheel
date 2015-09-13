@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ page import="services.TestService" %>
+<%@ page import="services.CustomerControllerService" %>
+<%@ page import="services.utility.MessageBundle" %>
+<%@ page import="services.utility.GenericConstant" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,7 +12,8 @@
 </head>
 <body>
 <%
-new TestService().cleanBookings();
+new CustomerControllerService().cleanBookings();
+session.setAttribute(GenericConstant.COMINGFROMPAGE, "LandingPage");
 %>
 	
 	<table border=1 width="100%">
@@ -47,5 +50,6 @@ new TestService().cleanBookings();
 	</form>
 	
 	<a href="${pageContext.request.contextPath}/Login.jsp">Login</a>
+	
 </body>
 </html>

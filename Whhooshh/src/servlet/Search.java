@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import services.TestService;
+import services.CustomerControllerService;
 import services.utility.GenericConstant;
 
 /**
@@ -46,7 +46,8 @@ public class Search extends HttpServlet {
 		// TODO Auto-generated method stub
 		System.out.println("Post method hit for Search");
 		
-		TestService s = new TestService();
+		CustomerControllerService s = new CustomerControllerService();
+		
 		Map displaySearchResultMap = null;
 		String pagecontext = request.getContextPath();
 		String fromDateString = request.getParameter(GenericConstant.FROMDATE);
@@ -74,12 +75,8 @@ public class Search extends HttpServlet {
 				session.setAttribute(GenericConstant.FROMDATESTRING, fromDateString);
 				session.setAttribute(GenericConstant.TODATESTRING, toDateString);
 				response.sendRedirect(pagecontext+GenericConstant.NAV_TO_SEARCHRESULT_PAGE);
-				//RequestDispatcher rd = request.getRequestDispatcher(GenericConstant.NAV_TO_SEARCHRESULT_PAGE);
-				//rd.forward(request, response);
 			}
 		}
-		//RequestDispatcher rd = request.getRequestDispatcher("/SearchResult.jsp");
-		//rd.forward(request, response);
 	}
 	
 }
