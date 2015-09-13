@@ -14,7 +14,8 @@ public class Payment implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@SequenceGenerator(name="PAYMENT_PYMTID_GENERATOR", sequenceName="KEYSEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PAYMENT_PYMTID_GENERATOR")
 	@Column(name="PYMT_ID")
 	private String pymtId;
 

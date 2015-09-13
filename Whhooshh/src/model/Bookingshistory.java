@@ -2,8 +2,8 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.util.Date;
+import java.math.BigInteger;
 
 
 /**
@@ -16,7 +16,8 @@ public class Bookingshistory implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@SequenceGenerator(name="BOOKINGSHISTORY_BKNGSEQ_GENERATOR", sequenceName="KEYSEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="BOOKINGSHISTORY_BKNGSEQ_GENERATOR")
 	@Column(name="BKNG_SEQ")
 	private String bkngSeq;
 

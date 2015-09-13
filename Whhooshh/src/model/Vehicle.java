@@ -2,8 +2,8 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.util.Date;
+import java.math.BigInteger;
 
 
 /**
@@ -17,7 +17,8 @@ public class Vehicle implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@SequenceGenerator(name="VEHICLES_VHCLID_GENERATOR", sequenceName="KEYSEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="VEHICLES_VHCLID_GENERATOR")
 	@Column(name="VHCL_ID")
 	private String vhclId;
 
@@ -36,9 +37,6 @@ public class Vehicle implements Serializable {
 
 	@Column(name="VHCL_PER_DAY_COST")
 	private int vhclPerDayCost;
-
-	@Column(name="VHCL_PICKUP_ADDR")
-	private BigInteger vhclPickupAddr;
 
 	@Column(name="VHCL_PROVIDER_ID")
 	private BigInteger vhclProviderId;
@@ -104,14 +102,6 @@ public class Vehicle implements Serializable {
 
 	public void setVhclPerDayCost(int vhclPerDayCost) {
 		this.vhclPerDayCost = vhclPerDayCost;
-	}
-
-	public BigInteger getVhclPickupAddr() {
-		return this.vhclPickupAddr;
-	}
-
-	public void setVhclPickupAddr(BigInteger vhclPickupAddr) {
-		this.vhclPickupAddr = vhclPickupAddr;
 	}
 
 	public BigInteger getVhclProviderId() {

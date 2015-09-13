@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
+import java.math.BigInteger;
 
 
 /**
@@ -15,7 +16,8 @@ public class Address implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@SequenceGenerator(name="ADDRESS_ADDRID_GENERATOR", sequenceName="KEYSEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ADDRESS_ADDRID_GENERATOR")
 	@Column(name="ADDR_ID")
 	private String addrId;
 
@@ -52,6 +54,9 @@ public class Address implements Serializable {
 
 	@Column(name="LAST_UPDATED_BY")
 	private String lastUpdatedBy;
+
+	@Column(name="USER_ID")
+	private BigInteger userId;
 
 	public Address() {
 	}
@@ -150,6 +155,14 @@ public class Address implements Serializable {
 
 	public void setLastUpdatedBy(String lastUpdatedBy) {
 		this.lastUpdatedBy = lastUpdatedBy;
+	}
+
+	public BigInteger getUserId() {
+		return this.userId;
+	}
+
+	public void setUserId(BigInteger userId) {
+		this.userId = userId;
 	}
 
 }

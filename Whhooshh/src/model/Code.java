@@ -15,7 +15,8 @@ public class Code implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@SequenceGenerator(name="CODE_CODECODE_GENERATOR", sequenceName="KEYSEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="CODE_CODECODE_GENERATOR")
 	@Column(name="CODE_CODE")
 	private String codeCode;
 
