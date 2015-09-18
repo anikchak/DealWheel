@@ -3,6 +3,9 @@
 <%@ page import="services.CustomerControllerService" %>
 <%@ page import="services.utility.MessageBundle" %>
 <%@ page import="services.utility.GenericConstant" %>
+<%@ page import="services.utility.CommonUtility" %>
+<%@ page import="java.util.List" %>
+<%@ page import="model.User" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -14,31 +17,28 @@
 <%
 new CustomerControllerService().cleanBookings();
 session.setAttribute(GenericConstant.COMINGFROMPAGE, "LandingPage");
+if(session.getAttribute("LoggedInUserDetailsObject")!=null){
+List<User> validUserDetails = (List<User>)session.getAttribute("LoggedInUserDetailsObject");
+if(validUserDetails!=null & validUserDetails.size()>0){
+	for(User u : validUserDetails){
 %>
-	
-	<table border=1 width="100%">
-	<tr>
-		<td>Space for logo</td>
-		<td>Location<br>
-		<a href="">How it works</a> &nbsp;&nbsp;&nbsp; <a href="">Tariffs</a> &nbsp;&nbsp;&nbsp;		<a href="">Policies</a> &nbsp;&nbsp;&nbsp;		<a href="">Offers</a>&nbsp;&nbsp;&nbsp;<br>
-		All these above links will be a pop-up/Modal windows with close icon
-		</td>
-		<td>My Account - This will be a menu<br>
-		<div id="myAccntInitial">
-		Sign In - pop up - Initial Default option<br>
-		Sign Up - pop up - Initial Default option<br>
-		Forgot Password - pop up - Initial Default option 
-		</div>
-		<div id="myAccntLoggedInUser">
-		My Bookings - Page<br>
-		Account Settings - pop up/page<br>
-		Verification Docs uploaded - pop up/page<br>
-		Logout - pop up
-		</div>
-		</td>
-		
-	</tr>
-	</table>
+<span style="float: right;"> Welcome <span style="font-size: 20px;font-weight: bold;color: BLUE;"><%=u.getUserEmail().toUpperCase() %></span></span>
+
+<%		
+	}
+}
+}
+else{
+%>
+<span style="float: right;"> Welcome <span style="font-size: 20px;font-weight: bold;color: BLUE;font-family: Verdana;">Guest</span></span>
+<%} %>	
+<br>
+<form method="post" id="logoutFormId" action="${pageContext.request.contextPath}/Logout">
+<br>
+<input type="submit" value="Logout" style="float: right;"/>
+</form>
+<br>
+<br>	
 	<form method="post" id="searchFormId" action="${pageContext.request.contextPath}/Search">
 	<div>
    		Space allocated for Search  - Enter Date here in yyyy-MMM-dd format
@@ -50,6 +50,8 @@ session.setAttribute(GenericConstant.COMINGFROMPAGE, "LandingPage");
 	</form>
 	
 	<a href="${pageContext.request.contextPath}/Login.jsp">Login</a>
-	
+	<br>
+	<a href="${pageContext.request.contextPath}/POC.jsp">POC Page</a>
+
 </body>
 </html>

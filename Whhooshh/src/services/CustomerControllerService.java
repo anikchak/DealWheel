@@ -7,13 +7,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import model.Address;
 import model.LoginDetail;
 import model.User;
 import model.Vehicle;
@@ -54,8 +54,8 @@ public class CustomerControllerService {
 		if(em!=null)
 		{
 			//Verify if the username already exists
-			Query usrnmExist  = em.createNativeQuery("select login.* from LOGIN_DETAIL login where login.LOGN_USER_NAME = ? " , LoginDetail.class);
-			usrnmExist.setParameter(1, usr);
+			Query usrnmExist  = em.createNamedQuery("LoginDetail.findDetailUsingUserName");
+			usrnmExist.setParameter("loginUserName", usr);
 			List<LoginDetail> resultSet = (List<LoginDetail>)usrnmExist.getResultList();
 			if(resultSet!=null && resultSet.size()>0){
 				System.out.println("Unique username encountered");
@@ -91,6 +91,7 @@ public class CustomerControllerService {
 		}
 		}catch(Exception e){
 			System.out.println("Error while feeding user credentials to DB");
+			e.printStackTrace();
 		}finally{
 			em.close();
 		}
@@ -101,24 +102,26 @@ public class CustomerControllerService {
 	 * This method is used to validate the entered user credentials 
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean validateUser(String usrEntered, String pwdEntered){
+	public List<User> validateUser(String usrEntered, String pwdEntered){
 		System.out.println("ControllerService:Validate user");
 
 		SecurePassword securePwd = new SecurePassword();
-		Boolean validationStatus=false;
-		
+		List<User> validatedUserDetails=null;
+		boolean validationStatus = false;
+		BigInteger loginUserId = null;
 	//Query to fetch hashed password and salt	
 	try{
 		if(em!=null)
 		{
-			Query q  = em.createNativeQuery("select login.* from LOGIN_DETAIL login where login.LOGN_USER_NAME = ?" , LoginDetail.class);
-			q.setParameter(1, usrEntered);
+			Query q  = em.createNamedQuery("LoginDetail.findDetailUsingUserName");
+			q.setParameter("loginUserName", usrEntered);
 			List<LoginDetail> resultSet = (List<LoginDetail>)q.getResultList();
 			if(resultSet!=null && resultSet.size()==1){
 				System.out.println("Result fetched");
 				LoginDetail details = (LoginDetail)resultSet.get(0);
 				
 				try{
+					loginUserId = details.getLognUserId();
 					validationStatus = securePwd.validatePassword(pwdEntered, details.getLognPassword());
 				}catch(Exception e){
 					System.out.println("Error while validating password");
@@ -126,7 +129,7 @@ public class CustomerControllerService {
 			}
 			else
 			{
-				return validationStatus;
+				return null;
 			}
 		}
 	}catch(Exception e){
@@ -138,21 +141,28 @@ public class CustomerControllerService {
 	  try{	
 		if(em!=null){
 			et.begin();
-			Query q = em.createNativeQuery("update login_detail set LOGN_LAST_LOGIN_DETAIL = ? where LOGN_USER_NAME = ?" );
-			q.setParameter(1, new Date());
-			q.setParameter(2, usrEntered);
-			q.executeUpdate();
+			Query q = em.createNamedQuery("LoginDetail.UpdateLastLoginDetail" );
+			q.setParameter("lastLoginDetail", new Date());
+			q.setParameter("loginUserName", usrEntered);
+			int updateStatus = q.executeUpdate();
 			et.commit();
+			if(updateStatus>0){
+				System.out.println("Update Successfull..fetching user details for ="+loginUserId);
+				Query fetchUserDetails = em.createNamedQuery("User.findUserById");
+				fetchUserDetails.setParameter("userId", String.valueOf(loginUserId));
+				validatedUserDetails = fetchUserDetails.getResultList();
+			}
+			
 		}
 	  }catch(Exception e){
 			e.printStackTrace();
 		}finally{
 			em.close();
 		}
-	    return true;
+	    return validatedUserDetails;
 	}else
 		em.close();
-		return false;
+		return null;
 	}
 	
 	/**
@@ -167,17 +177,23 @@ public class CustomerControllerService {
 		Map displayResultMap = null;
 		try{
 			if(em!=null){
-				Query q  = em.createNativeQuery("SELECT v.vhcl_name,v.vhcl_make,a.addr_locality,v.vhcl_per_day_cost,v.VHCL_SECURITY_DEPOSIT,v.VHCL_ID,a.addr_id "+
+			/*	Query q  = em.createNativeQuery("SELECT v.vhcl_name,v.vhcl_make,a.addr_locality,v.vhcl_per_day_cost,v.VHCL_SECURITY_DEPOSIT,v.VHCL_ID,a.addr_id "+
 												"FROM vehicles v ,  address a WHERE v.VHCL_ID NOT IN "+
 												"(SELECT bh.BKNG_VEHICLE FROM bookingshistory bh WHERE bh.BKNG_FROM_DATE <= ? AND bh.BKNG_TO_DATE >= ? "+
 												"AND bh.BKNG_STATUS  IN (?,?)) AND a.user_id = v.vhcl_provider_id GROUP BY v.vhcl_name,v.vhcl_provider_id "+
-												"ORDER BY v.vhcl_per_day_cost,v.vhcl_name",Vehicle.class);
-				q.setParameter(1, to);
-				q.setParameter(2, from);
-				q.setParameter(3, "UPCMNG");
-				q.setParameter(4, "VWNG");
+				  							    "ORDER BY v.vhcl_per_day_cost,v.vhcl_name",Vehicle.class);
+				  							    */
+				Query q  = em.createQuery("SELECT v, a "+
+						"FROM Vehicle v ,  Address a WHERE v.vhclId NOT IN "+
+						"(SELECT bh.bkngVehicle FROM Bookingshistory bh WHERE bh.bkngFromDate <= :toDate AND bh.bkngToDate >= :fromDate "+
+						"AND bh.bkngStatus  IN (:upcoming,:viewing)) AND a.userId = v.vhclProviderId GROUP BY v.vhclName,v.vhclProviderId "+
+						    "ORDER BY v.vhclPerDayCost,v.vhclName");
+				q.setParameter("toDate", to);
+				q.setParameter("fromDate", from);
+				q.setParameter("upcoming", "UPCMNG");
+				q.setParameter("viewing", "VWNG");
 				System.out.println("Execution successful");
-				List<Vehicle> searchResultSet = (List<Vehicle>)q.getResultList();
+				List<Object[]> searchResultSet = (List<Object[]>)q.getResultList();
 				
 				if(searchResultSet!=null && searchResultSet.size()>0){
 					displayResultMap = prepareSearchResultDisplay(searchResultSet);
@@ -198,21 +214,24 @@ public class CustomerControllerService {
 	 * @return Map: key - holds the vehicle details, value - holds location details for the vehicles
 	 */
 	 @SuppressWarnings({ "unchecked", "rawtypes" })
-		public Map prepareSearchResultDisplay(List searchResultSet){
+		public Map prepareSearchResultDisplay(List<Object[]> searchResultSet){
 			System.out.println("prepareSearchResultDisplay method invoked");
 			
 			Map displaySearchResultMap =  new HashMap();
 			 int len = searchResultSet.size();
-			 for(int i = 0;i<len;i++){
-				 Vehicle v = (Vehicle)searchResultSet.get(i);
+			// for(int i = 0;i<len;i++){
+			 for(Object[] o: searchResultSet){
+				// Vehicle v = (Vehicle)searchResultSet.get(i);
+				 Vehicle v = (Vehicle)o[0];
+				 Address a = (Address)o[1];
 				if(displaySearchResultMap!=null){
 					String locationValue = null;
 					String key = v.getVhclName()+"$"+v.getVhclMake()+"$"+v.getVhclPerDayCost()+"$"+v.getVhclSecurityDeposit();
 					if(displaySearchResultMap.containsKey(key)){
 						locationValue = (String) displaySearchResultMap.get(key);
-						locationValue = locationValue +"$"+ v.getAddrLocality();
+						locationValue = locationValue +"$"+ a.getAddrLocality();
 					 }else{
-						locationValue = v.getAddrLocality();
+						locationValue = a.getAddrLocality();
 					 }
 					locationValue = locationValue+"%"+v.getVhclId();
 					displaySearchResultMap.put(key, locationValue);
@@ -236,7 +255,7 @@ public class CustomerControllerService {
 	  */
 	 public long updateBooking(String lockingcode,Date fromDate,Date toDate,String vehicleName, String vehicleProviderId,String usernm){
 		 System.out.println("lockingcode="+lockingcode+"\nfromDate="+fromDate+"\ntoDate="+toDate+"\nvehicleName="+vehicleName+"\nvehicleProviderId="+vehicleProviderId+"\nusernm="+usernm);
-		 long lastRowId = 0L;
+		 String lastRowId = null;
 		 try{
 				if(em!=null)
 				{
@@ -247,6 +266,8 @@ public class CustomerControllerService {
 													+"SELECT bh.BKNG_VEHICLE FROM bookingshistory bh WHERE "
 													+"bh.BKNG_FROM_DATE <= ? AND bh.BKNG_TO_DATE >= ? AND bh.BKNG_STATUS  IN ('UPCMNG','VWNG')) limit 1"
 													);
+					
+					
 					q.setParameter(1, lockingcode);
 					q.setParameter(2, fromDate);
 					q.setParameter(3, toDate);
@@ -260,8 +281,11 @@ public class CustomerControllerService {
 					System.out.println("value="+entryUpdate);
 					et.commit();
 					if(entryUpdate==1){
-					Query seqQuery = em.createNativeQuery("select BKNG_SEQ from bookingshistory order by BKNG_SEQ DESC limit 1;"); 
-					lastRowId = (Long)seqQuery.getSingleResult();
+					Query seqQuery = em.createNamedQuery("Bookingshistory.findBookingSeq"); 
+					List rowIdList = (List)seqQuery.setMaxResults(1).getResultList();
+					if(rowIdList!=null && rowIdList.size()>0){
+						lastRowId = (String)rowIdList.get(0);
+					}
 					System.out.println("Last Row="+lastRowId);
 					}
 				}
@@ -271,7 +295,7 @@ public class CustomerControllerService {
 		 }finally{
 			 em.close();
 		 }
-		return lastRowId; 
+		return (lastRowId!=null)?Long.parseLong(lastRowId):0L; 
 	 }
 	 
 	 /**
@@ -304,11 +328,12 @@ public class CustomerControllerService {
 				if(em!=null)
 				{
 					et.begin();
-					Query q = em.createNativeQuery("update bookingshistory b set b.BKNG_STATUS = 'UPCMNG' ,b.BKNG_NUMBER = ? where b.BKNG_SEQ = ? and b.BKNG_STATUS in (?)");
+					Query q = em.createNamedQuery("Bookingshistory.UpdateBooking");
 					//q.setParameter(1, "UPCMNG");
-					q.setParameter(1, generatedOrderId);
-					q.setParameter(2, Double.valueOf(tempBookingSeq));
-					q.setParameter(3, "VWNG");
+					q.setParameter("bkngStatus", "UPCMNG");
+					q.setParameter("bkngNumber", generatedOrderId);
+					q.setParameter("bkngSeq", String.valueOf(tempBookingSeq));
+					q.setParameter("bkngStatusWhereClause", "VWNG");
 					updateStatus = q.executeUpdate();
 					et.commit();
 				}
@@ -319,5 +344,30 @@ public class CustomerControllerService {
 				em.close();
 			}
 		 return (updateStatus==1)?true:false;
+	 }
+	 
+	 @SuppressWarnings("unchecked")
+	public Map fetchStaticData(){
+		 System.out.println("Inside method fetchStaticData");
+		 Map staticVehicleDetails = new HashMap();
+		 try{
+				if(em!=null)
+				{
+					Query q = em.createNamedQuery("Vehicle.findAll");
+					List<Vehicle> resultList = (List<Vehicle>)q.getResultList();
+					if(resultList!=null & resultList.size()>0){
+						for(Vehicle veh :resultList){
+							staticVehicleDetails.put(veh.getVhclName(), veh.getVhclMake()+"#"+veh.getVhclPerDayCost()+"#"+veh.getVhclSecurityDeposit());
+						}
+					}
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}finally{
+				System.out.println("Finally invoked");
+				em.close();
+			}
+		 
+		 return staticVehicleDetails;
 	 }
 }

@@ -3,7 +3,15 @@ package services.utility;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -60,4 +68,44 @@ public class CommonUtility {
 			e.printStackTrace();
 		}
 	}
+	
+	public void sendEmailNotification(String bookingNo) {
+		final String username = "anikchak";
+		final String password = "anikanj3187";
+
+		Properties props = new Properties();
+		
+		props.put("mail.smtp.auth", "true");
+		props.put("mail.smtp.starttls.enable", "true");
+		props.put("mail.smtp.host", "smtp.gmail.com");
+		props.put("mail.smtp.port", "587");
+		
+		Session session = Session.getInstance(props,
+		  new javax.mail.Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		  });
+
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("admin123@doctordekhoo.in"));
+			message.setRecipients(Message.RecipientType.TO,
+				InternetAddress.parse("anikchak@gmail.com"));
+			
+			message.setSubject("Confirmation: Booking Id - "+bookingNo);
+			message.setText("Dear Guest,"
+				+ "\n\n Your booking was successful! Booking reference id="+bookingNo
+				+ "\n\n This mail is auto-generated using Java Code.");
+
+			Transport.send(message);
+
+			System.out.println("Done");
+
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		} 
+		   
+		 } 
 }

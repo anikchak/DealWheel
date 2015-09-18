@@ -2,6 +2,8 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="services.utility.MessageBundle" %>
 <%@ page import="services.utility.GenericConstant" %>
+<%@ page import="java.util.List" %>
+<%@ page import="model.User" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -37,17 +39,24 @@ String pagecontext = request.getContextPath();
 String userName = null;
 String sessionID = null;
 long tempBookingId = 0;
-if(session.getAttribute(GenericConstant.USERNAME) == null){
-    
-   RequestDispatcher rd = request.getRequestDispatcher(GenericConstant.NAV_TO_LOGIN_PAGE);
-   rd.forward(request, response);
+session.setAttribute(GenericConstant.COMINGFROMPAGE, "ReviewBooking");
+if(session.getAttribute("LoggedInUserDetailsObject")!=null){
+List<User> validUserDetails = (List<User>)session.getAttribute("LoggedInUserDetailsObject");
+if(validUserDetails!=null & validUserDetails.size()>0){
+	for(User u : validUserDetails){
+		userName = u.getUserEmail();
+	}
 }
+}
+if(userName == null){
+   response.sendRedirect(GenericConstant.NAV_TO_LOGIN_PAGE);
+ }
 	if(session.getAttribute(GenericConstant.SESSIONID)!=null)
     sessionID = (String) session.getAttribute(GenericConstant.SESSIONID);
-	
+	/*
 	if(session.getAttribute(GenericConstant.USERNAME)!=null)
     userName = (String) session.getAttribute(GenericConstant.USERNAME);
-	
+	*/
 	if(session.getAttribute(GenericConstant.TEMPBOOKINGSEQ)!=null){
 	tempBookingId = (Long)session.getAttribute(GenericConstant.TEMPBOOKINGSEQ);
 	}else{
@@ -55,6 +64,9 @@ if(session.getAttribute(GenericConstant.USERNAME) == null){
 	}
 	
 	%>
+<span style="float: right;"> Welcome <span style="font-size: 20px;font-weight: bold;color: BLUE;"><%=userName.toUpperCase() %></span></span>
+<br>
+<br>	
 <h3>Hi <%=userName %>. Your Session ID=<%=sessionID %></h3>
 <br>
 

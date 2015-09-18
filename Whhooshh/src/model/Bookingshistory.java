@@ -11,6 +11,10 @@ import java.math.BigInteger;
  * 
  */
 @Entity
+@NamedQueries({
+	@NamedQuery(name="Bookingshistory.findBookingSeq", query="select b.bkngSeq FROM Bookingshistory b order by b.bkngSeq DESC"),
+	@NamedQuery(name="Bookingshistory.UpdateBooking", query="update Bookingshistory b set b.bkngStatus = :bkngStatus ,b.bkngNumber = :bkngNumber where b.bkngSeq = :bkngSeq and b.bkngStatus in (:bkngStatusWhereClause)")		
+})
 public class Bookingshistory implements Serializable {
 	private static final long serialVersionUID = 1L;
 

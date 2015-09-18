@@ -1,7 +1,9 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.Date;
 import java.math.BigInteger;
 
@@ -12,7 +14,12 @@ import java.math.BigInteger;
  */
 @Entity
 @Table(name="login_detail")
-@NamedQuery(name="LoginDetail.findAll", query="SELECT l FROM LoginDetail l")
+@NamedQueries({
+	@NamedQuery(name="LoginDetail.findAll", query="SELECT l FROM LoginDetail l"),
+	@NamedQuery(name="LoginDetail.findDetailUsingUserName", query="SELECT l FROM LoginDetail l where l.lognUserName = :loginUserName"),
+	@NamedQuery(name="LoginDetail.UpdateLastLoginDetail", query="update LoginDetail l set l.lognLastLoginDetail = :lastLoginDetail where l.lognUserName = :loginUserName")
+})
+
 public class LoginDetail implements Serializable {
 	private static final long serialVersionUID = 1L;
 

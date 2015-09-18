@@ -12,7 +12,12 @@ import java.math.BigInteger;
  */
 @Entity
 @Table(name="users")
-@NamedQuery(name="User.findAll", query="SELECT u FROM User u")
+
+
+@NamedQueries({
+		@NamedQuery(name="User.findAll", query="SELECT u FROM User u"),
+		@NamedQuery(name="User.findUserById", query="SELECT u FROM User u where u.userId = :userId")
+})
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 

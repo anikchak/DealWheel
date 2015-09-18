@@ -7,6 +7,8 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.util.concurrent.TimeUnit" %>
+<%@ page import="java.util.List" %>
+<%@ page import="model.User" %>
  
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -44,6 +46,30 @@ function selectedVehicle(rowId){
 </script>
 </head>
 <body>
+<%
+session.setAttribute(GenericConstant.COMINGFROMPAGE, "SearchResult");
+if(session.getAttribute("LoggedInUserDetailsObject")!=null){
+List<User> validUserDetails = (List<User>)session.getAttribute("LoggedInUserDetailsObject");
+if(validUserDetails!=null & validUserDetails.size()>0){
+	for(User u : validUserDetails){
+%>
+<span style="float: right;"> Welcome <span style="font-size: 20px;font-weight: bold;color: BLUE;"><%=u.getUserEmail().toUpperCase() %></span></span>
+<input type="submit" value="Logout" style="float:right;"/>
+<%		
+	}
+}
+}
+else{
+%>
+<span style="float: right;"> Welcome <span style="font-size: 20px;font-weight: bold;color: BLUE;font-family: Verdana;">Guest</span></span>
+<%} %>	
+<br>
+<form method="post" id="logoutFormId" action="${pageContext.request.contextPath}/Logout">
+<br>
+<input type="submit" value="Logout" style="float: right;"/>
+</form>
+<br>
+<br>
 <form method="post" id="bookingFormId" action="${pageContext.request.contextPath}/ConfirmBooking">
 From:<input type="text" value='<%=session.getAttribute(GenericConstant.FROMDATESTRING)%>' readonly> To: <input type="text" value='<%=session.getAttribute(GenericConstant.TODATESTRING)%>' readonly>
 <br>

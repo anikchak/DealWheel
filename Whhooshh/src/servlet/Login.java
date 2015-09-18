@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.User;
 import services.CustomerControllerService;
 import services.utility.CommonUtility;
 import services.utility.GenericConstant;
@@ -60,13 +62,15 @@ public class Login extends HttpServlet {
 		System.out.println("Coming from page = " + comingFromPage);
 
 		if (GenericConstant.OLDREGISTRATION.equalsIgnoreCase(optionSelected)) {
-			Boolean validUser = s.validateUser(uName, pwd);
-			if (validUser) {
+			List<User> validUserDetails = s.validateUser(uName, pwd);
+			if (validUserDetails!=null && validUserDetails.size()==1) {
 				session = generateSession(request, uName);
+				session.setAttribute("LoggedInUserDetailsObject",validUserDetails );
 				session.setAttribute(GenericConstant.LOGINERROR,null );
 				new CommonUtility().pageNavigation(pagecontext, comingFromPage, request, response);
 			}else{
 				System.out.println("Invalid username or password");
+				request.getSession().removeAttribute("LoggedInUserDetailsObject");
 				request.getSession().setAttribute(GenericConstant.LOGINERROR,MessageBundle.LOGIN_ERROR_MSG);
 				response.sendRedirect(pagecontext + GenericConstant.NAV_TO_LOGIN_PAGE);
 				}
