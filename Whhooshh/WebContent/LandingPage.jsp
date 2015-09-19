@@ -52,6 +52,8 @@ else{
 	<a href="${pageContext.request.contextPath}/Login.jsp">Login</a>
 	<br>
 	<a href="${pageContext.request.contextPath}/POC.jsp">POC Page</a>
+	<br>
+	<a href="${pageContext.request.contextPath}/VendorLoginSignUp.jsp">Vendor mySpace</a>
 
 </body>
 </html>

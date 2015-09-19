@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.math.BigInteger;
+import static services.utility.GenericConstant.*;
 
 
 /**
@@ -13,13 +14,9 @@ import java.math.BigInteger;
 @Entity
 @Table(name="vehicles")
 @NamedQueries({
-	@NamedQuery(name="Vehicle.findAll", query="SELECT v FROM Vehicle v")
+	@NamedQuery(name=VEHICLE_FIND_ALL, query="SELECT v FROM Vehicle v"),
+	@NamedQuery(name=VEHICLE_GET_NAMES, query="SELECT v.vhclName FROM Vehicle v")
 })
-/*
-@SecondaryTables({
-@SecondaryTable(name = "ADDRESS", pkJoinColumns = @PrimaryKeyJoinColumn(name = "ADDR_ID"))
-})
-*/
 public class Vehicle implements Serializable {
 	private static final long serialVersionUID = 1L;
 

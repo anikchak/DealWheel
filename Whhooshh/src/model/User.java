@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.math.BigInteger;
+import static services.utility.GenericConstant.*;
 
 
 /**
@@ -15,8 +16,8 @@ import java.math.BigInteger;
 
 
 @NamedQueries({
-		@NamedQuery(name="User.findAll", query="SELECT u FROM User u"),
-		@NamedQuery(name="User.findUserById", query="SELECT u FROM User u where u.userId = :userId")
+		@NamedQuery(name=USER_FIND_ALL, query="SELECT u FROM User u"),
+		@NamedQuery(name=USER_FIND_BY_ID, query="SELECT u FROM User u where u.userId = :userId")
 })
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
