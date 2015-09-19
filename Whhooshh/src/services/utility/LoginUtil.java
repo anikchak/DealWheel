@@ -50,7 +50,7 @@ public class LoginUtil {
 			LoginDetail detail = loginDAOImpl.validateUserCredentials(userName,password);
 			isUserValid = securePwd.validatePassword(password, detail.getLognPassword());
 			if(isUserValid){
-				 return new UserDAOImpl<User>().findById(detail.getLognUserId());
+				 return new UserDAOImpl<User>().findById(detail.getLognUserId().toString());
 			}
 		}catch(Exception e){
 			
