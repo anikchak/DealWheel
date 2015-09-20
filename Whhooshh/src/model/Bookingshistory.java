@@ -11,15 +11,12 @@ import java.math.BigInteger;
  * 
  */
 @Entity
-@NamedQueries({
-	@NamedQuery(name="Bookingshistory.findBookingSeq", query="select b.bkngSeq FROM Bookingshistory b order by b.bkngSeq DESC"),
-	@NamedQuery(name="Bookingshistory.UpdateBooking", query="update Bookingshistory b set b.bkngStatus = :bkngStatus ,b.bkngNumber = :bkngNumber where b.bkngSeq = :bkngSeq and b.bkngStatus in (:bkngStatusWhereClause)")		
-})
+@NamedQuery(name="Bookingshistory.findAll", query="SELECT b FROM Bookingshistory b")
 public class Bookingshistory implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="BOOKINGSHISTORY_BKNGSEQ_GENERATOR", sequenceName="KEYSEQ")
+	@SequenceGenerator(name="BOOKINGSHISTORY_BKNGSEQ_GENERATOR", sequenceName="BIKESEQUENCE")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="BOOKINGSHISTORY_BKNGSEQ_GENERATOR")
 	@Column(name="BKNG_SEQ")
 	private String bkngSeq;
@@ -54,6 +51,9 @@ public class Bookingshistory implements Serializable {
 
 	@Column(name="LAST_UPDATED_BY")
 	private String lastUpdatedBy;
+
+	@Column(name="user_id")
+	private int userId;
 
 	public Bookingshistory() {
 	}
@@ -136,6 +136,14 @@ public class Bookingshistory implements Serializable {
 
 	public void setLastUpdatedBy(String lastUpdatedBy) {
 		this.lastUpdatedBy = lastUpdatedBy;
+	}
+
+	public int getUserId() {
+		return this.userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 }
