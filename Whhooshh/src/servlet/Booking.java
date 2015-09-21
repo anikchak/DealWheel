@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.User;
 import services.utility.CommonUtility;
 import services.utility.GenericConstant;
 
@@ -46,7 +48,7 @@ public class Booking extends HttpServlet {
 		// TODO Auto-generated method stub
 		System.out.println("Post method hit for Booking");
 		String pagecontext = request.getContextPath();
-
+		
 		HttpSession session = request.getSession();
 		System.out.println("session while booking=" + session);
 		

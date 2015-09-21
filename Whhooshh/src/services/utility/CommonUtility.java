@@ -3,6 +3,7 @@ package services.utility;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -15,6 +16,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.User;
 import services.CustomerControllerService;
 
 public class CommonUtility {
@@ -29,6 +31,17 @@ public class CommonUtility {
 		System.out.println("FromDate="+(String)request.getSession().getAttribute("fromDateString"));
 		System.out.println("FromDate="+(String)request.getSession().getAttribute("toDateString"));
 		System.out.println("VehicleDetails="+(String)request.getSession().getAttribute("selectedVehicleDetails"));
+		String loggedInUserId = null;
+		//Logged in user details
+				List<User> validUserDetails = (List<User>)request.getSession().getAttribute("LoggedInUserDetailsObject");
+				if(validUserDetails!=null & validUserDetails.size()>0){
+					for(User u : validUserDetails){
+						loggedInUserId = u.getUserId();
+					}
+				}
+				loggedInUserId = (loggedInUserId!=null)?loggedInUserId:"0";
+		System.out.println("LoggedInUserId="+loggedInUserId);
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd");
 		long tempBookingId=0;
 		if(request.getSession().getAttribute("fromDateString")!=null && request.getSession().getAttribute("toDateString")!=null){
@@ -38,7 +51,7 @@ public class CommonUtility {
 				String vehicleDetails[] = null;
 				if((String)request.getSession().getAttribute("selectedVehicleDetails") !=null){
 				vehicleDetails  = ((String)request.getSession().getAttribute("selectedVehicleDetails")).split("\\$",-1);
-				tempBookingId = s.updateBooking("VWNG",fromDate,toDate,vehicleDetails[0],vehicleDetails[2],(String)request.getSession().getAttribute("username"));
+				tempBookingId = s.updateBooking("VWNG",fromDate,toDate,vehicleDetails[0],vehicleDetails[2],(String)request.getSession().getAttribute("username"),loggedInUserId);
 				}
 			} catch (ParseException e) {
 				System.out.println("Date Parsing error");

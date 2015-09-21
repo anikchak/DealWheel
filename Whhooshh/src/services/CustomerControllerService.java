@@ -1,5 +1,11 @@
 package services;
 
+import static services.utility.GenericConstant.*;
+
+import org.apache.log4j.Logger;
+
+import dao.UserDAOImpl;
+
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -28,6 +34,8 @@ public class CustomerControllerService {
 	EntityManager em = emf.createEntityManager();
 	EntityTransaction et = em.getTransaction();
 	
+	private static Logger logger = Logger.getLogger(CustomerControllerService.class);
+	
 	/**
 	 * This method is invoked when a new user is registering. 
 	 * @param: user entered email id(username) and password
@@ -36,7 +44,8 @@ public class CustomerControllerService {
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean inserNewUser(String usr,String pwd){
-		System.out.println("ControllerService: inserting new user through insertNewUser");
+	
+		logger.info("ControllerService: inserting new user through insertNewUser");
 		//Secure password
 		//get Salt to be used with password
 		SecurePassword securePwd = new SecurePassword();
@@ -56,7 +65,7 @@ public class CustomerControllerService {
 		if(em!=null)
 		{
 			//Verify if the username already exists
-			Query usrnmExist  = em.createNamedQuery("LoginDetail.findDetailUsingUserName");
+			Query usrnmExist  = em.createNamedQuery(LOGIN_DETAIL_FIND_USING_USER_NAME);
 			usrnmExist.setParameter("loginUserName", usr);
 			List<LoginDetail> resultSet = (List<LoginDetail>)usrnmExist.getResultList();
 			if(resultSet!=null && resultSet.size()>0){
@@ -105,7 +114,7 @@ public class CustomerControllerService {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<User> validateUser(String usrEntered, String pwdEntered){
-		System.out.println("ControllerService:Validate user");
+		logger.info("ControllerService:Validate user");
 
 		SecurePassword securePwd = new SecurePassword();
 		List<User> validatedUserDetails=null;
@@ -115,7 +124,7 @@ public class CustomerControllerService {
 	try{
 		if(em!=null)
 		{
-			Query q  = em.createNamedQuery("LoginDetail.findDetailUsingUserName");
+			Query q  = em.createNamedQuery(LOGIN_DETAIL_FIND_USING_USER_NAME);
 			q.setParameter("loginUserName", usrEntered);
 			List<LoginDetail> resultSet = (List<LoginDetail>)q.getResultList();
 			if(resultSet!=null && resultSet.size()==1){
@@ -143,14 +152,14 @@ public class CustomerControllerService {
 	  try{	
 		if(em!=null){
 			et.begin();
-			Query q = em.createNamedQuery("LoginDetail.UpdateLastLoginDetail" );
+			Query q = em.createNamedQuery(LOGIN_DETAIL_UPDATE_LAST_LOGIN);
 			q.setParameter("lastLoginDetail", new Date());
 			q.setParameter("loginUserName", usrEntered);
 			int updateStatus = q.executeUpdate();
 			et.commit();
 			if(updateStatus>0){
 				System.out.println("Update Successfull..fetching user details for ="+loginUserId);
-				Query fetchUserDetails = em.createNamedQuery("User.findByUserId");
+				Query fetchUserDetails = em.createNamedQuery(USER_FIND_BY_ID);
 				fetchUserDetails.setParameter("userId", String.valueOf(loginUserId));
 				validatedUserDetails = fetchUserDetails.getResultList();
 			}
@@ -255,15 +264,15 @@ public class CustomerControllerService {
 	  * @param usernm
 	  * @return temporary booking id
 	  */
-	 public long updateBooking(String lockingcode,Date fromDate,Date toDate,String vehicleName, String vehicleProviderId,String usernm){
+	 public long updateBooking(String lockingcode,Date fromDate,Date toDate,String vehicleName, String vehicleProviderId,String usernm,String userId){
 		 System.out.println("lockingcode="+lockingcode+"\nfromDate="+fromDate+"\ntoDate="+toDate+"\nvehicleName="+vehicleName+"\nvehicleProviderId="+vehicleProviderId+"\nusernm="+usernm);
 		 String lastRowId = null;
 		 try{
 				if(em!=null)
 				{
 					et.begin();
-					Query q = em.createNativeQuery("insert into bookingshistory (BKNG_STATUS,BKNG_FROM_DATE,BKNG_TO_DATE,BKNG_VEHICLE,BKNG_CREATION_DATE,LAST_UPDATED_BY,LAST_UPDATED) "
-													+"select ?,?,?,v.vhcl_id,now(),?,now() "
+					Query q = em.createNativeQuery("insert into bookingshistory (BKNG_STATUS,BKNG_FROM_DATE,BKNG_TO_DATE,BKNG_VEHICLE,BKNG_CREATION_DATE,LAST_UPDATED_BY,LAST_UPDATED,USER_ID) "
+													+"select ?,?,?,v.vhcl_id,now(),?,now(),? "
 													+"from vehicles v where v.vhcl_name=? and v.vhcl_id not in ( "
 													+"SELECT bh.BKNG_VEHICLE FROM bookingshistory bh WHERE "
 													+"bh.BKNG_FROM_DATE <= ? AND bh.BKNG_TO_DATE >= ? AND bh.BKNG_STATUS  IN ('UPCMNG','VWNG')) limit 1"
@@ -274,16 +283,17 @@ public class CustomerControllerService {
 					q.setParameter(2, fromDate);
 					q.setParameter(3, toDate);
 					q.setParameter(4, usernm);
-					q.setParameter(5, vehicleName);
+					q.setParameter(5, Integer.parseInt(userId));
+					q.setParameter(6, vehicleName);
 					
-					q.setParameter(6, toDate);
-					q.setParameter(7, fromDate);
+					q.setParameter(7, toDate);
+					q.setParameter(8, fromDate);
 					
 					int entryUpdate = q.executeUpdate();
 					System.out.println("value="+entryUpdate);
 					et.commit();
 					if(entryUpdate==1){
-					Query seqQuery = em.createNamedQuery("Bookingshistory.findBookingSeq"); 
+					Query seqQuery = em.createNamedQuery(BOOKING_HISTORY_FIND_BOOKING_BY_SEQ); 
 					List rowIdList = (List)seqQuery.setMaxResults(1).getResultList();
 					if(rowIdList!=null && rowIdList.size()>0){
 						lastRowId = (String)rowIdList.get(0);
@@ -330,7 +340,7 @@ public class CustomerControllerService {
 				if(em!=null)
 				{
 					et.begin();
-					Query q = em.createNamedQuery("Bookingshistory.UpdateBooking");
+					Query q = em.createNamedQuery(BOOKING_HISTORY_UPDATE);
 					//q.setParameter(1, "UPCMNG");
 					q.setParameter("bkngStatus", "UPCMNG");
 					q.setParameter("bkngNumber", generatedOrderId);
@@ -355,7 +365,7 @@ public class CustomerControllerService {
 		 try{
 				if(em!=null)
 				{
-					Query q = em.createNamedQuery("Vehicle.findAll");
+					Query q = em.createNamedQuery(VEHICLE_FIND_ALL);
 					List<Vehicle> resultList = (List<Vehicle>)q.getResultList();
 					if(resultList!=null & resultList.size()>0){
 						for(Vehicle veh :resultList){
@@ -373,25 +383,24 @@ public class CustomerControllerService {
 		 return staticVehicleDetails;
 	 }
 	 
-	 public List<Object[]> getBookings(String uName) {
-			Query q  = em.createQuery("Select book,bike,pd,adds "+ 
-          "from Bookingshistory book,Vehicle bike,User us,User pd,Address adds "+ 
+	 @SuppressWarnings("unchecked")
+	public List<Object[]> getMyBookings(String uName) {
+		
+		System.out.println("getMyBookings() method invoked");
+		
+			Query q  = em.createQuery("Select book,veh,pd,adds "+ 
+          "from Bookingshistory book,Vehicle veh,User us,User pd,Address adds "+ 
 					" where book.userId = us.userId"+
-					" AND book.bkngVehicle = bike.vhclId"+ 
-					" AND pd.userId = bike.vhclProviderId"+
+					" AND book.bkngVehicle = veh.vhclId"+ 
+					" AND pd.userId = veh.vhclProviderId"+
                     " AND pd.userId = adds.userId "+
-         "AND us.userName = :userName");
+         "AND (upper(us.userName) = upper(:userName) or upper(us.userEmail) = upper(:userName)) ");
 			q.setParameter("userName", uName);
-			System.out.println("im here in test service getbookings");
-			@SuppressWarnings("unchecked")
 			
 			List<Object[]> searchResultSet = (List<Object[]>)q.getResultList();
 			
 		
 			return searchResultSet;
-			
-			// TODO Auto-generated method stub
-			
 		} 
 	 
 	 

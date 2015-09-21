@@ -32,11 +32,11 @@ public class MyBookings extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("DoGet");
+		System.out.println("MyBookings:DoGet");
 		String uName = (String) request.getSession().getAttribute(GenericConstant.USERNAME);
 		System.out.println("USER NAME "+uName);
 		CustomerControllerService s = new CustomerControllerService();
-		List<Object[]> MyBookList= s.getBookings (uName);
+		List<Object[]> MyBookList= s.getMyBookings(uName);
 		System.out.println("Size"+MyBookList.size());
 		request.getSession().setAttribute("BookingHistory", MyBookList);
 		String pagecontext = request.getContextPath();

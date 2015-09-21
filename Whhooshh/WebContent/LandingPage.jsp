@@ -55,6 +55,10 @@ else{
 	<br>
 	<a href="${pageContext.request.contextPath}/VendorLoginSignUp.jsp">Vendor mySpace</a>
 	<br>
-    <a href="${pageContext.request.contextPath}/MyBookings">My Bookings</a>
+	Log-in to view your bookings<br>
+	<%if(session.getAttribute("LoggedInUserDetailsObject")!=null){
+		%>
+	 <a href="${pageContext.request.contextPath}/MyBookings">My Bookings</a>
+	 <%} %>
 </body>
 </html>

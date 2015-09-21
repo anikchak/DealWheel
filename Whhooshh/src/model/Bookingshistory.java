@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.math.BigInteger;
+import static services.utility.GenericConstant.*;
 
 
 /**
@@ -11,7 +12,12 @@ import java.math.BigInteger;
  * 
  */
 @Entity
-@NamedQuery(name="Bookingshistory.findAll", query="SELECT b FROM Bookingshistory b")
+@NamedQueries({
+	@NamedQuery(name=BOOKING_HISTORY_FIND_ALL, query="SELECT b FROM Bookingshistory b"),
+	@NamedQuery(name=BOOKING_HISTORY_FIND_BOOKING_BY_SEQ, query="select b.bkngSeq FROM Bookingshistory b order by b.bkngSeq DESC"),
+	@NamedQuery(name=BOOKING_HISTORY_UPDATE, query="update Bookingshistory b set b.bkngStatus = :bkngStatus ,b.bkngNumber = :bkngNumber where b.bkngSeq = :bkngSeq and b.bkngStatus in (:bkngStatusWhereClause)")		
+})
+
 public class Bookingshistory implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -52,7 +58,7 @@ public class Bookingshistory implements Serializable {
 	@Column(name="LAST_UPDATED_BY")
 	private String lastUpdatedBy;
 
-	@Column(name="user_id")
+	@Column(name="USER_ID")
 	private int userId;
 
 	public Bookingshistory() {

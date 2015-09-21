@@ -34,7 +34,8 @@ function selectedVehicle(rowId){
 	
 	var selectedVehicleDetailsId  = document.getElementById("selectedVehicleDetailsId");
 	if(selectedVehicleDetailsId!=null && perDayCostId!=null && effectiveCostId!=null && securityDepositId!=null && vehicleMakerId!=null && noOfDaysId!=null){
-		selectedVehicleDetailsId.value = vehicleNameId.innerHTML+"$"+vehicleMakerId.innerHTML+"$"+selectedPickUpLocation+"$"+perDayCostId.innerHTML+"$"+noOfDaysId.innerHTML+"$"+effectiveCostId.innerHTML+"$"+securityDepositId.innerHTML;
+		selectedVehicleDetailsId.value = vehicleNameId.innerHTML+"$"+vehicleMakerId.innerHTML+"$"+selectedPickUpLocation+"$"
+										+perDayCostId.innerHTML+"$"+noOfDaysId.innerHTML+"$"+effectiveCostId.innerHTML+"$"+securityDepositId.innerHTML;
 	}else{
 		return false;
 	}

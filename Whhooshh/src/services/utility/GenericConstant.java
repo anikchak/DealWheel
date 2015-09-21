@@ -41,4 +41,7 @@ public class GenericConstant {
 	public static final String USER_FIND_BY_ID = "User.findByUserId";
 	public static final String VEHICLE_GET_NAMES = "Vehicle.getAllNames";
 	public static final String VEHICLE_FIND_ALL = "Vehicle.findAll";
+	public static final String BOOKING_HISTORY_FIND_ALL = "Bookingshistory.findAll";
+	public static final String BOOKING_HISTORY_FIND_BOOKING_BY_SEQ = "Bookingshistory.findBookingSeq";
+	public static final String BOOKING_HISTORY_UPDATE = "Bookingshistory.UpdateBooking";
 }
