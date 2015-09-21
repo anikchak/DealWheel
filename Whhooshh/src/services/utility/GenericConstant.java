@@ -31,7 +31,7 @@ public class GenericConstant {
 	public static final String NAV_TO_VENDORREGISTRATION_PAGE = "/VendorRegister.jsp";
 	public static final String NAV_TO_VENDOR_HOME_PAGE = "/AddVehicle.jsp";
 	public static final String NAV_TO_ADD_VEHICLE_PAGE = "/AddVehicle.jsp";
-	
+	public static final String NAV_TO_MYBOOKINGS_PAGE = "/MyBookings.jsp";
 	
 	//NAMED QUERIES
 	public static final String LOGIN_DETAIL_FIND_ALL = "LoginDetail.findAll";

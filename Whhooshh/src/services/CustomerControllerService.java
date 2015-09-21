@@ -7,13 +7,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
+import javax.persistence.Query; 
 
 import model.Address;
+import model.Bookingshistory;
 import model.LoginDetail;
 import model.User;
 import model.Vehicle;
@@ -148,7 +150,7 @@ public class CustomerControllerService {
 			et.commit();
 			if(updateStatus>0){
 				System.out.println("Update Successfull..fetching user details for ="+loginUserId);
-				Query fetchUserDetails = em.createNamedQuery("User.findUserById");
+				Query fetchUserDetails = em.createNamedQuery("User.findByUserId");
 				fetchUserDetails.setParameter("userId", String.valueOf(loginUserId));
 				validatedUserDetails = fetchUserDetails.getResultList();
 			}
@@ -370,4 +372,27 @@ public class CustomerControllerService {
 		 
 		 return staticVehicleDetails;
 	 }
+	 
+	 public List<Object[]> getBookings(String uName) {
+			Query q  = em.createQuery("Select book,bike,pd,adds "+ 
+          "from Bookingshistory book,Vehicle bike,User us,User pd,Address adds "+ 
+					" where book.userId = us.userId"+
+					" AND book.bkngVehicle = bike.vhclId"+ 
+					" AND pd.userId = bike.vhclProviderId"+
+                    " AND pd.userId = adds.userId "+
+         "AND us.userName = :userName",Bookingshistory.class);
+			q.setParameter("userName", uName);
+			System.out.println("im here in test service getbookings");
+			@SuppressWarnings("unchecked")
+			
+			List<Object[]> searchResultSet = (List<Object[]>)q.getResultList();
+			
+		
+			return searchResultSet;
+			
+			// TODO Auto-generated method stub
+			
+		} 
+	 
+	 
 }
