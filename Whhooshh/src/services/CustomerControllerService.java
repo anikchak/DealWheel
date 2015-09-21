@@ -380,7 +380,7 @@ public class CustomerControllerService {
 					" AND book.bkngVehicle = bike.vhclId"+ 
 					" AND pd.userId = bike.vhclProviderId"+
                     " AND pd.userId = adds.userId "+
-         "AND us.userName = :userName",Bookingshistory.class);
+         "AND us.userName = :userName");
 			q.setParameter("userName", uName);
 			System.out.println("im here in test service getbookings");
 			@SuppressWarnings("unchecked")
