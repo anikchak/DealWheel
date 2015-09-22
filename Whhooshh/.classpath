@@ -15,6 +15,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/bmaheshw.ORADEV/Downloads/javamail1_4_7.zip"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

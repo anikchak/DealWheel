@@ -23,17 +23,10 @@ List<String[]> completed = new ArrayList<String[]>();
 List<String[]> upComing = new ArrayList<String[]>();
 List<String[]> Cancelled = new ArrayList<String[]>();
 @SuppressWarnings("unchecked")
-List<Object[]> resultSet = (List<Object[]>)session.getAttribute("BookingHistory");
+List<Object[]> resultSet = (List<Object[]>)session.getAttribute("MyBookingHistory");
 
-	
-		//List<Object[]> resultSet = (Object[])displayMyBookings.get(i);
-		
-		
-		
-		int i1,j,k;
+	    int i1,j,k;
 		i1=1;j=1;k=0;
-		
-		
 		
 		for(Object[] o: resultSet)
 		{

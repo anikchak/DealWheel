@@ -12,7 +12,7 @@ import javax.persistence.Query;
 
 public class BaseDAOImpl<T> implements BaseDAO<T> {
 	
-	EntityManagerFactory emf = Persistence.createEntityManagerFactory("Whhooshh");
+	EntityManagerFactory emf = Persistence.createEntityManagerFactory("DealWheel");
 	EntityManager em = emf.createEntityManager();
 	EntityTransaction et = em.getTransaction();
 	

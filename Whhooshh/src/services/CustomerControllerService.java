@@ -30,7 +30,7 @@ import services.utility.MessageBundle;
 
 public class CustomerControllerService {
 
-	EntityManagerFactory emf = Persistence.createEntityManagerFactory("Whhooshh");
+	EntityManagerFactory emf = Persistence.createEntityManagerFactory("DealWheel");
 	EntityManager em = emf.createEntityManager();
 	EntityTransaction et = em.getTransaction();
 	
@@ -43,9 +43,10 @@ public class CustomerControllerService {
 	 * 			false - if there is any exception while entering user record 
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean inserNewUser(String usr,String pwd){
+	public List<User> inserNewUser(String usr,String pwd){
 	
 		logger.info("ControllerService: inserting new user through insertNewUser");
+		List returnUserList=null;
 		//Secure password
 		//get Salt to be used with password
 		SecurePassword securePwd = new SecurePassword();
@@ -70,7 +71,7 @@ public class CustomerControllerService {
 			List<LoginDetail> resultSet = (List<LoginDetail>)usrnmExist.getResultList();
 			if(resultSet!=null && resultSet.size()>0){
 				System.out.println("Unique username encountered");
-				return false;
+				//return null;
 			}else{
 			   
 				//Beginning txn for User table record
@@ -96,8 +97,10 @@ public class CustomerControllerService {
 				et.commit();
 				
 				System.out.println("User ID="+u.getUserId());
+				if(u.getUserId()!=null ){
+					returnUserList =  getValidUserDetails(BigInteger.valueOf(Long.parseLong(u.getUserId())));
+				}
 				
-				return true;
 			}
 		}
 		}catch(Exception e){
@@ -106,7 +109,7 @@ public class CustomerControllerService {
 		}finally{
 			em.close();
 		}
-		return false;
+		return returnUserList;
 	}
 	
 	/**
@@ -158,10 +161,7 @@ public class CustomerControllerService {
 			int updateStatus = q.executeUpdate();
 			et.commit();
 			if(updateStatus>0){
-				System.out.println("Update Successfull..fetching user details for ="+loginUserId);
-				Query fetchUserDetails = em.createNamedQuery(USER_FIND_BY_ID);
-				fetchUserDetails.setParameter("userId", String.valueOf(loginUserId));
-				validatedUserDetails = fetchUserDetails.getResultList();
+				validatedUserDetails = getValidUserDetails(loginUserId);
 			}
 			
 		}
@@ -176,6 +176,20 @@ public class CustomerControllerService {
 		return null;
 	}
 	
+	public List getValidUserDetails(BigInteger loginUserId){
+		System.out.println("Update Successfull..fetching user details for ="+loginUserId);
+		Query fetchUserDetails = null;
+		try{
+			if(em!=null)
+			{
+			  fetchUserDetails = em.createNamedQuery(USER_FIND_BY_ID);
+			  fetchUserDetails.setParameter("userId", String.valueOf(loginUserId));
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return fetchUserDetails.getResultList();
+	}
 	/**
 	 * This method is used to prepare a map which will hold the related vehicle data (vehicle details and pickup locations) for the user entered date range 
 	 * @param from
@@ -394,7 +408,7 @@ public class CustomerControllerService {
 					" AND book.bkngVehicle = veh.vhclId"+ 
 					" AND pd.userId = veh.vhclProviderId"+
                     " AND pd.userId = adds.userId "+
-         "AND (upper(us.userName) = upper(:userName) or upper(us.userEmail) = upper(:userName)) ");
+					"AND (upper(us.userName) = upper(:userName) or upper(us.userEmail) = upper(:userName)) ");
 			q.setParameter("userName", uName);
 			
 			List<Object[]> searchResultSet = (List<Object[]>)q.getResultList();

@@ -38,7 +38,7 @@ public class MyBookings extends HttpServlet {
 		CustomerControllerService s = new CustomerControllerService();
 		List<Object[]> MyBookList= s.getMyBookings(uName);
 		System.out.println("Size"+MyBookList.size());
-		request.getSession().setAttribute("BookingHistory", MyBookList);
+		request.getSession().setAttribute("MyBookingHistory", MyBookList);
 		String pagecontext = request.getContextPath();
 		response.sendRedirect(pagecontext+ GenericConstant.NAV_TO_MYBOOKINGS_PAGE);
 		

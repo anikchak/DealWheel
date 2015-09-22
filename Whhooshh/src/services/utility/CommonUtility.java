@@ -33,12 +33,16 @@ public class CommonUtility {
 		System.out.println("VehicleDetails="+(String)request.getSession().getAttribute("selectedVehicleDetails"));
 		String loggedInUserId = null;
 		//Logged in user details
-				List<User> validUserDetails = (List<User>)request.getSession().getAttribute("LoggedInUserDetailsObject");
-				if(validUserDetails!=null & validUserDetails.size()>0){
-					for(User u : validUserDetails){
-						loggedInUserId = u.getUserId();
-					}
-				}
+		System.out.println(request.getSession().getAttribute("LoggedInUserDetailsObject"));
+				
+		if(request.getSession().getAttribute("LoggedInUserDetailsObject")!=null){	
+			List<User> validUserDetails = (List<User>)request.getSession().getAttribute("LoggedInUserDetailsObject");
+			if(validUserDetails!=null & validUserDetails.size()>0){
+				for(User u : validUserDetails){
+					loggedInUserId = u.getUserId();
+				  }
+			}
+		}
 				loggedInUserId = (loggedInUserId!=null)?loggedInUserId:"0";
 		System.out.println("LoggedInUserId="+loggedInUserId);
 		

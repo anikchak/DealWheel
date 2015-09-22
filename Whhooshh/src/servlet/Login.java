@@ -75,11 +75,17 @@ public class Login extends HttpServlet {
 				response.sendRedirect(pagecontext + GenericConstant.NAV_TO_LOGIN_PAGE);
 				}
 		} else if (GenericConstant.NEWREGISTRATION.equalsIgnoreCase(optionSelected)) {
-			Boolean status = s.inserNewUser(uName, pwd);
-			System.out.println("status post registration=" + status);
-			if (status) {
+			List<User> newUserEntryList = s.inserNewUser(uName, pwd);
+			System.out.println("status post registration=" + newUserEntryList);
+			if (newUserEntryList!=null && newUserEntryList.size()==1) {
 				session = generateSession(request, uName);
+				session.setAttribute("LoggedInUserDetailsObject",newUserEntryList );
 				new CommonUtility().pageNavigation(pagecontext, comingFromPage, request, response);
+			}else{
+				System.out.println("Username already exists. Error..!!");
+				request.getSession().removeAttribute("LoggedInUserDetailsObject");
+				request.getSession().setAttribute(GenericConstant.LOGINERROR,MessageBundle.NOT_UNIQUE_USERNAME_ERROR_MSG);
+				response.sendRedirect(pagecontext + GenericConstant.NAV_TO_LOGIN_PAGE);
 			}
 		}
 	}
