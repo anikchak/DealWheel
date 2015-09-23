@@ -4,6 +4,7 @@ import static services.utility.GenericConstant.*;
 
 import org.apache.log4j.Logger;
 
+import dao.LoginDAOImpl;
 import dao.UserDAOImpl;
 
 import java.math.BigInteger;
@@ -75,30 +76,32 @@ public class CustomerControllerService {
 			}else{
 			   
 				//Beginning txn for User table record
-				et.begin();
+				//et.begin();
 				User u = new User();
 				u.setUserEmail(usr);
 				u.setUserType("CUST");
 				u.setLastUpdated(new Date());
 				u.setLastUpdatedBy(usr);
-				em.persist(u);
-				et.commit();
+				User insertedUser = new UserDAOImpl<User>().addNewUser(u);
+				//em.persist(u);
+				//et.commit();
 							
 				//Beginning txn for LoginDetail table record
-				et.begin();
+				//et.begin();
 				LoginDetail l = new LoginDetail();
-				l.setLognUserId(BigInteger.valueOf(Long.parseLong(u.getUserId())));
+				l.setLognUserId(BigInteger.valueOf(Long.parseLong(insertedUser.getUserId())));
 				l.setLognUserName(usr);
 				l.setLognPassword(pwd);
 				l.setLastUpdatedBy(usr);
 				l.setLognLastLoginDetail(new Date());
 				l.setLastUpdated(new Date());
-				em.persist(l);
-				et.commit();
+				//em.persist(l);
+				//et.commit();
+				LoginDetail newLoginDetail = new LoginDAOImpl<LoginDetail>().addNewLogin(l);
 				
-				System.out.println("User ID="+u.getUserId());
-				if(u.getUserId()!=null ){
-					returnUserList =  getValidUserDetails(BigInteger.valueOf(Long.parseLong(u.getUserId())));
+				System.out.println("User ID="+insertedUser.getUserId());
+				if(insertedUser.getUserId()!=null ){
+					returnUserList =  getValidUserDetails(BigInteger.valueOf(Long.parseLong(insertedUser.getUserId())));
 				}
 				
 			}

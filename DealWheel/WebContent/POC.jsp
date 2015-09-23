@@ -5,7 +5,7 @@
 <%@ page import="java.util.Map" %>  
 <%@ page import="java.util.Map.Entry" %>  
 <%@ page import="java.util.Iterator" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -19,7 +19,22 @@ function populateVehicleDetails(){
 		alert(optionSelected);
 	}
 }
+
+
+var map;
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: -34.397, lng: 150.644},
+    zoom: 8
+  });
+}
+
 </script>
+
+ <style type="text/css">
+      html, body { height: 100%; margin: 0; padding: 0; }
+      #map { height: 100%; }
+    </style>
 </head>
 <body>
 <select id="listVehicleId" onchange="populateVehicleDetails()">
@@ -50,5 +65,11 @@ while(itr.hasNext()){
 <option id="Other">Other</option>
 </select>
 <br>	<a href="${pageContext.request.contextPath}/LandingPage.jsp">Landing Page</a>
+
+<div id="map"></div>
+
+<script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgpKmCXrt-BhLYP3wgtgRrLClxKd0M3_U&callback=initMap">
+    </script>
 </body>
 </html>
