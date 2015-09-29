@@ -1,0 +1,49 @@
+.header {
+	position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    background-color: white;
+    box-shadow: 0 1px 12px 2px #999;
+}
+
+.navbar-nav>li>a {
+    color: #666;
+}
+
+.navbar-nav>li>a:hover {
+    color: #F70;
+}
+
+.signUpContent {
+	display: none;
+}
+
+.main-content {
+	margin-top: 250px;
+	background-color: #EAEAEA;
+}
+.main-search {
+	position: relative;
+}
+
+.home-search-container {
+    border-radius: 2px;
+    display: inline;
+    left: 0;
+    right: 0;
+    padding: 6px 7px 2px 6px;
+    position: absolute;
+}
+
+.main-input {
+	height: 50px;
+    width: 300px !important;
+    margin-right: 15px;
+}
+
+.booking-button {
+	background: #F70;
+	font-weight: 900;
+	font-size: 25px;
+}
