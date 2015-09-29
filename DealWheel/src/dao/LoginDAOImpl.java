@@ -1,6 +1,6 @@
 package dao;
 
-import static services.utility.GenericConstant.LOGIN_DETAIL_FIND_USING_USER_NAME;
+import static services.utility.GenericConstant.LOGIN_DETAIL_FIND_USING_USER_NAME_AND_TYPE;
 
 import javax.persistence.Query;
 
@@ -18,10 +18,11 @@ public class LoginDAOImpl<T> extends BaseDAOImpl<LoginDetail> implements LoginDA
 		return l;
 	}
 
-	public LoginDetail validateUserCredentials(String userName, String password) {
+	public LoginDetail validateUserCredentials(String userName, String password, String userType) {
 		logger.debug("Validating User Credentials for "+userName);
-		Query q = getEntityManager().createNamedQuery(LOGIN_DETAIL_FIND_USING_USER_NAME);
+		Query q = em.createNamedQuery(LOGIN_DETAIL_FIND_USING_USER_NAME_AND_TYPE);
 		q.setParameter("loginUserName", userName);
+		q.setParameter("loginUserType", userType);
 		LoginDetail user = (LoginDetail) q.getSingleResult();
 		return user;
 	}

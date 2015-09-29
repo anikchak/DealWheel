@@ -15,7 +15,11 @@ import static services.utility.GenericConstant.*;
 @Table(name="vehicles")
 @NamedQueries({
 	@NamedQuery(name=VEHICLE_FIND_ALL, query="SELECT v FROM Vehicle v"),
-	@NamedQuery(name=VEHICLE_GET_NAMES, query="SELECT v.vhclName FROM Vehicle v")
+	@NamedQuery(name=VEHICLE_GET_NAMES, query="SELECT v.vhclName FROM Vehicle v"),
+	@NamedQuery(name=VEHICLE_GET_VEHICLE_DETAILS_FOR_USER, 
+		query="SELECT v.vhclName, v.vhclMake, v.vhclRegistrationNo, v.vhclYearOfManufacture, v.vhclPerDayCost, v.vhclSecurityDeposit, "
+				+ "a.addrLine1, a.addrLine2, a.addrLine3, a.addrLocality, a.addrCity, a.addrState, a.addrCountry, a.addrPinCode "
+				+ "FROM Vehicle v JOIN Address a ON v.vhclAddressId = a.addrId JOIN User u ON a.userId = u.userId WHERE u.userId = :userId ")
 })
 public class Vehicle implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -42,8 +46,8 @@ public class Vehicle implements Serializable {
 	@Column(name="VHCL_PER_DAY_COST")
 	private int vhclPerDayCost;
 
-	@Column(name="VHCL_PROVIDER_ID")
-	private BigInteger vhclProviderId;
+	@Column(name="VHCL_ADDRESS_ID")
+	private BigInteger vhclAddressId;
 
 	@Column(name="VHCL_REGISTRATION_NO")
 	private String vhclRegistrationNo;
@@ -57,19 +61,6 @@ public class Vehicle implements Serializable {
 	@Column(name="VHCL_YEAR_OF_MANUFACTURE")
 	private String vhclYearOfManufacture;
 	
-	/*
-	@Column(table="ADDRESS",name="ADDR_LOCALITY")
-	private String addrLocality;
-	*/	
-	/*
-	public String getAddrLocality() {
-		return addrLocality;
-	}
-
-	public void setAddrLocality(String addrLocality) {
-		this.addrLocality = addrLocality;
-	}
-*/
 	public Vehicle() {
 	}
 
@@ -121,12 +112,12 @@ public class Vehicle implements Serializable {
 		this.vhclPerDayCost = vhclPerDayCost;
 	}
 
-	public BigInteger getVhclProviderId() {
-		return this.vhclProviderId;
+	public BigInteger getVhclAddressId() {
+		return this.vhclAddressId;
 	}
 
-	public void setVhclProviderId(BigInteger vhclProviderId) {
-		this.vhclProviderId = vhclProviderId;
+	public void setVhclAddressId(BigInteger vhclAddressId) {
+		this.vhclAddressId = vhclAddressId;
 	}
 
 	public String getVhclRegistrationNo() {

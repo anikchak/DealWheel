@@ -1,3 +1,5 @@
+<%@page import="java.util.List"%>
+<%@page import="services.LocationOfOperationController"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -7,7 +9,7 @@
 <title>Register with us..</title>
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/vendorRegistration" method="post">
+<form action="${pageContext.request.contextPath}/VendorRegistration" method="post">
 <table align="center" border="0" >
 <tr><td>User Name(e-mail)</td> <td><input type="text" id="email" name="email" value=<%= request.getParameter("email") %>></td></tr>
 <tr><td colspan="2" align="center"> --------- Personal Details --------- </td></tr>
@@ -22,9 +24,30 @@
 <tr><td>Address Line 2</td><td><input type="text" id="addr2" name="addr2"></td></tr>
 <tr><td>Address Line 3</td><td><input type="text" id="addr3" name="addr3"></td></tr>
 <tr><td>Locality</td><td><input type="text" id="locality" name="locality"></td></tr>
-<tr><td>City</td><td><input type="text" id="city" name="city"></td></tr>
-<tr><td>State</td><td><input type="text" id="state" name="state"></td></tr>
-<tr><td>Country</td><td><input type="text" id="country" name="country"></td></tr>
+<% 
+List<String> countries = new LocationOfOperationController().getCountryNames();
+List<String> states = new LocationOfOperationController().getStateNamesForCountry(countries.get(0));
+List<String> cities = new LocationOfOperationController().getCityNamesForCountryState(countries.get(0), "Maharashtra");
+%>
+
+<tr><td>Country :</td><td><select name="country"  id="country">
+	<option value="default">Select a Country</option>
+	<%for(String c : countries){ %>
+		<option value=<%=c %>><%=c %></option>
+	<%} %></select></td></tr>
+	
+<tr><td>State :</td><td><select name="state"  id="state">
+	<option value="default">Select a State</option>
+	<%for(String s : states){ %>
+		<option value=<%=s %>><%=s %></option>
+	<%} %></select></td></tr>
+
+<tr><td>City :</td><td><select name="city"  id="city">
+	<option value="default">Select A City</option>
+	<%for(String ct : cities){ %>
+		<option value=<%=ct %>><%=ct %></option>
+	<%} %></select></td></tr>
+	
 <tr><td>Pin Code</td><td><input type="text" id="pinCode" name="pinCode"></td></tr>
 <tr><td colspan="2" align="center"><input type="submit" name="Register" value="Register"></td></tr>
 </table>

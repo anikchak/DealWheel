@@ -16,7 +16,7 @@ import java.math.BigInteger;
 @Table(name="login_detail")
 @NamedQueries({
 	@NamedQuery(name=LOGIN_DETAIL_FIND_ALL, query="SELECT l FROM LoginDetail l"),
-	@NamedQuery(name=LOGIN_DETAIL_FIND_USING_USER_NAME, query="SELECT l FROM LoginDetail l where l.lognUserName = :loginUserName"),
+	@NamedQuery(name=LOGIN_DETAIL_FIND_USING_USER_NAME_AND_TYPE, query="SELECT l FROM LoginDetail l JOIN User u ON l.lognUserId = u.userId WHERE l.lognUserName = :loginUserName AND u.userType = :loginUserType"),
 	@NamedQuery(name=LOGIN_DETAIL_UPDATE_LAST_LOGIN, query="update LoginDetail l set l.lognLastLoginDetail = :lastLoginDetail where l.lognUserName = :loginUserName")
 })
 

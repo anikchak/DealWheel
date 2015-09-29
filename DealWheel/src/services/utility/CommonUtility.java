@@ -1,5 +1,6 @@
 package services.utility;
 
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,7 +40,7 @@ public class CommonUtility {
 			List<User> validUserDetails = (List<User>)request.getSession().getAttribute("LoggedInUserDetailsObject");
 			if(validUserDetails!=null & validUserDetails.size()>0){
 				for(User u : validUserDetails){
-					loggedInUserId = u.getUserId();
+//					loggedInUserId = u.getUserId();
 				  }
 			}
 		}

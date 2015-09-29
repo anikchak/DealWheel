@@ -29,12 +29,12 @@ public class LoginUtil {
 		return password;
 	}
 	
-	public static boolean validateUserCredentials(String userName, String password){
+	public static boolean validateUserCredentials(String userName, String password, String userType){
 		boolean isUserValid = false;
 		try{
 			SecurePassword securePwd = new SecurePassword();
 			LoginDAOImpl<LoginDetail> loginDAOImpl = new LoginDAOImpl<LoginDetail>();
-			LoginDetail detail = loginDAOImpl.validateUserCredentials(userName,password);
+			LoginDetail detail = loginDAOImpl.validateUserCredentials(userName,password, userType);
 			isUserValid = securePwd.validatePassword(password, detail.getLognPassword());
 		}catch(Exception e){
 			
@@ -42,20 +42,22 @@ public class LoginUtil {
 		return isUserValid;
 	}
 	
-	public static User getUserByCredentials(String userName, String password){
+	public static User getUserByCredentials(String userName, String password, String userType){
 		boolean isUserValid = false;
+		User user = null;
 		try{
 			SecurePassword securePwd = new SecurePassword();
 			LoginDAOImpl<LoginDetail> loginDAOImpl = new LoginDAOImpl<LoginDetail>();
-			LoginDetail detail = loginDAOImpl.validateUserCredentials(userName,password);
+			LoginDetail detail = loginDAOImpl.validateUserCredentials(userName,password, userType);
 			isUserValid = securePwd.validatePassword(password, detail.getLognPassword());
 			if(isUserValid){
-				 return new UserDAOImpl<User>().findById(detail.getLognUserId().toString());
+				user = new UserDAOImpl<User>().findById(detail.getLognUserId());
+				return user;
 			}
 		}catch(Exception e){
-			
+			return null;
 		}
-		return null;
+		return user;
 	}
 	
 }

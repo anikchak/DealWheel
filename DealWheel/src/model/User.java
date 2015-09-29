@@ -1,10 +1,24 @@
 package model;
 
+import static services.utility.GenericConstant.USER_FIND_ALL;
+import static services.utility.GenericConstant.USER_FIND_BY_EMAIL;
+import static services.utility.GenericConstant.USER_FIND_BY_ID;
+
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.Date;
 import java.math.BigInteger;
-import static services.utility.GenericConstant.*;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -17,7 +31,8 @@ import static services.utility.GenericConstant.*;
 
 @NamedQueries({
 		@NamedQuery(name=USER_FIND_ALL, query="SELECT u FROM User u"),
-		@NamedQuery(name=USER_FIND_BY_ID, query="SELECT u FROM User u where u.userId = :userId")
+		@NamedQuery(name=USER_FIND_BY_ID, query="SELECT u FROM User u where u.userId = :userId"),
+		@NamedQuery(name=USER_FIND_BY_EMAIL, query="SELECT u FROM User u where u.userEmail = :email"),
 })
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -26,7 +41,7 @@ public class User implements Serializable {
 	@SequenceGenerator(name="USERS_USERID_GENERATOR", sequenceName="KEYSEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="USERS_USERID_GENERATOR")
 	@Column(name="USER_ID")
-	private String userId;
+	private BigInteger userId;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="LAST_UPDATED")
@@ -59,11 +74,11 @@ public class User implements Serializable {
 	public User() {
 	}
 
-	public String getUserId() {
+	public BigInteger getUserId() {
 		return this.userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(BigInteger userId) {
 		this.userId = userId;
 	}
 

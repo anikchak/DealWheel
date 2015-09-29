@@ -1,5 +1,6 @@
 package dao;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import model.Vehicle;
@@ -10,4 +11,5 @@ public interface VehicleDAO  extends BaseDAO<Vehicle>{
 	
 	public List<String> getNames();
 	
+	public List<Object[]> getVehicleDetailsForUserId(BigInteger userId);
 }

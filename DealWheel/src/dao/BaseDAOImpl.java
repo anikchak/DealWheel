@@ -13,19 +13,15 @@ import javax.persistence.Query;
 public class BaseDAOImpl<T> implements BaseDAO<T> {
 	
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("DealWheel");
-	EntityManager em = emf.createEntityManager();
-	EntityTransaction et = em.getTransaction();
+	EntityManager em ;
 	
 	private Class<T> type;
 	
-	public EntityManager getEntityManager(){
-		return em;
-	}
-	
-    public BaseDAOImpl() {
+	public BaseDAOImpl() {
         Type t = getClass().getGenericSuperclass();
         ParameterizedType pt = (ParameterizedType) t;
         type = (Class) pt.getActualTypeArguments()[0];
+        em = emf.createEntityManager();
     }
 
     @Override
@@ -37,7 +33,7 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
         queryString.append(type.getSimpleName()).append(" o ");
 //        queryString.append(this.getQueryClauses(params, null));
 
-        final Query query = getEntityManager().createQuery(queryString.toString());
+        final Query query = em.createQuery(queryString.toString());
 
         return (Long) query.getSingleResult();
 
@@ -45,24 +41,62 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
 
     @Override
     public T insert(final T t) {
-    	getEntityManager().getTransaction().begin();
-    	getEntityManager().persist(t);
-    	getEntityManager().getTransaction().commit();
+    	EntityTransaction txn = null;
+    	try{
+    		txn = em.getTransaction();
+        	if(!txn.isActive())
+        		txn.begin();
+        	em.persist(t);
+        	txn.commit();
+    	}catch(Exception e){
+    		if(txn.isActive())
+    			txn.rollback();
+    	}finally{
+    		if(em.isOpen())
+    			em.close();
+    	}
         return t;
     }
 
     @Override
     public void delete(final Object id) {
-        getEntityManager().remove(getEntityManager().getReference(type, id));
+    	EntityTransaction txn = null;
+    	try{
+    		txn = em.getTransaction();
+        	if(!txn.isActive())
+        		txn.begin();
+        	em.remove(em.getReference(type, id));
+        	txn.commit();
+    	}catch(Exception e){
+    		if(txn.isActive())
+    			txn.rollback();
+    	}finally{
+    		if(em.isOpen())
+    			em.close();
+    	}
     }
 
     @Override
     public T findById(final Object id) {
-        return (T) getEntityManager().find(type, id);
+        return (T) em.find(type, id);
     }
 
     @Override
     public T update(final T t) {
-        return getEntityManager().merge(t);    
+    	EntityTransaction txn = null;
+    	try{
+    		txn = em.getTransaction();
+        	if(!txn.isActive())
+        		txn.begin();
+        	em.merge(t);
+        	txn.commit();
+    	}catch(Exception e){
+    		if(txn.isActive())
+    			txn.rollback();
+    	}finally{
+    		if(em.isOpen())
+    			em.close();
+    	}
+        return t;
     }
 }

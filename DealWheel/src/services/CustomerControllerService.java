@@ -67,8 +67,9 @@ public class CustomerControllerService {
 		if(em!=null)
 		{
 			//Verify if the username already exists
-			Query usrnmExist  = em.createNamedQuery(LOGIN_DETAIL_FIND_USING_USER_NAME);
+			Query usrnmExist  = em.createNamedQuery(LOGIN_DETAIL_FIND_USING_USER_NAME_AND_TYPE);
 			usrnmExist.setParameter("loginUserName", usr);
+			usrnmExist.setParameter("loginUserType",USER_TYPE_USER);
 			List<LoginDetail> resultSet = (List<LoginDetail>)usrnmExist.getResultList();
 			if(resultSet!=null && resultSet.size()>0){
 				System.out.println("Unique username encountered");
@@ -89,7 +90,7 @@ public class CustomerControllerService {
 				//Beginning txn for LoginDetail table record
 				//et.begin();
 				LoginDetail l = new LoginDetail();
-				l.setLognUserId(BigInteger.valueOf(Long.parseLong(insertedUser.getUserId())));
+				l.setLognUserId(insertedUser.getUserId());
 				l.setLognUserName(usr);
 				l.setLognPassword(pwd);
 				l.setLastUpdatedBy(usr);
@@ -101,7 +102,7 @@ public class CustomerControllerService {
 				
 				System.out.println("User ID="+insertedUser.getUserId());
 				if(insertedUser.getUserId()!=null ){
-					returnUserList =  getValidUserDetails(BigInteger.valueOf(Long.parseLong(insertedUser.getUserId())));
+					returnUserList =  getValidUserDetails(insertedUser.getUserId());
 				}
 				
 			}
@@ -214,7 +215,7 @@ public class CustomerControllerService {
 				Query q  = em.createQuery("SELECT v, a "+
 						"FROM Vehicle v ,  Address a WHERE v.vhclId NOT IN "+
 						"(SELECT bh.bkngVehicle FROM Bookingshistory bh WHERE bh.bkngFromDate <= :toDate AND bh.bkngToDate >= :fromDate "+
-						"AND bh.bkngStatus  IN (:upcoming,:viewing)) AND a.userId = v.vhclProviderId GROUP BY v.vhclName,v.vhclProviderId "+
+						"AND bh.bkngStatus  IN (:upcoming,:viewing)) AND a.userId = v.vhclAddressId GROUP BY v.vhclName,v.vhclAddressId "+
 						    "ORDER BY v.vhclPerDayCost,v.vhclName");
 				q.setParameter("toDate", to);
 				q.setParameter("fromDate", from);

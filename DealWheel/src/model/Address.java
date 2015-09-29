@@ -4,6 +4,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 import java.util.Date;
 import java.math.BigInteger;
+import static services.utility.GenericConstant.*;
 
 
 /**
@@ -11,7 +12,11 @@ import java.math.BigInteger;
  * 
  */
 @Entity
-@NamedQuery(name="Address.findAll", query="SELECT a FROM Address a")
+@NamedQueries({
+	@NamedQuery(name=ADDRESS_FIND_ALL, query="SELECT a FROM Address a"),
+	@NamedQuery(name=ADDRESS_FIND_FOR_USER_ID_AND_TYPE, query="SELECT a FROM Address a where a.userId = :userId and a.addrType = :userType")
+})
+
 public class Address implements Serializable {
 	private static final long serialVersionUID = 1L;
 
