@@ -80,7 +80,7 @@ public class CustomerControllerService {
 				//et.begin();
 				User u = new User();
 				u.setUserEmail(usr);
-				u.setUserType("CUST");
+				u.setUserType("CUSTOMER");
 				u.setLastUpdated(new Date());
 				u.setLastUpdatedBy(usr);
 				User insertedUser = new UserDAOImpl<User>().addNewUser(u);
@@ -131,8 +131,10 @@ public class CustomerControllerService {
 	try{
 		if(em!=null)
 		{
-			Query q  = em.createNamedQuery(LOGIN_DETAIL_FIND_USING_USER_NAME);
+			//Query q  = em.createNamedQuery(LOGIN_DETAIL_FIND_USING_USER_NAME);
+			Query q  = em.createNamedQuery(LOGIN_DETAIL_FIND_USING_USER_NAME_AND_TYPE );
 			q.setParameter("loginUserName", usrEntered);
+			q.setParameter("loginUserType", "CUSTOMER");
 			List<LoginDetail> resultSet = (List<LoginDetail>)q.getResultList();
 			if(resultSet!=null && resultSet.size()==1){
 				System.out.println("Result fetched");
@@ -152,6 +154,7 @@ public class CustomerControllerService {
 		}
 	}catch(Exception e){
 		System.out.println("Exception while password verification");
+		e.printStackTrace();
 	}
 	
 	System.out.println("validationStatus = "+validationStatus);
@@ -187,7 +190,7 @@ public class CustomerControllerService {
 			if(em!=null)
 			{
 			  fetchUserDetails = em.createNamedQuery(USER_FIND_BY_ID);
-			  fetchUserDetails.setParameter("userId", String.valueOf(loginUserId));
+			  fetchUserDetails.setParameter("userId", loginUserId);
 			}
 		}catch(Exception e){
 			e.printStackTrace();

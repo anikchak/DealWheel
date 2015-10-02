@@ -1,3 +1,11 @@
+drop table address;
+drop table users;
+drop table bookingshistory;
+drop table code;
+drop table login_detail;
+drop table payment;
+drop table vehicles;
+
 CREATE
   TABLE `address`
   (
@@ -15,7 +23,7 @@ CREATE
     `LAST_UPDATED`    DATETIME NOT NULL,
     `USER_ID` bigint(20) NOT NULL,
     PRIMARY KEY (`ADDR_ID`)
-  )
+  );
 
   
   CREATE
@@ -33,7 +41,7 @@ CREATE
     `LAST_UPDATED`       DATETIME NOT NULL,
     PRIMARY KEY (`USER_ID`),
     UNIQUE KEY `USER_EMAIL` (`USER_EMAIL`)
-  ) 
+  ) ;
   
   CREATE
   TABLE `bookingshistory`
@@ -50,7 +58,7 @@ CREATE
     `LAST_UPDATED`    DATETIME NOT NULL,
     `USER_ID` bigint(20) NOT NULL,
     PRIMARY KEY (`BKNG_SEQ`)
-  )
+  );
   
   CREATE
   TABLE `code`
@@ -61,7 +69,7 @@ CREATE
     `LAST_UPDATED_BY` VARCHAR(400) NOT NULL,
     `LAST_UPDATED`    DATETIME NOT NULL,
     PRIMARY KEY (`CODE_CODE`)
-  )
+  );
   
   CREATE
   TABLE `login_detail`
@@ -74,7 +82,7 @@ CREATE
     `LAST_UPDATED_BY`        VARCHAR(400) NOT NULL,
     `LAST_UPDATED`           DATETIME NOT NULL,
     PRIMARY KEY (`LOGN_ID`)
-  )
+  );
   
   CREATE
   TABLE `payment`
@@ -85,7 +93,7 @@ CREATE
     `PYMT_AMOUNT` INT(11) NOT NULL,
     `PYMT_STATUS` VARCHAR(20) NOT NULL,
     PRIMARY KEY (`PYMT_ID`)
-  )
+  );
   
   CREATE
   TABLE `vehicles`
@@ -96,10 +104,10 @@ CREATE
     `VHCL_TYPE`                VARCHAR(20) NOT NULL,
     `VHCL_REGISTRATION_NO`     VARCHAR(50) NOT NULL,
     `VHCL_YEAR_OF_MANUFACTURE` VARCHAR(50) DEFAULT NULL,
-    `VHCL_PROVIDER_ID` bigint(20) NOT NULL,
+    `VHCL_ADDRESS_ID` bigint(20) NOT NULL,
     `VHCL_PER_DAY_COST`     INT(11) NOT NULL,
     `VHCL_SECURITY_DEPOSIT` INT(11) NOT NULL,
     `LAST_UPDATED_BY`       VARCHAR(400) NOT NULL,
     `LAST_UPDATED`          DATETIME NOT NULL,
     PRIMARY KEY (`VHCL_ID`)
-  ) 
+  ) ;
