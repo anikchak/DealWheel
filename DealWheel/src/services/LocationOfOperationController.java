@@ -1,7 +1,5 @@
 package services;
 
-import static services.utility.GenericConstant.COUNTRY_OF_OPERATIONS_FILE;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -91,7 +89,7 @@ public class LocationOfOperationController {
 			JAXBContext context = JAXBContext.newInstance(Location.class);
 			Unmarshaller un = context.createUnmarshaller();
 			Location loc = (Location) un.unmarshal(new File(
-					COUNTRY_OF_OPERATIONS_FILE));
+					LocationOfOperationController.class.getClassLoader().getResource("LocationOfOperation.xml").getPath()));//Aniket: Changes made to fetch xml file
 			return loc;
 		} catch (JAXBException e) {
 			logger.info("File is Blank");
@@ -106,7 +104,7 @@ public class LocationOfOperationController {
 			JAXBContext context = JAXBContext.newInstance(Location.class);
 			Marshaller m = context.createMarshaller();
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-			m.marshal(loc, new File(COUNTRY_OF_OPERATIONS_FILE));
+			m.marshal(loc, new File(LocationOfOperationController.class.getClassLoader().getResource("LocationOfOperation.xml").getPath())); //Aniket: Changes made to fetch xml file
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}

@@ -7,21 +7,34 @@
 <title>Welcome Vendor</title>
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/vendorLoginSignUp" method="post">
+<form action="${pageContext.request.contextPath}/vendorLoginSignUp" method="post" id="loginFormId">
 <table align="center" border="0">
 <tr><td colspan="2" align="center">Vendor Login</td></tr>
 <tr><td>Email</td><td><input type="text" name="loginEmail"></td></tr>
 <tr><td>Password</td><td><input type="password" name="loginPassword"></td></tr>
-<tr><td colspan="2" align="center"><input type="submit" name="Log In" value="Log In"></td></tr>
+<tr><td colspan="2" align="center"><input type="button" name="Log In" value="Log In" onclick="selectedUserOption('Log In')"></td></tr> <!-- Changes done by Aniket -->
 <tr><td></td></tr>
 <tr><td></td></tr>
 <tr><td colspan="2" align="center">Sign Up Vendor!</td></tr>
 <tr><td>Email</td><td><input type="text" name="email"></td></tr>
 <tr><td>Password</td><td><input type="password" name="password"></td></tr>
 <tr><td>Confirm Password</td><td><input type="password" name="confirmPassword"></td></tr>
-<tr><td colspan="2" align="center"><input type="submit" name="Sign Up" value="Sign Up"></td></tr>
+<tr><td colspan="2" align="center"><input type="button" name="Sign Up" value="Sign Up" onclick="selectedUserOption('Sign Up')"></td></tr><!-- Changes done by Aniket -->
 </table>
-<input type="hidden" name="identifier" id="identifier" value="login"/>
+<input type="hidden" name="identifier" id="identifier" />
 </form>
+
+<!-- Changes done by Aniket Start-->
+<script>
+function selectedUserOption(btnClicked){
+	if(btnClicked=='Sign Up'){
+		document.getElementById("identifier").value = "signup";
+	}else if (btnClicked=='Log In'){
+		document.getElementById("identifier").value = "login";
+	}
+	document.getElementById("loginFormId").submit();
+}
+</script>
+<!--  Changes done by Aniket End -->
 </body>
 </html>
