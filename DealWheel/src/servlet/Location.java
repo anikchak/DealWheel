@@ -35,6 +35,7 @@ public class Location extends HttpServlet {
 			}
 		}catch(Exception e){
 			logger.error("error adding locations");
+			e.printStackTrace();
 			resp.sendRedirect(req.getContextPath()+NAV_TO_ADD_LOCATION_PAGE);
 		}
 	}
