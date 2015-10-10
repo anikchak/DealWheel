@@ -218,15 +218,15 @@ public class CustomerControllerService {
 				Query q  = em.createQuery("SELECT v, a "+
 						"FROM Vehicle v ,  Address a WHERE v.vhclId NOT IN "+
 						"(SELECT bh.bkngVehicle FROM Bookingshistory bh WHERE bh.bkngFromDate <= :toDate AND bh.bkngToDate >= :fromDate "+
-						"AND bh.bkngStatus  IN (:upcoming,:viewing)) AND a.userId = v.vhclAddressId GROUP BY v.vhclName,v.vhclAddressId "+
+						"AND bh.bkngStatus  IN (:upcoming,:viewing)) AND a.addrId = v.vhclAddressId GROUP BY v.vhclName,v.vhclAddressId "+
 						    "ORDER BY v.vhclPerDayCost,v.vhclName");
 				q.setParameter("toDate", to);
 				q.setParameter("fromDate", from);
 				q.setParameter("upcoming", "UPCMNG");
 				q.setParameter("viewing", "VWNG");
-				System.out.println("Execution successful");
+			
 				List<Object[]> searchResultSet = (List<Object[]>)q.getResultList();
-				
+				System.out.println("Execution successful"+searchResultSet.size());
 				if(searchResultSet!=null && searchResultSet.size()>0){
 					displayResultMap = prepareSearchResultDisplay(searchResultSet);
 					
@@ -405,24 +405,46 @@ public class CustomerControllerService {
 	 }
 	 
 	 @SuppressWarnings("unchecked")
-	public List<Object[]> getMyBookings(String uName) {
-		
-		System.out.println("getMyBookings() method invoked");
-		
-			Query q  = em.createQuery("Select book,veh,pd,adds "+ 
-          "from Bookingshistory book,Vehicle veh,User us,User pd,Address adds "+ 
+	 public List<Object[]> getBookings(String uName) {
+	     
+		 em.getEntityManagerFactory().getCache().evictAll();
+			Query q  = em.createQuery("Select book,bike,pd,adds "+ 
+          "from Bookingshistory book,Vehicle bike,User us,User pd,Address adds "+ 
 					" where book.userId = us.userId"+
-					" AND book.bkngVehicle = veh.vhclId"+ 
-					" AND pd.userId = veh.vhclProviderId"+
+					" AND book.bkngVehicle = bike.vhclId"+ 
+					" AND adds.addrId = bike.vhclAddressId"+
                     " AND pd.userId = adds.userId "+
-					"AND (upper(us.userName) = upper(:userName) or upper(us.userEmail) = upper(:userName)) ");
+         "AND us.userName = :userName",Bookingshistory.class);
 			q.setParameter("userName", uName);
+			System.out.println("im here in test service getbookings");
+			@SuppressWarnings("unchecked")
 			
 			List<Object[]> searchResultSet = (List<Object[]>)q.getResultList();
 			
 		
 			return searchResultSet;
+			
+			// TODO Auto-generated method stub
+			
 		} 
 	 
+	 public void cancelbooking (String uBookId) {
+		 
+		    int cleanStatus=0;
+		    System.out.println(uBookId);
+		    et.begin();
+		    Query q  = em.createNativeQuery("Update bookingshistory set bkng_status = 'CANC' where bkng_seq = ?"); 
+			
+			q.setParameter(1,uBookId);
+			cleanStatus = q.executeUpdate();
+			et.commit();   
+						
+			
+			
+		
+				
+			// TODO Auto-generated method stub
+			
+		} 
 	 
 }

@@ -32,13 +32,15 @@ public class MyBookings extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("MyBookings:DoGet");
+		System.out.println("DoGet");
+		
+		
 		String uName = (String) request.getSession().getAttribute(GenericConstant.USERNAME);
 		System.out.println("USER NAME "+uName);
 		CustomerControllerService s = new CustomerControllerService();
-		List<Object[]> MyBookList= s.getMyBookings(uName);
+		List<Object[]> MyBookList= s.getBookings (uName);
 		System.out.println("Size"+MyBookList.size());
-		request.getSession().setAttribute("MyBookingHistory", MyBookList);
+		request.getSession().setAttribute("BookingHistory", MyBookList);
 		String pagecontext = request.getContextPath();
 		response.sendRedirect(pagecontext+ GenericConstant.NAV_TO_MYBOOKINGS_PAGE);
 		
@@ -50,6 +52,23 @@ public class MyBookings extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		if (request.getParameter("DeleteId")!=null){
+			System.out.println(request.getParameter("DeleteId"));
+		}
+		//String uName = (String) request.getSession().getAttribute(GenericConstant.USERNAME);
+		CustomerControllerService s = new CustomerControllerService();
+		s.cancelbooking(request.getParameter("DeleteId"));
+		String pagecontext = request.getContextPath();
+		String uName = (String) request.getSession().getAttribute(GenericConstant.USERNAME);
+		System.out.println("USER NAME "+uName);
+		//CustomerControllerService s = new CustomerControllerService();
+		List<Object[]> MyBookList= s.getBookings (uName);
+		System.out.println("Size"+MyBookList.size());
+		request.getSession().setAttribute("BookingHistory", MyBookList);
+		//String pagecontext = request.getContextPath();
+		response.sendRedirect(pagecontext+ GenericConstant.NAV_TO_MYBOOKINGS_PAGE);
+		
 	}
 
 }
