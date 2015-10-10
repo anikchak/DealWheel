@@ -74,7 +74,7 @@ public class GenericConstant {
 	public static final String VEHICLE_TYPE_FOUR_WHEELER = "4-WHEELER";
 	
 	// LOCATION OF OPERATIONS
-	public static final String COUNTRY_OF_OPERATIONS_FILE = "/LocationOfOperation.xml";
+	public static final String COUNTRY_OF_OPERATIONS_FILE = "LocationOfOperation.xml";
 	public static final String XML_OBJECT_COUNTRY = "COUNTRY";
 	public static final String XML_OBJECT_STATE = "STATE";
 	public static final String XML_OBJECT_CITY = "CITY";

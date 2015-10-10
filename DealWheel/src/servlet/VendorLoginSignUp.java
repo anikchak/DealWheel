@@ -16,7 +16,7 @@ import model.User;
 import services.VendorLoginController;
 import dao.AddressDAOImpl;
 
-@WebServlet("/vendorLoginSignUp")
+@WebServlet("/VendorLoginSignUp")
 public class VendorLoginSignUp extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;

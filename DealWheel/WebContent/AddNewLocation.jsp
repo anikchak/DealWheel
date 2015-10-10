@@ -7,7 +7,7 @@
 <title>Add New Location Of Operation</title>
 </head>
 <body>
-<form action="${pageContext.request.contextPath}/addLocation" method="post">
+<form action="${pageContext.request.contextPath}/AddLocation" method="post">
 <table>
 <tr><td>City</td><td><input type="text" id="city" name="city"></td></tr>
 <tr><td>State</td><td><input type="text" id="state" name="state"></td></tr>

@@ -27,7 +27,7 @@
 <% 
 List<String> countries = new LocationOfOperationController().getCountryNames();
 List<String> states = new LocationOfOperationController().getStateNamesForCountry(countries.get(0));
-List<String> cities = new LocationOfOperationController().getCityNamesForCountryState(countries.get(0), "Maharashtra");
+List<String> cities = new LocationOfOperationController().getCityNamesForCountryState(countries.get(0), "Karnataka");
 %>
 
 <tr><td>Country :</td><td><select name="country"  id="country">

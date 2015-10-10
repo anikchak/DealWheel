@@ -6,6 +6,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import  static services.utility.GenericConstant.COUNTRY_OF_OPERATIONS_FILE;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -88,12 +90,10 @@ public class LocationOfOperationController {
 		try {
 			JAXBContext context = JAXBContext.newInstance(Location.class);
 			Unmarshaller un = context.createUnmarshaller();
-			Location loc = (Location) un.unmarshal(new File(
-					LocationOfOperationController.class.getClassLoader().getResource("LocationOfOperation.xml").getPath()));//Aniket: Changes made to fetch xml file
+			Location loc = (Location) un.unmarshal(new File(LocationOfOperationController.class.getClassLoader().getResource(COUNTRY_OF_OPERATIONS_FILE).getFile()));
 			return loc;
 		} catch (JAXBException e) {
 			logger.info("File is Blank");
-			System.out.println("File is Blank");
 		}
 		return null;
 	}
@@ -104,7 +104,7 @@ public class LocationOfOperationController {
 			JAXBContext context = JAXBContext.newInstance(Location.class);
 			Marshaller m = context.createMarshaller();
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-			m.marshal(loc, new File(LocationOfOperationController.class.getClassLoader().getResource("LocationOfOperation.xml").getPath())); //Aniket: Changes made to fetch xml file
+			m.marshal(loc, new File(LocationOfOperationController.class.getClassLoader().getResource(COUNTRY_OF_OPERATIONS_FILE).getFile()));
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
@@ -277,5 +277,4 @@ public class LocationOfOperationController {
 				return true;
 			return false;
 		}
-
 	}
