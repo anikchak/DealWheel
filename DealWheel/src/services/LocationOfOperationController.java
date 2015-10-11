@@ -1,12 +1,16 @@
 package services;
 
+import static services.utility.GenericConstant.COUNTRY_OF_OPERATIONS_FILE;
+
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
-import  static services.utility.GenericConstant.COUNTRY_OF_OPERATIONS_FILE;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -90,7 +94,7 @@ public class LocationOfOperationController {
 		try {
 			JAXBContext context = JAXBContext.newInstance(Location.class);
 			Unmarshaller un = context.createUnmarshaller();
-			Location loc = (Location) un.unmarshal(new File(LocationOfOperationController.class.getClassLoader().getResource(COUNTRY_OF_OPERATIONS_FILE).getFile()));
+			Location loc = (Location) un.unmarshal(new File(COUNTRY_OF_OPERATIONS_FILE));
 			return loc;
 		} catch (JAXBException e) {
 			logger.info("File is Blank");
@@ -101,10 +105,12 @@ public class LocationOfOperationController {
 	private static void jaxbObjectToXML(Location loc) {
 
 		try {
+			File xml = new File(COUNTRY_OF_OPERATIONS_FILE);
 			JAXBContext context = JAXBContext.newInstance(Location.class);
 			Marshaller m = context.createMarshaller();
 			m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-			m.marshal(loc, new File(LocationOfOperationController.class.getClassLoader().getResource(COUNTRY_OF_OPERATIONS_FILE).getFile()));
+			m.marshal(loc, xml);
+			m.marshal(loc, System.out);
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}

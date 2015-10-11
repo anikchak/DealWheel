@@ -7,6 +7,12 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Register with us..</title>
+<script src="jquery-1.11.3.min.js"></script>
+<script>
+$(document).ready(function(){
+	alert("Hi");
+});
+</script>
 </head>
 <body>
 <form action="${pageContext.request.contextPath}/VendorRegistration" method="post">
