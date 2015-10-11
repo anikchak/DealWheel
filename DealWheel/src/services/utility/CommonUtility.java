@@ -32,7 +32,7 @@ public class CommonUtility {
 		System.out.println("FromDate="+(String)request.getSession().getAttribute("fromDateString"));
 		System.out.println("FromDate="+(String)request.getSession().getAttribute("toDateString"));
 		System.out.println("VehicleDetails="+(String)request.getSession().getAttribute("selectedVehicleDetails"));
-		String loggedInUserId = null;
+		long loggedInUserId = 0L;
 		//Logged in user details
 		System.out.println(request.getSession().getAttribute("LoggedInUserDetailsObject"));
 				
@@ -40,15 +40,17 @@ public class CommonUtility {
 			List<User> validUserDetails = (List<User>)request.getSession().getAttribute("LoggedInUserDetailsObject");
 			if(validUserDetails!=null & validUserDetails.size()>0){
 				for(User u : validUserDetails){
-//					loggedInUserId = u.getUserId();
+					loggedInUserId = u.getUserId().longValue();
 				  }
 			}
 		}
-				loggedInUserId = (loggedInUserId!=null)?loggedInUserId:"0";
-		System.out.println("LoggedInUserId="+loggedInUserId);
 		
+		//loggedInUserId = (loggedInUserId!=null)?loggedInUserId:0;
+		System.out.println("LoggedInUserId in lockRecord()="+loggedInUserId);
+	
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd");
-		long tempBookingId=0;
+		long tempBookingId=0L;
+		if(loggedInUserId>0L){
 		if(request.getSession().getAttribute("fromDateString")!=null && request.getSession().getAttribute("toDateString")!=null){
 			try {
 				Date fromDate = sdf.parse((String)request.getSession().getAttribute("fromDateString"));
@@ -56,7 +58,7 @@ public class CommonUtility {
 				String vehicleDetails[] = null;
 				if((String)request.getSession().getAttribute("selectedVehicleDetails") !=null){
 				vehicleDetails  = ((String)request.getSession().getAttribute("selectedVehicleDetails")).split("\\$",-1);
-				tempBookingId = s.updateBooking("VWNG",fromDate,toDate,vehicleDetails[0],vehicleDetails[2],(String)request.getSession().getAttribute("username"),loggedInUserId);
+				tempBookingId = s.updateBooking("VIEWING",fromDate,toDate,vehicleDetails[0],(String)request.getSession().getAttribute("username"),loggedInUserId);
 				}
 			} catch (ParseException e) {
 				System.out.println("Date Parsing error");
@@ -64,6 +66,7 @@ public class CommonUtility {
 			}
 			
 		}
+	}
 		return tempBookingId;
 	}
 	
@@ -75,9 +78,13 @@ public class CommonUtility {
 		try {
 			if (comingFromPage != null && "Booking".equalsIgnoreCase(comingFromPage)) {
 				//Inserting the currently viewed vehicle record - locking mechanism
-				//lockRecord(request);
-				request.getSession().setAttribute("tempBookingSeq", lockRecord(request));
+				long tempBookingSeq = lockRecord(request);
+				if(tempBookingSeq>0){
+				request.getSession().setAttribute("tempBookingSeq", tempBookingSeq);
 				response.sendRedirect(pagecontext + "/ReviewBooking.jsp");
+				}else {
+					response.sendRedirect(pagecontext+"/BookingError.jsp");
+				}
 			} else if (comingFromPage == null || "LandingPage".equalsIgnoreCase(comingFromPage)) {
 				response.sendRedirect(pagecontext + "/LandingPage.jsp");
 			}

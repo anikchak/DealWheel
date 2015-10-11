@@ -63,6 +63,7 @@ public class Login extends HttpServlet {
 
 		if (GenericConstant.OLDREGISTRATION.equalsIgnoreCase(optionSelected)) {
 			List<User> validUserDetails = s.validateUser(uName, pwd);
+			System.out.println("user from query="+validUserDetails.get(0).getUserId());
 			if (validUserDetails!=null && validUserDetails.size()==1) {
 				session = generateSession(request, uName);
 				session.setAttribute("LoggedInUserDetailsObject",validUserDetails );

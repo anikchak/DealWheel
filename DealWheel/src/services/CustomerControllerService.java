@@ -80,6 +80,7 @@ public class CustomerControllerService {
 				//et.begin();
 				User u = new User();
 				u.setUserEmail(usr);
+				u.setUserName(usr);
 				u.setUserType("CUSTOMER");
 				u.setLastUpdated(new Date());
 				u.setLastUpdatedBy(usr);
@@ -104,7 +105,6 @@ public class CustomerControllerService {
 				if(insertedUser.getUserId()!=null ){
 					returnUserList =  getValidUserDetails(insertedUser.getUserId());
 				}
-				
 			}
 		}
 		}catch(Exception e){
@@ -218,12 +218,13 @@ public class CustomerControllerService {
 				Query q  = em.createQuery("SELECT v, a "+
 						"FROM Vehicle v ,  Address a WHERE v.vhclId NOT IN "+
 						"(SELECT bh.bkngVehicle FROM Bookingshistory bh WHERE bh.bkngFromDate <= :toDate AND bh.bkngToDate >= :fromDate "+
-						"AND bh.bkngStatus  IN (:upcoming,:viewing)) AND a.addrId = v.vhclAddressId GROUP BY v.vhclName,v.vhclAddressId "+
+						"AND bh.bkngStatus  IN (:upcoming,:viewing)) AND a.addrId = v.vhclAddressId AND a.addrType = :addrType GROUP BY v.vhclName,v.vhclAddressId "+
 						    "ORDER BY v.vhclPerDayCost,v.vhclName");
 				q.setParameter("toDate", to);
 				q.setParameter("fromDate", from);
-				q.setParameter("upcoming", "UPCMNG");
-				q.setParameter("viewing", "VWNG");
+				q.setParameter("upcoming", "UPCOMING");
+				q.setParameter("viewing", "VIEWING");
+				q.setParameter("addrType", "PICKUP");
 			
 				List<Object[]> searchResultSet = (List<Object[]>)q.getResultList();
 				System.out.println("Execution successful"+searchResultSet.size());
@@ -285,8 +286,8 @@ public class CustomerControllerService {
 	  * @param usernm
 	  * @return temporary booking id
 	  */
-	 public long updateBooking(String lockingcode,Date fromDate,Date toDate,String vehicleName, String vehicleProviderId,String usernm,String userId){
-		 System.out.println("lockingcode="+lockingcode+"\nfromDate="+fromDate+"\ntoDate="+toDate+"\nvehicleName="+vehicleName+"\nvehicleProviderId="+vehicleProviderId+"\nusernm="+usernm);
+	 public long updateBooking(String lockingcode,Date fromDate,Date toDate,String vehicleName, String usernm,long userId){
+		 System.out.println("lockingcode="+lockingcode+"\nfromDate="+fromDate+"\ntoDate="+toDate+"\nvehicleName="+vehicleName+"\nusernm="+usernm);
 		 String lastRowId = null;
 		 try{
 				if(em!=null)
@@ -296,7 +297,7 @@ public class CustomerControllerService {
 													+"select ?,?,?,v.vhcl_id,now(),?,now(),? "
 													+"from vehicles v where v.vhcl_name=? and v.vhcl_id not in ( "
 													+"SELECT bh.BKNG_VEHICLE FROM bookingshistory bh WHERE "
-													+"bh.BKNG_FROM_DATE <= ? AND bh.BKNG_TO_DATE >= ? AND bh.BKNG_STATUS  IN ('UPCMNG','VWNG')) limit 1"
+													+"bh.BKNG_FROM_DATE <= ? AND bh.BKNG_TO_DATE >= ? AND bh.BKNG_STATUS  IN ('UPCOMING','VIEWING')) limit 1"
 													);
 					
 					
@@ -304,7 +305,7 @@ public class CustomerControllerService {
 					q.setParameter(2, fromDate);
 					q.setParameter(3, toDate);
 					q.setParameter(4, usernm);
-					q.setParameter(5, Integer.parseInt(userId));
+					q.setParameter(5, userId);
 					q.setParameter(6, vehicleName);
 					
 					q.setParameter(7, toDate);
@@ -341,7 +342,7 @@ public class CustomerControllerService {
 			if(em!=null)
 			{
 				et.begin();
-				Query q = em.createNativeQuery("update bookingshistory b set b.BKNG_STATUS = 'TMOUT' where TIME_TO_SEC(TIMEDIFF(NOW(),b.LAST_UPDATED))>? and b.BKNG_STATUS in ('VWNG')");
+				Query q = em.createNativeQuery("update bookingshistory b set b.BKNG_STATUS = 'TIMEOUT' where TIME_TO_SEC(TIMEDIFF(NOW(),b.LAST_UPDATED))>? and b.BKNG_STATUS in ('VIEWING')");
 				q.setParameter(1, MessageBundle.TICKERVALUE);
 				cleanStatus = q.executeUpdate();
 				et.commit();
@@ -363,10 +364,10 @@ public class CustomerControllerService {
 					et.begin();
 					Query q = em.createNamedQuery(BOOKING_HISTORY_UPDATE);
 					//q.setParameter(1, "UPCMNG");
-					q.setParameter("bkngStatus", "UPCMNG");
+					q.setParameter("bkngStatus", "UPCOMING");
 					q.setParameter("bkngNumber", generatedOrderId);
 					q.setParameter("bkngSeq", String.valueOf(tempBookingSeq));
-					q.setParameter("bkngStatusWhereClause", "VWNG");
+					q.setParameter("bkngStatusWhereClause", "VIEWING");
 					updateStatus = q.executeUpdate();
 					et.commit();
 				}
@@ -406,15 +407,15 @@ public class CustomerControllerService {
 	 
 	 @SuppressWarnings("unchecked")
 	 public List<Object[]> getBookings(String uName) {
-	     
-		 em.getEntityManagerFactory().getCache().evictAll();
+	   
+	//	 em.getEntityManagerFactory().getCache().evictAll();
 			Query q  = em.createQuery("Select book,bike,pd,adds "+ 
           "from Bookingshistory book,Vehicle bike,User us,User pd,Address adds "+ 
 					" where book.userId = us.userId"+
 					" AND book.bkngVehicle = bike.vhclId"+ 
 					" AND adds.addrId = bike.vhclAddressId"+
                     " AND pd.userId = adds.userId "+
-         "AND us.userName = :userName",Bookingshistory.class);
+         "AND us.userName = :userName");
 			q.setParameter("userName", uName);
 			System.out.println("im here in test service getbookings");
 			@SuppressWarnings("unchecked")
@@ -434,17 +435,9 @@ public class CustomerControllerService {
 		    System.out.println(uBookId);
 		    et.begin();
 		    Query q  = em.createNativeQuery("Update bookingshistory set bkng_status = 'CANC' where bkng_seq = ?"); 
-			
 			q.setParameter(1,uBookId);
 			cleanStatus = q.executeUpdate();
 			et.commit();   
-						
-			
-			
-		
-				
-			// TODO Auto-generated method stub
-			
-		} 
+			} 
 	 
 }
