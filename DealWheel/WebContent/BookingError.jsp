@@ -7,7 +7,7 @@
 <title>Booking error</title>
 </head>
 <body>
-<h1>We have encountered some problem while confirming your booking</h1> <br>
+<h1>Our system did not respond appropriately. Our monkeys are on top of it. We apologize for the inconvenience caused.</h1> <br>
 <a href="${pageContext.request.contextPath}/LandingPage.jsp">Click here to re-book</a>
 
 </body>

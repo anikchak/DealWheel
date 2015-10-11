@@ -59,9 +59,15 @@ public class Booking extends HttpServlet {
 		if (session != null
 				&& session.getAttribute(GenericConstant.USERNAME) != null) {
 			System.out.println("Proceed with booking");
-			request.getSession().setAttribute(GenericConstant.TEMPBOOKINGSEQ, new CommonUtility().lockRecord(request));
-			
+			long tempBookingSeq = new CommonUtility().lockRecord(request);
+			System.out.println("tempBookingSeq from lockRecord()="+tempBookingSeq);
+			if(tempBookingSeq>0L){
+			request.getSession().setAttribute(GenericConstant.TEMPBOOKINGSEQ,tempBookingSeq );
 			response.sendRedirect(pagecontext+"/ReviewBooking.jsp");
+			}
+			else{
+				response.sendRedirect(pagecontext+"/BookingError.jsp");
+			}
 			
 		} else {
 			session.setAttribute(GenericConstant.COMINGFROMPAGE, GenericConstant.BOOKING);

@@ -53,14 +53,12 @@ if(userName == null){
  }
 	if(session.getAttribute(GenericConstant.SESSIONID)!=null)
     sessionID = (String) session.getAttribute(GenericConstant.SESSIONID);
-	/*
-	if(session.getAttribute(GenericConstant.USERNAME)!=null)
-    userName = (String) session.getAttribute(GenericConstant.USERNAME);
-	*/
+	
 	if(session.getAttribute(GenericConstant.TEMPBOOKINGSEQ)!=null){
 	tempBookingId = (Long)session.getAttribute(GenericConstant.TEMPBOOKINGSEQ);
 	}else{
 		tempBookingId = -1;
+		response.sendRedirect("/BookingError.jsp");
 	}
 	
 	%>
