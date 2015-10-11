@@ -409,13 +409,13 @@ public class CustomerControllerService {
 	 public List<Object[]> getBookings(String uName) {
 	   
 	//	 em.getEntityManagerFactory().getCache().evictAll();
-			Query q  = em.createNativeQuery("Select book,bike,pd,adds "+ 
+			Query q  = em.createQuery("Select book,bike,pd,adds "+ 
           "from Bookingshistory book,Vehicle bike,User us,User pd,Address adds "+ 
 					" where book.userId = us.userId"+
 					" AND book.bkngVehicle = bike.vhclId"+ 
 					" AND adds.addrId = bike.vhclAddressId"+
                     " AND pd.userId = adds.userId "+
-         "AND us.userName = :userName",Bookingshistory.class);
+         "AND us.userName = :userName");
 			q.setParameter("userName", uName);
 			System.out.println("im here in test service getbookings");
 			@SuppressWarnings("unchecked")
