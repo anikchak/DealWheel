@@ -27,7 +27,9 @@ import model.LoginDetail;
 import model.User;
 import model.Vehicle;
 import services.security.SecurePassword;
+import services.utility.GenericConstant;
 import services.utility.MessageBundle;
+import services.utility.QueryConstant;
 
 public class CustomerControllerService {
 
@@ -44,73 +46,73 @@ public class CustomerControllerService {
 	 * 			false - if there is any exception while entering user record 
 	 */
 	@SuppressWarnings("unchecked")
-	public List<User> inserNewUser(String usr,String pwd){
-	
+	public List<User> inserNewUser(String usr, String pwd) {
+
 		logger.info("ControllerService: inserting new user through insertNewUser");
-		List returnUserList=null;
-		//Secure password
-		//get Salt to be used with password
+		List returnUserList = null;
+		// Secure password
+		// get Salt to be used with password
 		SecurePassword securePwd = new SecurePassword();
 		byte[] salt = securePwd.createSalt();
-		// convert salt to hexadecimal value
-		String hexedSalt = securePwd.toHex(salt);
-		
-		//Hashing password with salt
-		try{
+		// Hashing password with salt
+		try {
 			pwd = securePwd.createHash(pwd, salt);
-		}catch(NoSuchAlgorithmException excep){
-			System.out.println("Exception in algorithm");
-		}catch(InvalidKeySpecException e){
-			System.out.println("Invalid Key Spec Exception");
+		} catch (NoSuchAlgorithmException excep) {
+			logger.error("Exception in algorithm");
+		} catch (InvalidKeySpecException e) {
+			logger.error("Invalid Key Spec Exception");
 		}
-		try{
-		if(em!=null)
-		{
-			//Verify if the username already exists
-			Query usrnmExist  = em.createNamedQuery(LOGIN_DETAIL_FIND_USING_USER_NAME_AND_TYPE);
-			usrnmExist.setParameter("loginUserName", usr);
-			usrnmExist.setParameter("loginUserType",USER_TYPE_USER);
-			List<LoginDetail> resultSet = (List<LoginDetail>)usrnmExist.getResultList();
-			if(resultSet!=null && resultSet.size()>0){
-				System.out.println("Unique username encountered");
-				//return null;
-			}else{
-			   
-				//Beginning txn for User table record
-				//et.begin();
-				User u = new User();
-				u.setUserEmail(usr);
-				u.setUserName(usr);
-				u.setUserType("CUSTOMER");
-				u.setLastUpdated(new Date());
-				u.setLastUpdatedBy(usr);
-				User insertedUser = new UserDAOImpl<User>().addNewUser(u);
-				//em.persist(u);
-				//et.commit();
-							
-				//Beginning txn for LoginDetail table record
-				//et.begin();
-				LoginDetail l = new LoginDetail();
-				l.setLognUserId(insertedUser.getUserId());
-				l.setLognUserName(usr);
-				l.setLognPassword(pwd);
-				l.setLastUpdatedBy(usr);
-				l.setLognLastLoginDetail(new Date());
-				l.setLastUpdated(new Date());
-				//em.persist(l);
-				//et.commit();
-				LoginDetail newLoginDetail = new LoginDAOImpl<LoginDetail>().addNewLogin(l);
-				
-				System.out.println("User ID="+insertedUser.getUserId());
-				if(insertedUser.getUserId()!=null ){
-					returnUserList =  getValidUserDetails(insertedUser.getUserId());
+		try {
+			if (em != null) {
+				// Verify if the username already exists
+				Query usrnmExist = em
+						.createNamedQuery(LOGIN_DETAIL_FIND_USING_USER_NAME_AND_TYPE);
+				usrnmExist.setParameter(LOGIN_USER_NAME, usr);
+				usrnmExist.setParameter(LOGIN_USER_TYPE, USER_TYPE_CUSTOMER);
+				List<LoginDetail> resultSet = (List<LoginDetail>) usrnmExist
+						.getResultList();
+				if (resultSet != null && resultSet.size() > 0) {
+					logger.error("Unique username encountered");
+					// return null;
+				} else {
+
+					// Beginning txn for User table record
+					// et.begin();
+					User u = new User();
+					u.setUserEmail(usr);
+					u.setUserName(usr);
+					u.setUserType(USER_TYPE_CUSTOMER);
+					u.setLastUpdated(new Date());
+					u.setLastUpdatedBy(usr);
+					User insertedUser = new UserDAOImpl<User>().addNewUser(u);
+					// em.persist(u);
+					// et.commit();
+
+					// Beginning txn for LoginDetail table record
+					// et.begin();
+					LoginDetail l = new LoginDetail();
+					l.setLognUserId(insertedUser.getUserId());
+					l.setLognUserName(usr);
+					l.setLognPassword(pwd);
+					l.setLastUpdatedBy(usr);
+					l.setLognLastLoginDetail(new Date());
+					l.setLastUpdated(new Date());
+					// em.persist(l);
+					// et.commit();
+					LoginDetail newLoginDetail = new LoginDAOImpl<LoginDetail>()
+							.addNewLogin(l);
+
+					logger.info("User ID=" + insertedUser.getUserId());
+					if (insertedUser.getUserId() != null) {
+						returnUserList = getValidUserDetails(insertedUser
+								.getUserId());
+					}
 				}
 			}
-		}
-		}catch(Exception e){
-			System.out.println("Error while feeding user credentials to DB");
+		} catch (Exception e) {
+			logger.error("Error while feeding user credentials to DB");
 			e.printStackTrace();
-		}finally{
+		} finally {
 			em.close();
 		}
 		return returnUserList;
@@ -120,79 +122,79 @@ public class CustomerControllerService {
 	 * This method is used to validate the entered user credentials 
 	 */
 	@SuppressWarnings("unchecked")
-	public List<User> validateUser(String usrEntered, String pwdEntered){
+	public List<User> validateUser(String usrEntered, String pwdEntered) {
 		logger.info("ControllerService:Validate user");
 
 		SecurePassword securePwd = new SecurePassword();
-		List<User> validatedUserDetails=null;
+		List<User> validatedUserDetails = null;
 		boolean validationStatus = false;
 		BigInteger loginUserId = null;
-	//Query to fetch hashed password and salt	
-	try{
-		if(em!=null)
-		{
-			//Query q  = em.createNamedQuery(LOGIN_DETAIL_FIND_USING_USER_NAME);
-			Query q  = em.createNamedQuery(LOGIN_DETAIL_FIND_USING_USER_NAME_AND_TYPE );
-			q.setParameter("loginUserName", usrEntered);
-			q.setParameter("loginUserType", "CUSTOMER");
-			List<LoginDetail> resultSet = (List<LoginDetail>)q.getResultList();
-			if(resultSet!=null && resultSet.size()==1){
-				System.out.println("Result fetched");
-				LoginDetail details = (LoginDetail)resultSet.get(0);
-				
-				try{
-					loginUserId = details.getLognUserId();
-					validationStatus = securePwd.validatePassword(pwdEntered, details.getLognPassword());
-				}catch(Exception e){
-					System.out.println("Error while validating password");
+		// Query to fetch hashed password and salt
+		try {
+			if (em != null) {
+				Query q = em
+						.createNamedQuery(LOGIN_DETAIL_FIND_USING_USER_NAME_AND_TYPE);
+				q.setParameter(LOGIN_USER_NAME, usrEntered);
+				q.setParameter(LOGIN_USER_TYPE, USER_TYPE_CUSTOMER);
+				List<LoginDetail> resultSet = (List<LoginDetail>) q
+						.getResultList();
+				if (resultSet != null && resultSet.size() == 1) {
+					logger.info("Result fetched");
+					LoginDetail details = (LoginDetail) resultSet.get(0);
+
+					try {
+						loginUserId = details.getLognUserId();
+						validationStatus = securePwd.validatePassword(
+								pwdEntered, details.getLognPassword());
+					} catch (Exception e) {
+						logger.error("Error while validating password");
+					}
+				} else {
+					return null;
 				}
 			}
-			else
-			{
-				return null;
-			}
-		}
-	}catch(Exception e){
-		System.out.println("Exception while password verification");
-		e.printStackTrace();
-	}
-	
-	System.out.println("validationStatus = "+validationStatus);
-	if(validationStatus){
-	  try{	
-		if(em!=null){
-			et.begin();
-			Query q = em.createNamedQuery(LOGIN_DETAIL_UPDATE_LAST_LOGIN);
-			q.setParameter("lastLoginDetail", new Date());
-			q.setParameter("loginUserName", usrEntered);
-			int updateStatus = q.executeUpdate();
-			et.commit();
-			if(updateStatus>0){
-				validatedUserDetails = getValidUserDetails(loginUserId);
-			}
-			
-		}
-	  }catch(Exception e){
+		} catch (Exception e) {
+			logger.error("Exception while password verification");
 			e.printStackTrace();
-		}finally{
-			em.close();
 		}
-	    return validatedUserDetails;
-	}else
-		em.close();
+
+		logger.info("validationStatus = " + validationStatus);
+		if (validationStatus) {
+			try {
+				if (em != null) {
+					et.begin();
+					Query q = em
+							.createNamedQuery(LOGIN_DETAIL_UPDATE_LAST_LOGIN);
+					q.setParameter(LAST_LOGIN_DETAIL, new Date());
+					q.setParameter(LOGIN_USER_NAME, usrEntered);
+					int updateStatus = q.executeUpdate();
+					et.commit();
+					if (updateStatus > 0) {
+						validatedUserDetails = getValidUserDetails(loginUserId);
+					}
+
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				em.close();
+			}
+			return validatedUserDetails;
+		} else
+			em.close();
 		return null;
 	}
 	
-	public List getValidUserDetails(BigInteger loginUserId){
-		System.out.println("Update Successfull..fetching user details for ="+loginUserId);
+	public List getValidUserDetails(BigInteger loginUserId) {
+		logger.info("Update Successfull..fetching user details for ="
+				+ loginUserId);
 		Query fetchUserDetails = null;
-		try{
-			if(em!=null)
-			{
-			  fetchUserDetails = em.createNamedQuery(USER_FIND_BY_ID);
-			  fetchUserDetails.setParameter("userId", loginUserId);
+		try {
+			if (em != null) {
+				fetchUserDetails = em.createNamedQuery(USER_FIND_BY_ID);
+				fetchUserDetails.setParameter(USERID, loginUserId);
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return fetchUserDetails.getResultList();
@@ -204,38 +206,32 @@ public class CustomerControllerService {
 	 * @return Map: key - holds the vehicle details, value - holds location details for the vehicles
 	 */
 	@SuppressWarnings({"unchecked", "rawtypes" })
-	public Map fetchSearchResult(Date from, Date to){
-		System.out.println("Inside Fetch Search Result");
+	public Map fetchSearchResult(Date from, Date to) {
+		logger.info("Inside Fetch Search Result");
 		Map displayResultMap = null;
-		try{
-			if(em!=null){
-			/*	Query q  = em.createNativeQuery("SELECT v.vhcl_name,v.vhcl_make,a.addr_locality,v.vhcl_per_day_cost,v.VHCL_SECURITY_DEPOSIT,v.VHCL_ID,a.addr_id "+
-												"FROM vehicles v ,  address a WHERE v.VHCL_ID NOT IN "+
-												"(SELECT bh.BKNG_VEHICLE FROM bookingshistory bh WHERE bh.BKNG_FROM_DATE <= ? AND bh.BKNG_TO_DATE >= ? "+
-												"AND bh.BKNG_STATUS  IN (?,?)) AND a.user_id = v.vhcl_provider_id GROUP BY v.vhcl_name,v.vhcl_provider_id "+
-				  							    "ORDER BY v.vhcl_per_day_cost,v.vhcl_name",Vehicle.class);
-				  							    */
-				Query q  = em.createQuery("SELECT v, a "+
-						"FROM Vehicle v ,  Address a WHERE v.vhclId NOT IN "+
-						"(SELECT bh.bkngVehicle FROM Bookingshistory bh WHERE bh.bkngFromDate <= :toDate AND bh.bkngToDate >= :fromDate "+
-						"AND bh.bkngStatus  IN (:upcoming,:viewing)) AND a.addrId = v.vhclAddressId AND a.addrType = :addrType GROUP BY v.vhclName,v.vhclAddressId "+
-						    "ORDER BY v.vhclPerDayCost,v.vhclName");
-				q.setParameter("toDate", to);
-				q.setParameter("fromDate", from);
-				q.setParameter("upcoming", "UPCOMING");
-				q.setParameter("viewing", "VIEWING");
-				q.setParameter("addrType", "PICKUP");
-			
-				List<Object[]> searchResultSet = (List<Object[]>)q.getResultList();
-				System.out.println("Execution successful"+searchResultSet.size());
-				if(searchResultSet!=null && searchResultSet.size()>0){
+		try {
+			if (em != null) {
+				
+				Query q = em
+						.createQuery(QueryConstant.LIST_AVAILABLE_VEHICLES);
+				q.setParameter(TODATE, to);
+				q.setParameter(FROMDATE, from);
+				q.setParameter(UPCOMING, UPCOMING);
+				q.setParameter(VIEWING, VIEWING);
+				q.setParameter(ADDR_TYPE, PICKUP);
+
+				List<Object[]> searchResultSet = (List<Object[]>) q
+						.getResultList();
+				logger.info("Execution successful"
+						+ searchResultSet.size());
+				if (searchResultSet != null && searchResultSet.size() > 0) {
 					displayResultMap = prepareSearchResultDisplay(searchResultSet);
-					
+
 				}
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			em.close();
 		}
 		return displayResultMap;
@@ -247,34 +243,35 @@ public class CustomerControllerService {
 	 * @return Map: key - holds the vehicle details, value - holds location details for the vehicles
 	 */
 	 @SuppressWarnings({ "unchecked", "rawtypes" })
-		public Map prepareSearchResultDisplay(List<Object[]> searchResultSet){
-			System.out.println("prepareSearchResultDisplay method invoked");
-			
-			Map displaySearchResultMap =  new HashMap();
-			 int len = searchResultSet.size();
-			// for(int i = 0;i<len;i++){
-			 for(Object[] o: searchResultSet){
-				// Vehicle v = (Vehicle)searchResultSet.get(i);
-				 Vehicle v = (Vehicle)o[0];
-				 Address a = (Address)o[1];
-				if(displaySearchResultMap!=null){
-					String locationValue = null;
-					String key = v.getVhclName()+"$"+v.getVhclMake()+"$"+v.getVhclPerDayCost()+"$"+v.getVhclSecurityDeposit();
-					if(displaySearchResultMap.containsKey(key)){
-						locationValue = (String) displaySearchResultMap.get(key);
-						locationValue = locationValue +"$"+ a.getAddrLocality();
-					 }else{
-						locationValue = a.getAddrLocality();
-					 }
-					locationValue = locationValue+"%"+v.getVhclId();
-					displaySearchResultMap.put(key, locationValue);
+	public Map prepareSearchResultDisplay(List<Object[]> searchResultSet) {
+		logger.info("prepareSearchResultDisplay method invoked");
+
+		Map displaySearchResultMap = new HashMap();
+		int len = searchResultSet.size();
+		for (Object[] o : searchResultSet) {
+			// Vehicle v = (Vehicle)searchResultSet.get(i);
+			Vehicle v = (Vehicle) o[0];
+			Address a = (Address) o[1];
+			if (displaySearchResultMap != null) {
+				String locationValue = null;
+				String key = v.getVhclName() + DOLLAR + v.getVhclMake() + DOLLAR
+						+ v.getVhclPerDayCost() + DOLLAR
+						+ v.getVhclSecurityDeposit();
+				if (displaySearchResultMap.containsKey(key)) {
+					locationValue = (String) displaySearchResultMap.get(key);
+					locationValue = locationValue + DOLLAR + a.getAddrLocality();
+				} else {
+					locationValue = a.getAddrLocality();
 				}
-				 
-			 }
-			 System.out.println("Map Values= "+displaySearchResultMap);
-			
-			 return displaySearchResultMap;
-		 }
+				locationValue = locationValue + PERCENT + v.getVhclId();
+				displaySearchResultMap.put(key, locationValue);
+			}
+
+		}
+		logger.info("Map Values= " + displaySearchResultMap);
+
+		return displaySearchResultMap;
+	}
 	 
 	 /**
 	  * This method is used to lock the records while the user is in booking process for a specified time-duration to maintain concurrency
@@ -286,158 +283,156 @@ public class CustomerControllerService {
 	  * @param usernm
 	  * @return temporary booking id
 	  */
-	 public long updateBooking(String lockingcode,Date fromDate,Date toDate,String vehicleName, String usernm,long userId){
-		 System.out.println("lockingcode="+lockingcode+"\nfromDate="+fromDate+"\ntoDate="+toDate+"\nvehicleName="+vehicleName+"\nusernm="+usernm);
-		 String lastRowId = null;
-		 try{
-				if(em!=null)
-				{
-					et.begin();
-					Query q = em.createNativeQuery("insert into bookingshistory (BKNG_STATUS,BKNG_FROM_DATE,BKNG_TO_DATE,BKNG_VEHICLE,BKNG_CREATION_DATE,LAST_UPDATED_BY,LAST_UPDATED,USER_ID) "
-													+"select ?,?,?,v.vhcl_id,now(),?,now(),? "
-													+"from vehicles v where v.vhcl_name=? and v.vhcl_id not in ( "
-													+"SELECT bh.BKNG_VEHICLE FROM bookingshistory bh WHERE "
-													+"bh.BKNG_FROM_DATE <= ? AND bh.BKNG_TO_DATE >= ? AND bh.BKNG_STATUS  IN ('UPCOMING','VIEWING')) limit 1"
-													);
-					
-					
-					q.setParameter(1, lockingcode);
-					q.setParameter(2, fromDate);
-					q.setParameter(3, toDate);
-					q.setParameter(4, usernm);
-					q.setParameter(5, userId);
-					q.setParameter(6, vehicleName);
-					
-					q.setParameter(7, toDate);
-					q.setParameter(8, fromDate);
-					
-					int entryUpdate = q.executeUpdate();
-					System.out.println("value="+entryUpdate);
-					et.commit();
-					if(entryUpdate==1){
-					Query seqQuery = em.createNamedQuery(BOOKING_HISTORY_FIND_BOOKING_BY_SEQ); 
-					List rowIdList = (List)seqQuery.setMaxResults(1).getResultList();
-					if(rowIdList!=null && rowIdList.size()>0){
-						lastRowId = (String)rowIdList.get(0);
+	public long updateBooking(String lockingcode, Date fromDate, Date toDate,
+			String vehicleName, String usernm, long userId) {
+		System.out.println("lockingcode=" + lockingcode + "\nfromDate="
+				+ fromDate + "\ntoDate=" + toDate + "\nvehicleName="
+				+ vehicleName + "\nusernm=" + usernm);
+		String lastRowId = null;
+		try {
+			if (em != null) {
+				et.begin();
+				Query q = em
+						.createNativeQuery("insert into bookingshistory (BKNG_STATUS,BKNG_FROM_DATE,BKNG_TO_DATE,BKNG_VEHICLE,BKNG_CREATION_DATE,LAST_UPDATED_BY,LAST_UPDATED,USER_ID) "
+								+ "select ?1,?2,?3,v.vhcl_id,now(),?4,now(),?5 "
+								+ "from vehicles v where v.vhcl_name=?6 and v.vhcl_id not in ( "
+								+ "SELECT bh.BKNG_VEHICLE FROM bookingshistory bh WHERE "
+								+ "bh.BKNG_FROM_DATE <= ?3 AND bh.BKNG_TO_DATE >= ?2 AND bh.BKNG_STATUS  IN (?7,?8)) limit 1");
+
+						
+				q.setParameter(1, lockingcode);
+				q.setParameter(2, fromDate);
+				q.setParameter(3, toDate);
+				q.setParameter(4, usernm);
+				q.setParameter(5, userId);
+				q.setParameter(6, vehicleName);
+
+				q.setParameter(7, toDate);
+				q.setParameter(8, fromDate);
+
+				int entryUpdate = q.executeUpdate();
+				logger.info("value post update=" + entryUpdate);
+				et.commit();
+				if (entryUpdate == 1) {
+					Query seqQuery = em
+							.createNamedQuery(BOOKING_HISTORY_FIND_BOOKING_BY_SEQ);
+					List rowIdList = (List) seqQuery.setMaxResults(1)
+							.getResultList();
+					if (rowIdList != null && rowIdList.size() > 0) {
+						lastRowId = (String) rowIdList.get(0);
 					}
-					System.out.println("Last Row="+lastRowId);
-					}
+					logger.info("Last Row=" + lastRowId);
 				}
-		 }catch(Exception e){
-			 System.out.println("Exception occured while inserting record in updateBooking()");
-			 e.printStackTrace();
-		 }finally{
-			 em.close();
-		 }
-		return (lastRowId!=null)?Long.parseLong(lastRowId):0L; 
-	 }
+			}
+		} catch (Exception e) {
+			logger.error("Exception occured while inserting record in updateBooking()");
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		return (lastRowId != null) ? Long.parseLong(lastRowId) : 0L;
+	}
 	 
 	 /**
 	  * This method will be executed on every page load. Its is used to clear the records which have been timed out  
 	  */
-	 public void cleanBookings(){
-		 System.out.println("cleanBookings called..!!!");
-		 int cleanStatus=0;
-		try{
-			if(em!=null)
-			{
+	public void cleanBookings() {
+		logger.info("cleanBookings called..!!!");
+		int cleanStatus = 0;
+		try {
+			if (em != null) {
 				et.begin();
-				Query q = em.createNativeQuery("update bookingshistory b set b.BKNG_STATUS = 'TIMEOUT' where TIME_TO_SEC(TIMEDIFF(NOW(),b.LAST_UPDATED))>? and b.BKNG_STATUS in ('VIEWING')");
-				q.setParameter(1, MessageBundle.TICKERVALUE);
+				Query q = em
+						.createNativeQuery(QueryConstant.CLEAN_BOOKINGS);
+				q.setParameter(1, TIMEDOUT);
+				q.setParameter(2, MessageBundle.TICKERVALUE);
+				q.setParameter(3, VIEWING);
 				cleanStatus = q.executeUpdate();
 				et.commit();
 			}
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally{
+		} finally {
 			em.close();
 		}
-		System.out.println("Clean Status="+cleanStatus);
-	 }
+		logger.info("Clean Status=" + cleanStatus);
+	}
 	 
-	 public boolean updateBookingWithOrderIdonSuccess(long tempBookingSeq, String generatedOrderId){
-		 System.out.println("Inside method updateBookingWithOrderIdonSuccess");
-		 int updateStatus=0;
-		 try{
-				if(em!=null)
-				{
-					et.begin();
-					Query q = em.createNamedQuery(BOOKING_HISTORY_UPDATE);
-					//q.setParameter(1, "UPCMNG");
-					q.setParameter("bkngStatus", "UPCOMING");
-					q.setParameter("bkngNumber", generatedOrderId);
-					q.setParameter("bkngSeq", String.valueOf(tempBookingSeq));
-					q.setParameter("bkngStatusWhereClause", "VIEWING");
-					updateStatus = q.executeUpdate();
-					et.commit();
-				}
-			}catch(Exception e){
-				e.printStackTrace();
-			}finally{
-				System.out.println("Finally invoked");
-				em.close();
+	public boolean updateBookingWithOrderIdonSuccess(long tempBookingSeq,String generatedOrderId) {
+		logger.info("Inside method updateBookingWithOrderIdonSuccess");
+		int updateStatus = 0;
+		try {
+			if (em != null) {
+				et.begin();
+				Query q = em.createNamedQuery(BOOKING_HISTORY_UPDATE);
+				// q.setParameter(1, "UPCMNG");
+				q.setParameter(BKNG_STATUS, GenericConstant.UPCOMING);
+				q.setParameter(BKNG_NUMBER, generatedOrderId);
+				q.setParameter(BKNG_SEQ, String.valueOf(tempBookingSeq));
+				q.setParameter(BKNG_STATUS_WHERE_CLAUSE, GenericConstant.VIEWING);
+				updateStatus = q.executeUpdate();
+				et.commit();
 			}
-		 return (updateStatus==1)?true:false;
-	 }
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			logger.info("Finally invoked");
+			em.close();
+		}
+		return (updateStatus == 1) ? true : false;
+	}
 	 
 	 @SuppressWarnings("unchecked")
-	public Map fetchStaticData(){
-		 System.out.println("Inside method fetchStaticData");
-		 Map staticVehicleDetails = new HashMap();
-		 try{
-				if(em!=null)
-				{
-					Query q = em.createNamedQuery(VEHICLE_FIND_ALL);
-					List<Vehicle> resultList = (List<Vehicle>)q.getResultList();
-					if(resultList!=null & resultList.size()>0){
-						for(Vehicle veh :resultList){
-							staticVehicleDetails.put(veh.getVhclName(), veh.getVhclMake()+"#"+veh.getVhclPerDayCost()+"#"+veh.getVhclSecurityDeposit());
-						}
+	public Map fetchStaticData() {
+		logger.info("Inside method fetchStaticData");
+		Map staticVehicleDetails = new HashMap();
+		try {
+			if (em != null) {
+				Query q = em.createNamedQuery(VEHICLE_FIND_ALL);
+				List<Vehicle> resultList = (List<Vehicle>) q.getResultList();
+				if (resultList != null & resultList.size() > 0) {
+					for (Vehicle veh : resultList) {
+						staticVehicleDetails.put(
+								veh.getVhclName(),
+								veh.getVhclMake() + GenericConstant.HASH
+										+ veh.getVhclPerDayCost() + GenericConstant.HASH
+										+ veh.getVhclSecurityDeposit());
 					}
 				}
-			}catch(Exception e){
-				e.printStackTrace();
-			}finally{
-				System.out.println("Finally invoked");
-				em.close();
 			}
-		 
-		 return staticVehicleDetails;
-	 }
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			logger.info("Finally invoked");
+			em.close();
+		}
+
+		return staticVehicleDetails;
+	}
 	 
 	 @SuppressWarnings("unchecked")
-	 public List<Object[]> getBookings(String uName) {
-	   
-	//	 em.getEntityManagerFactory().getCache().evictAll();
-			Query q  = em.createQuery("Select book,bike,pd,adds "+ 
-          "from Bookingshistory book,Vehicle bike,User us,User pd,Address adds "+ 
-					" where book.userId = us.userId"+
-					" AND book.bkngVehicle = bike.vhclId"+ 
-					" AND adds.addrId = bike.vhclAddressId"+
-                    " AND pd.userId = adds.userId "+
-         "AND us.userName = :userName");
-			q.setParameter("userName", uName);
-			System.out.println("im here in test service getbookings");
-			@SuppressWarnings("unchecked")
-			
-			List<Object[]> searchResultSet = (List<Object[]>)q.getResultList();
-			
+	public List<Object[]> getBookings(String uName) {
+		logger.info("Inside getbookings()");
 		
-			return searchResultSet;
-			
-			// TODO Auto-generated method stub
-			
-		} 
+		em.getEntityManagerFactory().getCache().evictAll();
+		Query q = em
+				.createQuery(QueryConstant.GET_BOOKING_DETAILS,Bookingshistory.class);
+		q.setParameter(USERNAME, uName);
+		List<Object[]> searchResultSet = (List<Object[]>) q.getResultList();
+
+		return searchResultSet;
+} 
 	 
-	 public void cancelbooking (String uBookId) {
-		 
-		    int cleanStatus=0;
-		    System.out.println(uBookId);
-		    et.begin();
-		    Query q  = em.createNativeQuery("Update bookingshistory set bkng_status = 'CANC' where bkng_seq = ?"); 
-			q.setParameter(1,uBookId);
-			cleanStatus = q.executeUpdate();
-			et.commit();   
-			} 
+	public void cancelbooking(String uBookId) {
+		logger.info("Inside cancelbooking");
+		logger.info("Bookingid passed="+uBookId);
+		et.begin();
+		Query q = em
+				.createNativeQuery(QueryConstant.CANCEL_BOOKING);
+		q.setParameter(1, CANCELLED);
+		q.setParameter(2, uBookId);
+		int cleanStatus = q.executeUpdate();
+		et.commit();
+	} 
 	 
 }

@@ -23,8 +23,7 @@ response.setDateHeader ("Expires", 0);
 <title>My Bookings</title>
 <script type="text/javascript">
 function confirm_decision(user_id){
-	console.log("log");
-    if(confirm("Are you sure you want to delete the booking?")) // this will pop up confirmation box and if yes is clicked it call servlet else return to page
+  if(confirm("Are you sure you want to delete the booking?")) // this will pop up confirmation box and if yes is clicked it call servlet else return to page
    {  
         console.log(user_id);
         document.getElementById("DeleteId").value = user_id;
@@ -72,7 +71,7 @@ List<Object[]> resultSet = (List<Object[]>)session.getAttribute("BookingHistory"
 		     
 		      System.out.println("stasts" +bh.getBkngStatus()+vh.getVhclName());
 		      
-		     if ("UPCMNG".equals(bh.getBkngStatus()))
+		     if ("UPCOMING".equals(bh.getBkngStatus()))
 		     {
 		    	 String comp[] = new String[8];
 		    	 comp[0] = vh.getVhclName();
@@ -91,7 +90,7 @@ List<Object[]> resultSet = (List<Object[]>)session.getAttribute("BookingHistory"
 		     }
 		    	 
 		     
-		     else if ("COMP".equals(bh.getBkngStatus()))
+		     else if ("COMPLETED".equals(bh.getBkngStatus()))
 		     {
 		    	 String comp[] = new String[8];
 		    	     comp[0] = vh.getVhclName();
@@ -109,7 +108,7 @@ List<Object[]> resultSet = (List<Object[]>)session.getAttribute("BookingHistory"
 		     }
 		    	 
 		     
-		     else if ("CANC".equals(bh.getBkngStatus())) 
+		     else if ("CANCELLED".equals(bh.getBkngStatus())) 
 		     {
 		    	 String comp[] = new String[8];
 		    	 comp[0] = vh.getVhclName();

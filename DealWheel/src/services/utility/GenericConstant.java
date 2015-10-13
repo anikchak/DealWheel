@@ -12,6 +12,9 @@ public class GenericConstant {
 	public static String TODATESTRING = "toDateString";
 	public static String DISPLAYSEARCHRESULTMAP = "displaySearchResultMap";
 	public static String DOLLARFORSPLIT = "\\$";
+	public static String HASH = "#";
+	public static String PERCENT = "%";
+	public static String DOLLAR = "$";
 	public static String PASSWORD = "password";
 	public static String OPTION = "option";
 	public static String OLDREGISTRATION = "oldRegistration";
@@ -21,6 +24,25 @@ public class GenericConstant {
 	public static String FROMDATE = "fromDate";
 	public static String TODATE = "toDate";
 	public static String DATEFORMAT = "yyyy-MMM-dd";
+	public static String CANCELLED = "CANCELLED";
+	public static String UPCOMING = "UPCOMING";
+	public static String VIEWING = "VIEWING";
+	public static String PICKUP = "PICKUP";
+	public static String BKNG_STATUS = "bkngStatus";
+	public static String BKNG_NUMBER = "bkngNumber";
+	public static String BKNG_SEQ = "bkngSeq";
+	public static String BKNG_STATUS_WHERE_CLAUSE = "bkngStatusWhereClause";
+	public static String TICKER_VALUE = "tickervalue";
+	public static String TIMEDOUT = "TIMEDOUT";
+	public static String LOCKING_CODE = "lockingcode";
+	public static String USERID = "userId";
+	public static String VEHICLE_NAME = "vehicleName";
+	public static String ADDR_TYPE = "addrType";
+	public static String LAST_LOGIN_DETAIL = "lastLoginDetail";
+	public static String LOGIN_USER_NAME = "loginUserName";
+	public static String LOGIN_USER_TYPE = "loginUserType";
+	
+	
 	
 	//Page Navigations String
 	public static String NAV_TO_CONFIRMBOOKING_PAGE= "/ConfirmBooking.jsp";
@@ -64,6 +86,7 @@ public class GenericConstant {
 	public static final String USER_TYPE_USER = "USER";
 	public static final String USER_TYPE_VENDOR = "VENDOR";
 	public static final String USER_TYPE_ADMIN = "ADMIN";
+	public static final String USER_TYPE_CUSTOMER = "CUSTOMER";
 	
 	// Address Type
 	public static final String ADDRESS_TYPE_VENDOR_OFFICE_LOCATION = "OFFICE";
