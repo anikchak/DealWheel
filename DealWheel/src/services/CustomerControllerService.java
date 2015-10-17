@@ -21,12 +21,14 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query; 
 
+import jdk.nashorn.internal.ir.RuntimeNode.Request;
 import model.Address;
 import model.Bookingshistory;
 import model.LoginDetail;
 import model.User;
 import model.Vehicle;
 import services.security.SecurePassword;
+import services.utility.CommonUtility;
 import services.utility.GenericConstant;
 import services.utility.MessageBundle;
 import services.utility.QueryConstant;
@@ -358,11 +360,13 @@ public class CustomerControllerService {
 		logger.info("Clean Status=" + cleanStatus);
 	}
 	 
-	public boolean updateBookingWithOrderIdonSuccess(long tempBookingSeq,String generatedOrderId) {
+	public boolean updateBookingWithOrderIdonSuccess(long tempBookingSeq,String generatedOrderId,String uName) {
 		logger.info("Inside method updateBookingWithOrderIdonSuccess");
-		int updateStatus = 0;
+		CommonUtility cu = new CommonUtility();
+		int updateStatus = 0;String uMail;
 		try {
 			if (em != null) {
+				
 				et.begin();
 				Query q = em.createNamedQuery(BOOKING_HISTORY_UPDATE);
 				// q.setParameter(1, "UPCMNG");
@@ -372,12 +376,17 @@ public class CustomerControllerService {
 				q.setParameter(BKNG_STATUS_WHERE_CLAUSE, GenericConstant.VIEWING);
 				updateStatus = q.executeUpdate();
 				et.commit();
+				Query q1= em.createNativeQuery(QueryConstant.GET_USER_EMAIL);
+				q1.setParameter(1,uName);
+				uMail = (String) q1.getSingleResult();
+				System.out.println("User Email"+uMail);
+				cu.sendEmailNotification(generatedOrderId,uMail);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			logger.info("Finally invoked");
-			em.close();
+		    em.close();
 		}
 		return (updateStatus == 1) ? true : false;
 	}

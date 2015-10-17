@@ -59,7 +59,7 @@ public class ConfirmationSummary extends HttpServlet {
 			long tempBookingseq = (Long)session.getAttribute(GenericConstant.TEMPBOOKINGSEQ);
 			System.out.println("tempBookingseq="+tempBookingseq);
 			CustomerControllerService s = new CustomerControllerService();
-			boolean status = s.updateBookingWithOrderIdonSuccess(tempBookingseq,"ORD-KA-BLR-"+tempBookingseq);
+			boolean status = s.updateBookingWithOrderIdonSuccess(tempBookingseq,"ORD-KA-BLR-"+tempBookingseq,(String) request.getSession().getAttribute(GenericConstant.USERNAME));
 			if(status){
 				request.getSession().setAttribute("BookingOrderId", "ORD-KA-BLR-"+tempBookingseq);
 				response.sendRedirect(pageContext+"/ConfirmationPage.jsp");

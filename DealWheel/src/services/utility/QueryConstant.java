@@ -16,4 +16,5 @@ public class QueryConstant {
 			+ "(SELECT bh.bkngVehicle FROM Bookingshistory bh WHERE bh.bkngFromDate <= :toDate AND bh.bkngToDate >= :fromDate "
 			+ "AND bh.bkngStatus  IN (:UPCOMING,:VIEWING)) AND a.addrId = v.vhclAddressId AND a.addrType = :addrType GROUP BY v.vhclName,v.vhclAddressId "
 			+ "ORDER BY v.vhclPerDayCost,v.vhclName";
+	public static String GET_USER_EMAIL = "SELECT USER_EMAIL FROM USERS WHERE USER_NAME = ?";
 }

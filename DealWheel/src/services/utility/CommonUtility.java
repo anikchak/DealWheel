@@ -94,16 +94,16 @@ public class CommonUtility {
 		}
 	}
 	
-	public void sendEmailNotification(String bookingNo) {
-		final String username = "anikchak";
-		final String password = "anikanj3187";
+	public void sendEmailNotification(String bookingNo,String uEmail) {
+		final String username = "bala@doctordekhoo.in";
+		final String password = "Sriramajayam1";
 
 		Properties props = new Properties();
 		
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.port", "587");
+		props.put("mail.smtp.host", "mail.doctordekhoo.in");
+		props.put("mail.smtp.port", "25");
 		
 		Session session = Session.getInstance(props,
 		  new javax.mail.Authenticator() {
@@ -115,9 +115,9 @@ public class CommonUtility {
 		try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("admin123@doctordekhoo.in"));
+			message.setFrom(new InternetAddress("admin@doctordekhoo.in"));
 			message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse("anikchak@gmail.com"));
+				InternetAddress.parse(uEmail));
 			
 			message.setSubject("Confirmation: Booking Id - "+bookingNo);
 			message.setText("Dear Guest,"
@@ -126,10 +126,12 @@ public class CommonUtility {
 
 			Transport.send(message);
 
-			System.out.println("Done");
+			System.out.println("Done Email");
 
 		} catch (MessagingException e) {
+			System.out.println("Error in Email");
 			throw new RuntimeException(e);
+			
 		} 
 		   
 		 } 
