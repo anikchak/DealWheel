@@ -75,7 +75,7 @@ else{
 From:<input type="text" value='<%=session.getAttribute(GenericConstant.FROMDATESTRING)%>' readonly> To: <input type="text" value='<%=session.getAttribute(GenericConstant.TODATESTRING)%>' readonly>
 <br>
 Booking Tenure=<%
-SimpleDateFormat format = new SimpleDateFormat("yyyy-MMM-dd");
+SimpleDateFormat format = new SimpleDateFormat(GenericConstant.DATEFORMAT);
 long noOfDays=0;
 if(session.getAttribute(GenericConstant.FROMDATESTRING)!=null && session.getAttribute(GenericConstant.TODATESTRING)!=null){
 	Date startDate = format.parse((String)session.getAttribute(GenericConstant.FROMDATESTRING));
