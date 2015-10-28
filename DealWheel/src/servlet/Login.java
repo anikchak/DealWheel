@@ -55,40 +55,67 @@ public class Login extends HttpServlet {
 		String pagecontext = request.getContextPath();
 		String uName = request.getParameter(GenericConstant.USERNAME);
 		String pwd = request.getParameter(GenericConstant.PASSWORD);
-		String optionSelected = request.getParameter(GenericConstant.OPTION);
+		String authType = request.getParameter(GenericConstant.AUTH_TYPE);
 		String comingFromPage = (String) request.getSession().getAttribute(GenericConstant.COMINGFROMPAGE);
 		HttpSession session = null;
-		System.out.println("option selected=" + optionSelected);
+		String msg=null;
+		System.out.println("uName="+uName);
+		System.out.println("authType="+authType);
 		System.out.println("Coming from page = " + comingFromPage);
-
-		if (GenericConstant.OLDREGISTRATION.equalsIgnoreCase(optionSelected)) {
+		
+		if(uName !=null && "".equals(uName.trim()) || pwd !=null && "".equals(pwd.trim())){
+			msg = "emptyFields";
+			System.out.println("empty fields");
+		}
+		else{
+		if ("login".equalsIgnoreCase(authType)) {
 			List<User> validUserDetails = s.validateUser(uName, pwd);
-			System.out.println("user from query="+validUserDetails.get(0).getUserId());
+			//System.out.println("user from query="+validUserDetails.get(0).getUserId());
 			if (validUserDetails!=null && validUserDetails.size()==1) {
 				session = generateSession(request, uName);
 				session.setAttribute("LoggedInUserDetailsObject",validUserDetails );
-				session.setAttribute(GenericConstant.LOGINERROR,null );
-				new CommonUtility().pageNavigation(pagecontext, comingFromPage, request, response);
+				msg = new CommonUtility().getPageName(comingFromPage);
+				//new CommonUtility().pageNavigation(pagecontext, comingFromPage, request, response);
 			}else{
 				System.out.println("Invalid username or password");
 				request.getSession().removeAttribute("LoggedInUserDetailsObject");
-				request.getSession().setAttribute(GenericConstant.LOGINERROR,MessageBundle.LOGIN_ERROR_MSG);
-				response.sendRedirect(pagecontext + GenericConstant.NAV_TO_LOGIN_PAGE);
+				msg = "authenticationFailed";
+				//response.setContentType("text/plain");
+		        //response.getWriter().write("authenticationFailed");
+				//request.getSession().setAttribute(GenericConstant.LOGINERROR,MessageBundle.LOGIN_ERROR_MSG);
+				//response.sendRedirect(pagecontext + GenericConstant.NAV_TO_LOGIN_PAGE);
 				}
-		} else if (GenericConstant.NEWREGISTRATION.equalsIgnoreCase(optionSelected)) {
+		} else if ("signup".equalsIgnoreCase(authType)) {
+			String confirmPassword = request.getParameter("confirmPassword");
+			if(confirmPassword!=null && !"".equals(confirmPassword) && pwd.equals(confirmPassword)){
 			List<User> newUserEntryList = s.inserNewUser(uName, pwd);
 			System.out.println("status post registration=" + newUserEntryList);
 			if (newUserEntryList!=null && newUserEntryList.size()==1) {
 				session = generateSession(request, uName);
 				session.setAttribute("LoggedInUserDetailsObject",newUserEntryList );
-				new CommonUtility().pageNavigation(pagecontext, comingFromPage, request, response);
+				//new CommonUtility().pageNavigation(pagecontext, comingFromPage, request, response);
+				//response.setContentType("text/plain");
+		        //response.getWriter().write("/LandingPage.jsp");
+				msg = new CommonUtility().getPageName(comingFromPage);
 			}else{
 				System.out.println("Username already exists. Error..!!");
 				request.getSession().removeAttribute("LoggedInUserDetailsObject");
-				request.getSession().setAttribute(GenericConstant.LOGINERROR,MessageBundle.NOT_UNIQUE_USERNAME_ERROR_MSG);
-				response.sendRedirect(pagecontext + GenericConstant.NAV_TO_LOGIN_PAGE);
+				msg = "userNameExists";
+				//response.setContentType("text/plain");
+		        //response.getWriter().write("userNameExists");
+				//request.getSession().setAttribute(GenericConstant.LOGINERROR,MessageBundle.NOT_UNIQUE_USERNAME_ERROR_MSG);
+				//response.sendRedirect(pagecontext + GenericConstant.NAV_TO_LOGIN_PAGE);
+			}
+			}else if(confirmPassword!=null && "".equals(confirmPassword)){
+				msg = "emptyFields";
+			}
+			else{
+				msg = "passwordMismatch";
 			}
 		}
+	}
+		response.setContentType("text/plain");
+        response.getWriter().write(msg);
 	}
 
 	private HttpSession generateSession(HttpServletRequest request, String uName) {
