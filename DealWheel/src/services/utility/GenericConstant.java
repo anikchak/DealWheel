@@ -19,11 +19,12 @@ public class GenericConstant {
 	public static String OPTION = "option";
 	public static String OLDREGISTRATION = "oldRegistration";
 	public static String NEWREGISTRATION = "newRegistration";	
+	public static String AUTH_TYPE = "authType";
 	public static String LOGINERROR = "LOGIN_ERROR";
 	public static String SESSIONID = "sessionID";
 	public static String FROMDATE = "fromDate";
 	public static String TODATE = "toDate";
-	public static String DATEFORMAT = "yyyy-MMM-dd";
+	public static String DATEFORMAT = "dd/MM/yyyy";
 	public static String CANCELLED = "CANCELLED";
 	public static String UPCOMING = "UPCOMING";
 	public static String VIEWING = "VIEWING";
