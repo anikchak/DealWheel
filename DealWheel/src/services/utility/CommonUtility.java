@@ -55,7 +55,7 @@ public class CommonUtility {
 		// loggedInUserId = (loggedInUserId!=null)?loggedInUserId:0;
 		System.out.println("LoggedInUserId in lockRecord()=" + loggedInUserId);
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd");
+		SimpleDateFormat sdf = new SimpleDateFormat(GenericConstant.DATEFORMAT);
 		long tempBookingId = 0L;
 		if (loggedInUserId > 0L) {
 			if (request.getSession().getAttribute("fromDateString") != null
@@ -114,31 +114,21 @@ public class CommonUtility {
 			e.printStackTrace();
 		}
 	}
-<<<<<<< HEAD
 	
 	public void sendEmailNotification(String bookingNo,String uEmail) {
 		final String username = "bala@doctordekhoo.in";
 		final String password = "Sriramajayam1";
-=======
 
-	public void sendEmailNotification(String bookingNo) {
-		final String username = "anikchak";
-		final String password = "anikanj3187";
->>>>>>> refs/heads/master
 
 		Properties props = new Properties();
 
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.starttls.enable", "true");
-<<<<<<< HEAD
+
 		props.put("mail.smtp.host", "mail.doctordekhoo.in");
 		props.put("mail.smtp.port", "25");
-		
-=======
-		props.put("mail.smtp.host", "smtp.gmail.com");
-		props.put("mail.smtp.port", "587");
 
->>>>>>> refs/heads/master
+
 		Session session = Session.getInstance(props,
 				new javax.mail.Authenticator() {
 					protected PasswordAuthentication getPasswordAuthentication() {
@@ -151,15 +141,10 @@ public class CommonUtility {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("admin@doctordekhoo.in"));
 			message.setRecipients(Message.RecipientType.TO,
-<<<<<<< HEAD
-				InternetAddress.parse(uEmail));
+			InternetAddress.parse("anikchak@gmail.com"));
 			
 			message.setSubject("Confirmation: Booking Id - "+bookingNo);
-=======
-					InternetAddress.parse("anikchak@gmail.com"));
 
-			message.setSubject("Confirmation: Booking Id - " + bookingNo);
->>>>>>> refs/heads/master
 			message.setText("Dear Guest,"
 					+ "\n\n Your booking was successful! Booking reference id="
 					+ bookingNo
@@ -172,15 +157,11 @@ public class CommonUtility {
 		} catch (MessagingException e) {
 			System.out.println("Error in Email");
 			throw new RuntimeException(e);
-<<<<<<< HEAD
 			
 		} 
 		   
 		 } 
-=======
-		}
 
-	}
 	
 	public String getPageName(String comingFromPage){
 		if("LandingPage".equalsIgnoreCase(comingFromPage)){
@@ -188,5 +169,5 @@ public class CommonUtility {
 		}
 		return "/LandingPage.jsp";
 	}
->>>>>>> refs/heads/master
+
 }
