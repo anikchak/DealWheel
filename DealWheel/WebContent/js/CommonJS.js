@@ -58,13 +58,14 @@ function openLoginPopUp() {
 	$('#loginErrorMsgDiv').css('display', 'none');
 	$('#loginUsrname').val("");
 	$('#loginPassword').val("");
+	$("#signupCancelBtn").click();
 	$("#loginModal").modal();
 }
 function openSignUpPopUp() {
 	$('#signupErrorMsgDiv').css('display', 'none');
 	$('#signupUsername').val("");
 	$('#signupPassword').val("");
-	$('#signupConfirmPassword').val("");
+	$('#signupmobileNumber').val("");
 	$("#loginCancelBtn").click();
 	$("#signupModal").modal();
 }
@@ -91,7 +92,13 @@ function submitForAuthentication(authType, pageContext) {
 				} else if(responseText == 'emptyFields'){
 					$('#loginErrorMsgSpan').html("Enter value for all fields");
 					$('#loginErrorMsgDiv').css('display', 'block');
-				} else {
+				} else if (responseText == 'invalidEmail'){
+					$('#loginErrorMsgSpan').html("Email address invalid.");
+					$('#loginErrorMsgDiv').css('display', 'block');
+					$('#loginUsrname').val("");
+					$('#loginPassword').val("");
+				}
+				else {
 					//alert("Response=" + responseText);
 					$(location).attr('href', pageContext + responseText);
 				}
@@ -100,8 +107,8 @@ function submitForAuthentication(authType, pageContext) {
 	} else if (authType == 'signup') {
 		if (($('#signupUsername') != null && $('#signupUsername').val() == '')
 				|| ($('#signupPassword') != null && $('#signupPassword').val() == '')
-				|| ($('#signupConfirmPassword') != null && $(
-						'#signupConfirmPassword').val() == '')) {
+				|| ($('#signupmobileNumber') != null && $(
+						'#signupmobileNumber').val() == '')) {
 			$('#signupErrorMsgSpan').html("Enter value for all fields");
 			$('#signupErrorMsgDiv').css('display', 'block');
 		} else {
@@ -111,7 +118,7 @@ function submitForAuthentication(authType, pageContext) {
 							{
 								username : $('#signupUsername').val(),
 								password : $('#signupPassword').val(),
-								confirmPassword : $('#signupConfirmPassword')
+								mobileNumber : $('#signupmobileNumber')
 										.val(),
 								authType : 'signup'
 							},
@@ -126,16 +133,23 @@ function submitForAuthentication(authType, pageContext) {
 												'block');
 										$('#signupUsername').val("");
 										$('#signupPassword').val("");
-										$('#signupConfirmPassword').val("");
-									} else if (responseText == 'passwordMismatch') {
+										$('#signupmobileNumber').val("");
+									} else if (responseText == 'mobileNaN') {
 										$('#signupErrorMsgSpan')
 												.html(
-														'Password and Confirm Password are not same.');
+														'Invalid Mobile Number.');
 										$('#signupErrorMsgDiv').css('display',
 												'block');
 										$('#signupPassword').val("");
-										$('#signupConfirmPassword').val("");
-									} else if(responseText == 'emptyFields'){
+										$('#signupmobileNumber').val("");
+									} else if(responseText == 'invalidEmail'){
+										$('#signupErrorMsgSpan').html("Email address invalid.");
+										$('#signupErrorMsgDiv').css('display', 'block');
+										$('#signupUsername').val("");
+										$('#signupPassword').val("");
+										$('#signupmobileNumber').val("");
+									}
+									else if(responseText == 'emptyFields'){
 										$('#signupErrorMsgSpan').html("Enter value for all fields");
 										$('#signupErrorMsgDiv').css('display', 'block');
 									} else {
@@ -152,7 +166,7 @@ function submitForAuthentication(authType, pageContext) {
 											'block');
 									$('#signupUsername').val("");
 									$('#signupPassword').val("");
-									$('#signupConfirmPassword').val("");
+									$('#signupmobileNumber').val("");
 								}
 							});
 

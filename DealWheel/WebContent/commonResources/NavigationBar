@@ -1,0 +1,81 @@
+<nav class="navbar navbar-default navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+		<a class="navbar-brand ">
+			<img class="" src="http://htmlstream.com/preview/unify-v1.8/assets/img/logo1-default.png" alt="Logo">
+		</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+
+      <ul class="nav navbar-nav navbar-right" >
+        <li class="" ><a href="#" style="color:#fff;font-size:13px;text-transform:uppercase;"><span class="glyphicon glyphicon-map-marker"></span> Bangalore</a></li>
+        <% if(1==2)
+        	{
+        %>
+        <li class="" >
+			<li class="dropdown">
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:#fff;font-size:13px;text-transform:uppercase;"><span class="glyphicon glyphicon-map-marker"></span> Location <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="#" style="color:#687074;font-size:13px;text-transform:uppercase;">Bangalore</a></li>
+						<li><a href="#" style="color:#687074;font-size:13px;text-transform:uppercase;">Pune</a></li>
+					</ul>
+			</li>
+		</li>
+        <%
+        	}
+        %>
+        <%
+							new CustomerControllerService().cleanBookings();
+							session.setAttribute(GenericConstant.COMINGFROMPAGE, "LandingPage");
+							if(session.getAttribute("LoggedInUserDetailsObject")!=null){
+								List<User> validUserDetails = (List<User>)session.getAttribute("LoggedInUserDetailsObject");
+								if(validUserDetails!=null & validUserDetails.size()>0){
+									for(User u : validUserDetails){
+		%>
+		<!-- User section post signin -->		
+						<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:#fff;font-size:13px;text-transform:uppercase;">
+								<span class="glyphicon glyphicon-user"></span> 
+								<%=u.getUserEmail() %><span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="#" style="color: #687074; font-weight:400;">
+										<span class="glyphicon glyphicon-cog"></span> My Profile
+									</a>
+								</li>
+								<li>
+									<a href="${pageContext.request.contextPath}/MyBookings" style="color: #687074; font-weight:400;">
+										<span class="glyphicon glyphicon-list"></span> My Bookings
+									</a>
+								</li>
+								<li>
+									<a href="#" style="color: #687074; font-weight:400;" onclick="logoutUser()">
+										<span class="glyphicon glyphicon-log-out"></span> Logout
+									</a>
+								</li>
+							</ul>
+						</li>
+		<!-- User section post signin ends-->	
+
+						<%		
+									}
+								}
+							}
+							else{
+						%>
+						<!-- When user is not logged in -->
+        <li style="padding-left:10px;"><button type="button" class="btn btn-info btn-default navbar-btn" onclick="openLoginPopUp()"><span class="glyphicon glyphicon-log-in"></span> Login</button></li>
+		<li style="padding-left:10px;"><button type="button" class="btn btn-info btn-default navbar-btn" onclick="openSignUpPopUp()"><span class="glyphicon glyphicon-user"></span> Sign Up</button></li>
+						<!-- When user is not logged in ends-->
+						<%} %>
+						<!-- Verify if the user is logged in or not ends-->
+      </ul>
+	</div>
+  </div>
+</nav>

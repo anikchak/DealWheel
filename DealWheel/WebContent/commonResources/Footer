@@ -1,0 +1,27 @@
+
+	<div id="footer">
+		<div class="container" style="margin-top: 0px;">
+
+			<hr style="border-color: #85b213; margin-bottom: 0px;">
+			<table width="100%">
+				<tr>
+					<td><span style="color: #687074;">Copyright ©2014 Wheelocity</span></td>
+					<td>
+						<div class="dropup" style="float: right;">
+							<ul class="nav navbar-nav">
+								<li class="dropdown"><a class="dropdown-toggle"
+									data-toggle="dropdown" href="#" style="color: #687074;">Know
+										us more<span class="caret"></span>
+								</a>
+									<ul class="dropdown-menu">
+										<li><a href="#" style="color: #687074;">Contact Us</a></li>
+										<li><a href="#" style="color: #687074;">About Us</a></li>
+									</ul></li>
+							</ul>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+	</div>

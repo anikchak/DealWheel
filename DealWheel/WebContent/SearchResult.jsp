@@ -1,19 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.Map" %>  
-<%@ page import="java.util.Map.Entry" %>  
-<%@ page import="java.util.Iterator" %> 
-<%@ page import="services.utility.GenericConstant" %>
-<%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.util.Date" %>
-<%@ page import="java.util.concurrent.TimeUnit" %>
-<%@ page import="java.util.List" %>
-<%@ page import="model.User" %>
+<%@ include file="commonResources/CommonViewImports"%>
  
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<%@ include file="commonResources/CommonJSCSSInclude"%>
 <title>Choose your vehicle</title>
 <script>
 function selectedVehicle(rowId){
@@ -45,8 +39,15 @@ function selectedVehicle(rowId){
 	bookingFormId.submit();
 }
 </script>
+
+<style>
+body{
+padding-top:0px;
+}
+</style>
 </head>
 <body>
+<%@ include file="commonResources/NavigationBar"%>
 <%
 session.setAttribute(GenericConstant.COMINGFROMPAGE, "SearchResult");
 if(session.getAttribute("LoggedInUserDetailsObject")!=null){

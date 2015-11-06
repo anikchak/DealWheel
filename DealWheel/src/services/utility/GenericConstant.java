@@ -3,52 +3,53 @@ package services.utility;
 public class GenericConstant {
 
 	//GENERIC STRING NAMES
-	public static String SELECTEDVEHICLEDETAILS = "selectedVehicleDetails";
-	public static String USERNAME = "username";
-	public static String TEMPBOOKINGSEQ = "tempBookingSeq";
-	public static String COMINGFROMPAGE = "comingFromPage";
-	public static String BOOKING = "Booking";
-	public static String FROMDATESTRING = "fromDateString";
-	public static String TODATESTRING = "toDateString";
-	public static String DISPLAYSEARCHRESULTMAP = "displaySearchResultMap";
-	public static String DOLLARFORSPLIT = "\\$";
-	public static String HASH = "#";
-	public static String PERCENT = "%";
-	public static String DOLLAR = "$";
-	public static String PASSWORD = "password";
-	public static String OPTION = "option";
-	public static String OLDREGISTRATION = "oldRegistration";
-	public static String NEWREGISTRATION = "newRegistration";	
-	public static String AUTH_TYPE = "authType";
-	public static String LOGINERROR = "LOGIN_ERROR";
-	public static String SESSIONID = "sessionID";
-	public static String FROMDATE = "fromDate";
-	public static String TODATE = "toDate";
-	public static String DATEFORMAT = "dd/MM/yyyy";
-	public static String CANCELLED = "CANCELLED";
-	public static String UPCOMING = "UPCOMING";
-	public static String VIEWING = "VIEWING";
-	public static String PICKUP = "PICKUP";
-	public static String BKNG_STATUS = "bkngStatus";
-	public static String BKNG_NUMBER = "bkngNumber";
-	public static String BKNG_SEQ = "bkngSeq";
-	public static String BKNG_STATUS_WHERE_CLAUSE = "bkngStatusWhereClause";
-	public static String TICKER_VALUE = "tickervalue";
-	public static String TIMEDOUT = "TIMEDOUT";
-	public static String LOCKING_CODE = "lockingcode";
-	public static String USERID = "userId";
-	public static String VEHICLE_NAME = "vehicleName";
-	public static String ADDR_TYPE = "addrType";
-	public static String LAST_LOGIN_DETAIL = "lastLoginDetail";
-	public static String LOGIN_USER_NAME = "loginUserName";
-	public static String LOGIN_USER_TYPE = "loginUserType";
-	
+	public static final String SELECTEDVEHICLEDETAILS = "selectedVehicleDetails";
+	public static final String USERNAME = "username";
+	public static final String TEMPBOOKINGSEQ = "tempBookingSeq";
+	public static final String COMINGFROMPAGE = "comingFromPage";
+	public static final String BOOKING = "Booking";
+	public static final String FROMDATESTRING = "fromDateString";
+	public static final String TODATESTRING = "toDateString";
+	public static final String DISPLAYSEARCHRESULTMAP = "displaySearchResultMap";
+	public static final String DOLLARFORSPLIT = "\\$";
+	public static final String HASH = "#";
+	public static final String PERCENT = "%";
+	public static final String DOLLAR = "$";
+	public static final String PASSWORD = "password";
+	public static final String OPTION = "option";
+	public static final String OLDREGISTRATION = "oldRegistration";
+	public static final String NEWREGISTRATION = "newRegistration";	
+	public static final String AUTH_TYPE = "authType";
+	public static final String LOGINERROR = "LOGIN_ERROR";
+	public static final String SESSIONID = "sessionID";
+	public static final String FROMDATE = "fromDate";
+	public static final String TODATE = "toDate";
+	public static final String DATEFORMAT = "dd/MM/yyyy";
+	public static final String CANCELLED = "CANCELLED";
+	public static final String UPCOMING = "UPCOMING";
+	public static final String VIEWING = "VIEWING";
+	public static final String PICKUP = "PICKUP";
+	public static final String BKNG_STATUS = "bkngStatus";
+	public static final String BKNG_NUMBER = "bkngNumber";
+	public static final String BKNG_SEQ = "bkngSeq";
+	public static final String BKNG_STATUS_WHERE_CLAUSE = "bkngStatusWhereClause";
+	public static final String TICKER_VALUE = "tickervalue";
+	public static final String TIMEDOUT = "TIMEDOUT";
+	public static final String LOCKING_CODE = "lockingcode";
+	public static final String USERID = "userId";
+	public static final String VEHICLE_NAME = "vehicleName";
+	public static final String ADDR_TYPE = "addrType";
+	public static final String LAST_LOGIN_DETAIL = "lastLoginDetail";
+	public static final String LOGIN_USER_NAME = "loginUserName";
+	public static final String LOGIN_USER_TYPE = "loginUserType";
+	public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+												+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	
 	
 	//Page Navigations String
-	public static String NAV_TO_CONFIRMBOOKING_PAGE= "/ConfirmBooking.jsp";
-	public static String NAV_TO_LOGIN_PAGE = "/Login.jsp";
-	public static String NAV_TO_SEARCHRESULT_PAGE = "/SearchResult.jsp";
+	public static final String NAV_TO_CONFIRMBOOKING_PAGE= "/ConfirmBooking.jsp";
+	public static final String NAV_TO_LOGIN_PAGE = "/Login.jsp";
+	public static final String NAV_TO_SEARCHRESULT_PAGE = "/SearchResult.jsp";
 	
 	public static final String NAV_TO_VENDORLOGINSIGNUP_PAGE = "/VendorLoginSignUp.jsp";
 	public static final String NAV_TO_VENDORREGISTRATION_PAGE = "/VendorRegister.jsp";

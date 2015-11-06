@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -55,6 +56,7 @@ public class Login extends HttpServlet {
 		String pagecontext = request.getContextPath();
 		String uName = request.getParameter(GenericConstant.USERNAME);
 		String pwd = request.getParameter(GenericConstant.PASSWORD);
+		
 		String authType = request.getParameter(GenericConstant.AUTH_TYPE);
 		String comingFromPage = (String) request.getSession().getAttribute(GenericConstant.COMINGFROMPAGE);
 		HttpSession session = null;
@@ -63,9 +65,11 @@ public class Login extends HttpServlet {
 		System.out.println("authType="+authType);
 		System.out.println("Coming from page = " + comingFromPage);
 		
-		if(uName !=null && "".equals(uName.trim()) || pwd !=null && "".equals(pwd.trim())){
+		if((uName !=null && "".equals(uName.trim())) || (pwd !=null && "".equals(pwd.trim()))){
 			msg = "emptyFields";
 			System.out.println("empty fields");
+		}else if(uName!=null && !new CommonUtility().validateEmail(uName)){
+			msg = "invalidEmail";
 		}
 		else{
 		if ("login".equalsIgnoreCase(authType)) {
@@ -86,9 +90,10 @@ public class Login extends HttpServlet {
 				//response.sendRedirect(pagecontext + GenericConstant.NAV_TO_LOGIN_PAGE);
 				}
 		} else if ("signup".equalsIgnoreCase(authType)) {
-			String confirmPassword = request.getParameter("confirmPassword");
-			if(confirmPassword!=null && !"".equals(confirmPassword) && pwd.equals(confirmPassword)){
-			List<User> newUserEntryList = s.inserNewUser(uName, pwd);
+			String mobileNumber = "0"+request.getParameter("mobileNumber");
+			String regex = "\\d+";
+			if(pwd!=null && !"".equals(pwd) && (mobileNumber!=null && !"".equals(mobileNumber) && mobileNumber.matches(regex) && mobileNumber.length()==11)){
+			List<User> newUserEntryList = s.inserNewUser(uName, pwd,BigInteger.valueOf(Long.parseLong(mobileNumber)));
 			System.out.println("status post registration=" + newUserEntryList);
 			if (newUserEntryList!=null && newUserEntryList.size()==1) {
 				session = generateSession(request, uName);
@@ -106,11 +111,13 @@ public class Login extends HttpServlet {
 				//request.getSession().setAttribute(GenericConstant.LOGINERROR,MessageBundle.NOT_UNIQUE_USERNAME_ERROR_MSG);
 				//response.sendRedirect(pagecontext + GenericConstant.NAV_TO_LOGIN_PAGE);
 			}
-			}else if(confirmPassword!=null && "".equals(confirmPassword)){
+			}else if(mobileNumber!=null && "".equals(mobileNumber)){
 				msg = "emptyFields";
 			}
-			else{
-				msg = "passwordMismatch";
+			else if(!mobileNumber.matches(regex) || mobileNumber.length()!=11){
+				msg = "mobileNaN";
+			}else{
+				msg = "emptyFields";
 			}
 		}
 	}

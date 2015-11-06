@@ -1,4 +1,9 @@
 @CHARSET "ISO-8859-1";
+/*
 .datepicker.dropdown-menu {
-			top: 265px !important;
-		}
+	top: 265px !important;
+}
+*/
+html, body {
+	height: 100%;
+}

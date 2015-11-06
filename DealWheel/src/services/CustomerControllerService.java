@@ -21,7 +21,6 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query; 
 
-import jdk.nashorn.internal.ir.RuntimeNode.Request;
 import model.Address;
 import model.Bookingshistory;
 import model.LoginDetail;
@@ -48,7 +47,7 @@ public class CustomerControllerService {
 	 * 			false - if there is any exception while entering user record 
 	 */
 	@SuppressWarnings("unchecked")
-	public List<User> inserNewUser(String usr, String pwd) {
+	public List<User> inserNewUser(String usr, String pwd,BigInteger mobileNo) {
 
 		logger.info("ControllerService: inserting new user through insertNewUser");
 		List returnUserList = null;
@@ -83,6 +82,7 @@ public class CustomerControllerService {
 					User u = new User();
 					u.setUserEmail(usr);
 					u.setUserName(usr);
+					u.setUserPrimaryContact(mobileNo);
 					u.setUserType(USER_TYPE_CUSTOMER);
 					u.setLastUpdated(new Date());
 					u.setLastUpdatedBy(usr);

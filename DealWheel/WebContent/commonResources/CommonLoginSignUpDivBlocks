@@ -1,97 +1,90 @@
-<div class="modal" id="myModal" role="dialog">
-  <div class="modal-dialog">
-  <div class="modal-content">
-	<div class="modal-header">
-		<button class="close" type="button" data-dismiss="modal">×</button>
-		<h3 class="modal-title"></h3>
-	</div>
-	<div class="modal-body">
-		<div id="modalCarousel" class="carousel">
- 
-          <div class="carousel-inner">
-           
-          </div>
-          
-          <a class="carousel-control left" href="#modaCarousel" data-slide="prev"><i class="glyphicon glyphicon-chevron-left"></i></a>
-          <a class="carousel-control right" href="#modalCarousel" data-slide="next"><i class="glyphicon glyphicon-chevron-right"></i></a>
-          
-        </div>
-	</div>
-	<div class="modal-footer">
-		<button class="btn btn-default" data-dismiss="modal">Close</button>
-	</div>
-   </div>
-  </div>
-</div>
-
 <!-- Login Modal starts-->
 <div class="modal fade" id="loginModal" role="dialog">
-    <div class="modal-dialog">
-	<div class="modal-content">
-        <div class="modal-header" style="padding:25px 10px;">
-          <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
-          <h4 style="float:center;color:#101f40;"><span class="glyphicon glyphicon-lock" ></span> <span id="headerSpanId" >Login</span></h4>
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><img class="" src="http://htmlstream.com/preview/unify-v1.8/assets/img/logo1-default.png" alt="Logo"></h4>
         </div>
-        <div class="modal-body" style="padding:40px 50px;">
+        <div class="modal-body">
           <form role="form">
           	<div class="form-group text-center" id="loginErrorMsgDiv" style="display:none;">
               <label style="font-weight:bold;font-size:14px;" class="label label-danger"><span id="loginErrorMsgSpan"> Username or Password is incorrect.</span></label>
             </div>
-            
-            <div class="form-group">
-              <label for="usrname" style="color:#101f40;"><span class="glyphicon glyphicon-user"></span> Username</label>
-              <input type="text" class="form-control" id="loginUsrname" placeholder="Enter your email id">
+            <div class="form-group " style="color:#687074;">
+				<label class="control-label" for="loginUsrname">Username</label>
+				<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+					<input type="text" class="form-control" id="loginUsrname" aria-describedby="loginUsrnameStatus" placeholder="Enter email">
+				</div>
+				
+			</div>
+            <div class="form-group" style="color:#687074;">
+              <label for="loginPassword" class="control-label">Password</label>
+              <div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+					<input type="password" class="form-control" id="loginPassword" aria-describedby="loginUsrnameStatus" placeholder="Enter password">
+			  </div>
             </div>
-            <div class="form-group">
-              <label for="psw" style="color:#101f40;"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
-              <input type="password" class="form-control" id="loginPassword" placeholder="Enter password">
-            </div>
-            <button type="button" class="btn btn-success btn-block" onclick="submitForAuthentication('login','<%=request.getContextPath()%>')"><span class="glyphicon glyphicon-log-in"></span> Login</button>
+            <button type="button" class="btn btn-danger btn-block" onclick="submitForAuthentication('login','<%=request.getContextPath()%>')"><span class="glyphicon glyphicon-log-in"></span> Login</button>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal" id="loginCancelBtn" style="display:none"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
-          <p><span style="color:#fff;">Not a member? </span><a href="#" onclick="openSignUpPopUp()">Sign Up</a></p>
-          <p><span style="color:#fff;">Forgot </span><a href="#">Password?</a></p>
-		 </div>
+          <p><span style="color:#687074;">Not a member? </span><a href="#" onclick="openSignUpPopUp()" style="color:#d9534f">Sign Up</a></p>
+          <p><span style="color:#687074;">Forgot </span><a href="#" style="color:#d9534f">Password?</a></p>
+          <button type="submit" class="" data-dismiss="modal" id="loginCancelBtn" style="display:none"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+        </div>
       </div>
-
-</div>
-      </div>
+    </div>
+  </div>
 <!-- Login Modal ends -->
 
 <!-- Signup Modal starts-->
 <div class="modal fade" id="signupModal" role="dialog">
-    <div class="modal-dialog">
-<div class="modal-content">
-        <div class="modal-header" style="padding:25px 10px;">
-          <button type="button" class="close" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></button>
-          <h4 style="color:#101f40;"><span class="glyphicon glyphicon-user"></span> <span id="">Sign Up</span></h4>
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><img class="" src="http://htmlstream.com/preview/unify-v1.8/assets/img/logo1-default.png" alt="Logo"></h4>
         </div>
-        <div class="modal-body" style="padding:40px 50px;">
+        <div class="modal-body">
           <form role="form">
-          <div class="form-group text-center" id="signupErrorMsgDiv" style="display:none;">
-              <label style="font-weight:bold;font-size:14px;" class="label label-danger"><span id="signupErrorMsgSpan"> Username already exists.</span></label>
-          </div>
-            <div class="form-group">
-              <label for="usrname" style="color:#101f40;"><span class="glyphicon glyphicon-user"></span> Username</label>
-              <input type="text" class="form-control" id="signupUsername" placeholder="Enter your email id">
+          	<div class="form-group text-center" id="signupErrorMsgDiv" style="display:none;">
+              <label style="font-weight:bold;font-size:14px;" class="label label-danger"><span id="signupErrorMsgSpan"> Username already exists. Kindly sign-in.</span></label>
             </div>
-            <div class="form-group">
-              <label for="psw" style="color:#101f40;"><span class="glyphicon glyphicon-eye-open"></span> Password</label>
-              <input type="password" class="form-control" id="signupPassword" placeholder="Enter password">
+            <div class="form-group " style="color:#687074;">
+				<label class="control-label" for="signupUsername">Username</label>
+				<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+					<input type="text" class="form-control" id="signupUsername" aria-describedby="signupUsernameStatus" placeholder="Enter email">
+				</div>
+			</div>
+            
+            <div class="form-group" style="color:#687074;">
+              <label class="control-label" for="signupmobileNumber">Mobile</label>
+              <div class="input-group">
+					<span class="input-group-addon">+91</span>
+					<input type="number" class="form-control" id="signupmobileNumber" aria-describedby="signupmobileNumberStatus" placeholder="Enter mobile number">
+			  </div>
             </div>
-            <div class="form-group" >
-              <label for="confirmpswSignUp" style="color:#101f40;"><span class="glyphicon glyphicon-eye-open"></span> Confirm Password</label>
-              <input type="password" class="form-control" id="signupConfirmPassword" placeholder="Enter password again">
+            
+            <div class="form-group" style="color:#687074;">
+              <label for="signupPassword" class="control-label" for="signupPassword">Password</label>
+              <div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+					<input type="password" class="form-control" id="signupPassword" aria-describedby="loginUsrnameStatus" placeholder="Enter password">
+			  </div>
             </div>
-              <button type="button" class="btn btn-success btn-block" onclick="submitForAuthentication('signup','<%=request.getContextPath()%>')"><span class="glyphicon glyphicon-off"></span> Sign Up</button>
+            <button type="button" class="btn btn-danger btn-block" onclick="submitForAuthentication('signup','<%=request.getContextPath()%>')"><span class="glyphicon glyphicon-off"></span> Sign Up</button>
           </form>
         </div>
+        <div class="modal-footer">
+          <p><span style="color:#687074;">Already a member? </span><a href="#" onclick="openLoginPopUp()" style="color:#d9534f">Login</a></p>
+          <button type="submit" class="" data-dismiss="modal" id="signupCancelBtn" style="display:none"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
        </div>
-
-</div>
       </div>
+    </div>
+  </div>
 <!-- Signup Modal ends -->
 
 <!-- Logout form -->

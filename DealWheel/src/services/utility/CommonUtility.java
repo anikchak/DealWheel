@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -168,6 +170,15 @@ public class CommonUtility {
 			return "/LandingPage.jsp";
 		}
 		return "/LandingPage.jsp";
+	}
+	
+	public boolean validateEmail(final String hex) {
+		Pattern pattern  = null;
+		Matcher matcher = null;
+		pattern = Pattern.compile(GenericConstant.EMAIL_PATTERN);
+		matcher = pattern.matcher(hex);
+		return matcher.matches();
+
 	}
 
 }
