@@ -8,15 +8,22 @@
 					<td><span style="color: #687074;">Copyright ©2014 Wheelocity</span></td>
 					<td>
 						<div class="dropup" style="float: right;">
+							
 							<ul class="nav navbar-nav">
-								<li class="dropdown"><a class="dropdown-toggle"
-									data-toggle="dropdown" href="#" style="color: #687074;">Know
-										us more<span class="caret"></span>
+							<li>
+								<a href="${pageContext.request.contextPath}/VendorLoginSignUp.jsp" style="color: #687074;">
+									List With Us
 								</a>
+							</li>
+								<li class="dropdown">
+									<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: #687074;">
+										Know us more<span class="caret"></span>
+									</a>
 									<ul class="dropdown-menu">
 										<li><a href="#" style="color: #687074;">Contact Us</a></li>
 										<li><a href="#" style="color: #687074;">About Us</a></li>
-									</ul></li>
+									</ul>
+								</li>
 							</ul>
 						</div>
 					</td>
