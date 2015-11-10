@@ -4,8 +4,10 @@ import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -180,5 +182,26 @@ public class CommonUtility {
 		return matcher.matches();
 
 	}
-
+	
+	public String[] activeCities(){
+		
+		String activeCities[] = null;
+		String value = getValuesFromProperties("activeCities");
+		System.out.println("Value: " + value);
+		if(value!=null){
+			activeCities =value.split("#",-1);
+		}
+		
+		return activeCities;
+	}
+	
+	public String getValuesFromProperties(String searchKey){
+		String value = null;
+		//Reading city values from resource bundle
+		ResourceBundle rb = ResourceBundle.getBundle("properties.applicationpropertybundle");
+		if(rb.containsKey(searchKey)){
+			value = rb.getString(searchKey);
+		}
+		return value;
+	}
 }

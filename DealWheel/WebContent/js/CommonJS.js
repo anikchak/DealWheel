@@ -2,6 +2,8 @@
  * This file contains jquery/javascript functions that are common accross the
  * application
  */
+// Global variables
+var city,ip,region;
 
 /* affix the navbar after scroll below header */
 $('#nav').affix({
@@ -45,6 +47,14 @@ $(document).ready(function() {
 		clearBtn : "true",
 		title : "pickup",
 	});
+	$.get("http://ipinfo.io", function (response) {
+		ip = response.ip;
+		city = response.city;
+		alert("city val="+city);
+		region = response.region;
+		matchLocation();
+	}, "jsonp");
+	
 });
 
 //This function is used to default the drop-off date to (start-date + 1)
@@ -178,3 +188,10 @@ function submitForAuthentication(authType, pageContext) {
 function logoutUser(){
 	$('#logoutFormId').submit();
 }
+
+function selectedLocation(selectedLoc){
+	$('#locationId').text(" "+selectedLoc+ " ");
+}
+
+
+

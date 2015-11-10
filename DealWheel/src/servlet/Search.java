@@ -67,6 +67,7 @@ public class Search extends HttpServlet {
 		}catch(Exception e){
 			System.out.println("Exception while searching vehicles");
 		}
+		
 		if(displaySearchResultMap !=null){
 			HttpSession session = request.getSession();
 			if(session !=null){
