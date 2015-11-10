@@ -68,7 +68,7 @@ public class Login extends HttpServlet {
 		if((uName !=null && "".equals(uName.trim())) || (pwd !=null && "".equals(pwd.trim()))){
 			msg = "emptyFields";
 			System.out.println("empty fields");
-		}else if(uName!=null && !new CommonUtility().validateEmail(uName)){
+		}else if(uName!=null && !CommonUtility.validateEmail(uName)){
 			msg = "invalidEmail";
 		}
 		else{
@@ -78,7 +78,7 @@ public class Login extends HttpServlet {
 			if (validUserDetails!=null && validUserDetails.size()==1) {
 				session = generateSession(request, uName);
 				session.setAttribute("LoggedInUserDetailsObject",validUserDetails );
-				msg = new CommonUtility().getPageName(comingFromPage);
+				msg = CommonUtility.getPageName(comingFromPage);
 				//new CommonUtility().pageNavigation(pagecontext, comingFromPage, request, response);
 			}else{
 				System.out.println("Invalid username or password");
@@ -101,7 +101,7 @@ public class Login extends HttpServlet {
 				//new CommonUtility().pageNavigation(pagecontext, comingFromPage, request, response);
 				//response.setContentType("text/plain");
 		        //response.getWriter().write("/LandingPage.jsp");
-				msg = new CommonUtility().getPageName(comingFromPage);
+				msg = CommonUtility.getPageName(comingFromPage);
 			}else{
 				System.out.println("Username already exists. Error..!!");
 				request.getSession().removeAttribute("LoggedInUserDetailsObject");

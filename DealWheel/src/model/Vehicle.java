@@ -14,12 +14,11 @@ import static services.utility.GenericConstant.*;
 @Entity
 @Table(name="vehicles")
 @NamedQueries({
-	@NamedQuery(name=VEHICLE_FIND_ALL, query="SELECT v FROM Vehicle v"),
-	@NamedQuery(name=VEHICLE_GET_NAMES, query="SELECT v.vhclName FROM Vehicle v"),
 	@NamedQuery(name=VEHICLE_GET_VEHICLE_DETAILS_FOR_USER, 
-		query="SELECT v.vhclName, v.vhclMake, v.vhclRegistrationNo, v.vhclYearOfManufacture, v.vhclPerDayCost, v.vhclSecurityDeposit, "
+		query="SELECT lv.lvclName, lv.lvclMake, v.vhclRegistrationNo, v.vhclYearOfManufacture, v.vhclPerDayCost, v.vhclSecurityDeposit, "
 				+ "a.addrLine1, a.addrLine2, a.addrLine3, a.addrLocality, a.addrCity, a.addrState, a.addrCountry, a.addrPinCode "
-				+ "FROM Vehicle v JOIN Address a ON v.vhclAddressId = a.addrId JOIN User u ON a.userId = u.userId WHERE u.userId = :userId ")
+				+ "FROM Vehicle v JOIN Address a ON v.vhclAddressId = a.addrId JOIN User u ON a.userId = u.userId JOIN ListedVehicle lv ON v.listedVhclId = lv.lvclId "
+				+ "WHERE u.userId = :userId ")
 })
 public class Vehicle implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -28,7 +27,10 @@ public class Vehicle implements Serializable {
 	@SequenceGenerator(name="VEHICLES_VHCLID_GENERATOR", sequenceName="KEYSEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="VEHICLES_VHCLID_GENERATOR")
 	@Column(name="VHCL_ID")
-	private String vhclId;
+	private BigInteger vhclId;
+	
+	@Column(name="VHCL_LVCL_ID")
+	private BigInteger listedVhclId;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="LAST_UPDATED")
@@ -36,12 +38,6 @@ public class Vehicle implements Serializable {
 
 	@Column(name="LAST_UPDATED_BY")
 	private String lastUpdatedBy;
-
-	@Column(name="VHCL_MAKE")
-	private String vhclMake;
-
-	@Column(name="VHCL_NAME")
-	private String vhclName;
 
 	@Column(name="VHCL_PER_DAY_COST")
 	private int vhclPerDayCost;
@@ -55,25 +51,27 @@ public class Vehicle implements Serializable {
 	@Column(name="VHCL_SECURITY_DEPOSIT")
 	private int vhclSecurityDeposit;
 
-	@Column(name="VHCL_TYPE")
-	private String vhclType;
-
 	@Column(name="VHCL_YEAR_OF_MANUFACTURE")
 	private String vhclYearOfManufacture;
-	
-	public Vehicle() {
+
+	public BigInteger getVhclId() {
+		return vhclId;
 	}
 
-	public String getVhclId() {
-		return this.vhclId;
-	}
-
-	public void setVhclId(String vhclId) {
+	public void setVhclId(BigInteger vhclId) {
 		this.vhclId = vhclId;
 	}
 
+	public BigInteger getListedVhclId() {
+		return listedVhclId;
+	}
+
+	public void setListedVhclId(BigInteger listedVhclId) {
+		this.listedVhclId = listedVhclId;
+	}
+
 	public Date getLastUpdated() {
-		return this.lastUpdated;
+		return lastUpdated;
 	}
 
 	public void setLastUpdated(Date lastUpdated) {
@@ -81,31 +79,15 @@ public class Vehicle implements Serializable {
 	}
 
 	public String getLastUpdatedBy() {
-		return this.lastUpdatedBy;
+		return lastUpdatedBy;
 	}
 
 	public void setLastUpdatedBy(String lastUpdatedBy) {
 		this.lastUpdatedBy = lastUpdatedBy;
 	}
 
-	public String getVhclMake() {
-		return this.vhclMake;
-	}
-
-	public void setVhclMake(String vhclMake) {
-		this.vhclMake = vhclMake;
-	}
-
-	public String getVhclName() {
-		return this.vhclName;
-	}
-
-	public void setVhclName(String vhclName) {
-		this.vhclName = vhclName;
-	}
-
 	public int getVhclPerDayCost() {
-		return this.vhclPerDayCost;
+		return vhclPerDayCost;
 	}
 
 	public void setVhclPerDayCost(int vhclPerDayCost) {
@@ -113,7 +95,7 @@ public class Vehicle implements Serializable {
 	}
 
 	public BigInteger getVhclAddressId() {
-		return this.vhclAddressId;
+		return vhclAddressId;
 	}
 
 	public void setVhclAddressId(BigInteger vhclAddressId) {
@@ -121,7 +103,7 @@ public class Vehicle implements Serializable {
 	}
 
 	public String getVhclRegistrationNo() {
-		return this.vhclRegistrationNo;
+		return vhclRegistrationNo;
 	}
 
 	public void setVhclRegistrationNo(String vhclRegistrationNo) {
@@ -129,23 +111,15 @@ public class Vehicle implements Serializable {
 	}
 
 	public int getVhclSecurityDeposit() {
-		return this.vhclSecurityDeposit;
+		return vhclSecurityDeposit;
 	}
 
 	public void setVhclSecurityDeposit(int vhclSecurityDeposit) {
 		this.vhclSecurityDeposit = vhclSecurityDeposit;
 	}
 
-	public String getVhclType() {
-		return this.vhclType;
-	}
-
-	public void setVhclType(String vhclType) {
-		this.vhclType = vhclType;
-	}
-
 	public String getVhclYearOfManufacture() {
-		return this.vhclYearOfManufacture;
+		return vhclYearOfManufacture;
 	}
 
 	public void setVhclYearOfManufacture(String vhclYearOfManufacture) {

@@ -165,14 +165,14 @@ public class CommonUtility {
 		 } 
 
 	
-	public String getPageName(String comingFromPage){
+	public static String getPageName(String comingFromPage){
 		if("LandingPage".equalsIgnoreCase(comingFromPage)){
 			return "/LandingPage.jsp";
 		}
 		return "/LandingPage.jsp";
 	}
 	
-	public boolean validateEmail(final String hex) {
+	public static boolean validateEmail(final String hex) {
 		Pattern pattern  = null;
 		Matcher matcher = null;
 		pattern = Pattern.compile(GenericConstant.EMAIL_PATTERN);

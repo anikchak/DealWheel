@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 import model.Address;
+import model.ListedVehicle;
 import model.Vehicle;
 import dao.AddressDAOImpl;
+import dao.ListedVehicleDAOImpl;
 import dao.VehicleDAOImpl;
 
 public class AddVehicleController {
@@ -46,15 +48,16 @@ public class AddVehicleController {
 				addressId = params.get("addrressId");
 			}
 			
+			ListedVehicle lv = new ListedVehicleDAOImpl<ListedVehicle>().findVehicle(
+					params.get("vehicleName"), params.get("vehicleManufacturer"), VEHICLE_TYPE_TWO_WHEELER);
+			
 			Vehicle v = new Vehicle();
 			v.setVhclAddressId(new BigInteger(addressId));
-			v.setVhclName(params.get("vehicleName"));
-			v.setVhclMake(params.get("vehicleManufacturer"));
+			v.setListedVhclId(lv.getLvclId());
 			v.setVhclRegistrationNo(params.get("registrationNo"));
 			v.setVhclYearOfManufacture(params.get("yearOfManufacture"));
 			v.setVhclPerDayCost(Integer.parseInt(params.get("perDayCost")));
 			v.setVhclSecurityDeposit(Integer.parseInt(params.get("securityDeposit")));
-			v.setVhclType(VEHICLE_TYPE_TWO_WHEELER);
 			v.setLastUpdated(new Date());
 			v.setLastUpdatedBy(params.get("userName"));
 			

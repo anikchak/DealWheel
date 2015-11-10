@@ -1,6 +1,6 @@
 package dao;
 
-import static services.utility.GenericConstant.VEHICLE_GET_NAMES;
+import static services.utility.GenericConstant.LISTED_VEHICLE_GET_NAMES;
 import static services.utility.GenericConstant.VEHICLE_GET_VEHICLE_DETAILS_FOR_USER;
 
 import java.math.BigInteger;
@@ -24,7 +24,7 @@ public class VehicleDAOImpl<T>  extends  BaseDAOImpl<Vehicle> implements Vehicle
 
 	public List<String> getNames() {
 		logger.debug("Fetching all the names of Vehicles");
-		Query q = em.createNamedQuery(VEHICLE_GET_NAMES);
+		Query q = em.createNamedQuery(LISTED_VEHICLE_GET_NAMES);
 		List<String> nameList =  q.getResultList();
 		return nameList;
 	}

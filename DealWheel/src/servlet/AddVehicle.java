@@ -78,5 +78,4 @@ public class AddVehicle extends HttpServlet {
 			throws ServletException, IOException {
 		doPost(req, resp);
 	}
-
 }

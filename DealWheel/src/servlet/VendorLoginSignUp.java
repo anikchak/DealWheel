@@ -41,7 +41,6 @@ public class VendorLoginSignUp extends HttpServlet {
 		}else if(req.getParameter("identifier").equals("login")){ //Aniket: Added if condition
 			VendorLoginController vlc = new VendorLoginController();
 			User user= vlc.validateVendor(req.getParameter("loginEmail"), req.getParameter("loginPassword"));
-			//Address address = new AddressDAOImpl<Address>().findAddressByUserIdAndType(user.getUserId(), ADDRESS_TYPE_VENDOR_OFFICE_LOCATION); //Aniket: Line moved
 			if(user!=null){
 				Address address = new AddressDAOImpl<Address>().findAddressByUserIdAndType(user.getUserId(), ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);//Aniket: Location for this line changed as if the validation fails the user object will be null and this line will give NPE
 				HttpSession session = req.getSession();
