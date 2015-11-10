@@ -39,6 +39,7 @@ public class GenericConstant {
 	public static final String USERID = "userId";
 	public static final String VEHICLE_NAME = "vehicleName";
 	public static final String ADDR_TYPE = "addrType";
+	public static final String ADDR_CITY = "addrCity";
 	public static final String LAST_LOGIN_DETAIL = "lastLoginDetail";
 	public static final String LOGIN_USER_NAME = "loginUserName";
 	public static final String LOGIN_USER_TYPE = "loginUserType";

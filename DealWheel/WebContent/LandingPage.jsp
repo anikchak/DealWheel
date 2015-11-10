@@ -75,6 +75,29 @@ var pageContext = '<%=request.getContextPath()%>';
 	<!-- Including Common JS -->
 
 	<script src="js/CommonJS.js" type="text/javascript"></script>
+	<script>
+	var propCities = '<%= new CommonUtility().getValuesFromProperties("activeCities")%>';
+
+	function matchLocation(){
+		if(city=='Bengaluru'){
+			city = "Bangalore";
+		}
+		if(propCities!=null){
+			var activeCities = propCities.split("#",-1);
+			for(i =0; i<activeCities.length;i++)
+				{
+					if(activeCities[i]==city){
+						alert("city match found");
+						alert($('#locationId').text());
+						$('#locationId').text(" "+activeCities[i]+ " ");
+						break;
+					}else{
+						alert("city match not found");
+					}
+				}
+		}
+	}
 	
+	</script>
 </body>
 </html>

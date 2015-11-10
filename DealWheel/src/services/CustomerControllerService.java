@@ -221,6 +221,7 @@ public class CustomerControllerService {
 				q.setParameter(UPCOMING, UPCOMING);
 				q.setParameter(VIEWING, VIEWING);
 				q.setParameter(ADDR_TYPE, PICKUP);
+				q.setParameter("addrCity", "bangalore".toUpperCase());
 
 				List<Object[]> searchResultSet = (List<Object[]>) q
 						.getResultList();
@@ -254,6 +255,26 @@ public class CustomerControllerService {
 			// Vehicle v = (Vehicle)searchResultSet.get(i);
 			Vehicle v = (Vehicle) o[0];
 			Address a = (Address) o[1];
+			User u  = (User) o[2];
+			if (displaySearchResultMap != null) {
+				String key = v.getVhclAddressId()+"#"+v.getVhclName();
+				String value = "vehcileImageURL"+"#"+
+								v.getVhclName()+"#"+
+								v.getVhclMake()+"#"+
+								v.getVhclPerDayCost()+"#"+
+								v.getVhclSecurityDeposit()+"#"+
+								u.getUserName()+"#"+
+								a.getAddrLocality()+" ,"+a.getAddrCity()+"#"+
+								a.getAddrLine1()+"\n"+
+								((a.getAddrLine2()!=null && (!a.getAddrLine2().isEmpty() || "null".equalsIgnoreCase(a.getAddrLine2())))?(a.getAddrLine2()+"\n"):"")+
+								((a.getAddrLine2()!=null && (!a.getAddrLine2().isEmpty() || "null".equalsIgnoreCase(a.getAddrLine2()) ))?(a.getAddrLine3()+"\n"):"")+
+								a.getAddrLocality()+"\n"+a.getAddrCity()+" - "+a.getAddrPinCode()+"\n"+a.getAddrState()+"\n"+a.getAddrCountry();
+				
+				if (!displaySearchResultMap.containsKey(key)) {
+					displaySearchResultMap.put(key, value);
+				}
+			}
+			/*
 			if (displaySearchResultMap != null) {
 				String locationValue = null;
 				String key = v.getVhclName() + DOLLAR + v.getVhclMake() + DOLLAR
@@ -268,10 +289,10 @@ public class CustomerControllerService {
 				locationValue = locationValue + PERCENT + v.getVhclId();
 				displaySearchResultMap.put(key, locationValue);
 			}
-
+*/
 		}
 		logger.info("Map Values= " + displaySearchResultMap);
-
+		logger.info("Map size= " + displaySearchResultMap.size());
 		return displaySearchResultMap;
 	}
 	 

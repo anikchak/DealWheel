@@ -13,21 +13,26 @@
     <div class="collapse navbar-collapse" id="myNavbar">
 
       <ul class="nav navbar-nav navbar-right" >
-        <li class="" ><a href="#" style="color:#fff;font-size:13px;text-transform:uppercase;"><span class="glyphicon glyphicon-map-marker"></span> Bangalore</a></li>
-        <% if(1==2)
-        	{
+        <%
+        	String activeCities[] = new CommonUtility().activeCities();
         %>
         <li class="" >
-			<li class="dropdown">
-				<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:#fff;font-size:13px;text-transform:uppercase;"><span class="glyphicon glyphicon-map-marker"></span> Location <span class="caret"></span></a>
+			<li class="dropdown" >
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:#fff;font-size:13px;text-transform:uppercase;"><span class="glyphicon glyphicon-map-marker"></span><span id="locationId"> Location </span><span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="#" style="color:#687074;font-size:13px;text-transform:uppercase;">Bangalore</a></li>
-						<li><a href="#" style="color:#687074;font-size:13px;text-transform:uppercase;">Pune</a></li>
+						<%
+						for(int i=0;i<activeCities.length;i++)
+							{
+						%>
+						<li><a href="#" style="color:#687074;font-size:13px;text-transform:uppercase;" onclick="selectedLocation('<%=activeCities[i]%>')"><%=activeCities[i]%></a></li>
+						<%
+							}
+						%>
 					</ul>
 			</li>
 		</li>
         <%
-        	}
+        	
         %>
         <%
 							new CustomerControllerService().cleanBookings();

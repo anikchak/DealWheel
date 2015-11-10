@@ -11,10 +11,11 @@ public class QueryConstant {
 			+ " AND pd.userId = adds.userId " + "AND us.userName = :username";
 	public static String CLEAN_BOOKINGS = "update bookingshistory b set b.BKNG_STATUS = ? where TIME_TO_SEC(TIMEDIFF(NOW(),b.LAST_UPDATED))> ? and b.BKNG_STATUS in (?)";
 	//public static String CLEAN_BOOKINGS = "update Bookingshistory b set b.bkngStatus = :timedout where TIME_TO_SEC(TIMEDIFF(NOW(),b.lastUpdated))> :tickervalue and b.bkngStatus in (:VIEWING)";
-	public static String LIST_AVAILABLE_VEHICLES = "SELECT v, a "
-			+ "FROM Vehicle v ,  Address a WHERE v.vhclId NOT IN "
+	public static String LIST_AVAILABLE_VEHICLES = "SELECT v, a, u "
+			+ "FROM Vehicle v ,  Address a , User u WHERE v.vhclId NOT IN "
 			+ "(SELECT bh.bkngVehicle FROM Bookingshistory bh WHERE bh.bkngFromDate <= :toDate AND bh.bkngToDate >= :fromDate "
-			+ "AND bh.bkngStatus  IN (:UPCOMING,:VIEWING)) AND a.addrId = v.vhclAddressId AND a.addrType = :addrType GROUP BY v.vhclName,v.vhclAddressId "
+			+ "AND bh.bkngStatus  IN (:UPCOMING,:VIEWING)) AND a.addrId = v.vhclAddressId AND a.addrType = :addrType AND u.userId = a.userId AND upper(a.addrCity) = :addrCity "
+			+ "GROUP BY v.vhclName,v.vhclAddressId,u.userId "
 			+ "ORDER BY v.vhclPerDayCost,v.vhclName";
 	public static String GET_USER_EMAIL = "SELECT USER_EMAIL FROM USERS WHERE USER_NAME = ?";
 }
