@@ -122,3 +122,32 @@ CREATE
     LAST_UPDATED          DATETIME NOT NULL,
     PRIMARY KEY (LVCL_ID)
   );
+  
+-- listed_vehicle value insert  
+  truncate listed_vehicle;
+  
+insert into listed_vehicle (lvcl_name,lvcl_make,lvcl_type,last_updated_by,last_updated)
+values ('Splendor','Hero Moto Corp','2-WHEELER','Admin',now());
+insert into listed_vehicle (lvcl_name,lvcl_make,lvcl_type,last_updated_by,last_updated)
+values ('Passion','Hero Moto Corp','2-WHEELER','Admin',now());
+insert into listed_vehicle (lvcl_name,lvcl_make,lvcl_type,last_updated_by,last_updated)
+values ('Pulsar 150','Bajaj','2-WHEELER','Admin',now());
+insert into listed_vehicle (lvcl_name,lvcl_make,lvcl_type,last_updated_by,last_updated)
+values ('Pulsar 180','Bajaj','2-WHEELER','Admin',now());
+insert into listed_vehicle (lvcl_name,lvcl_make,lvcl_type,last_updated_by,last_updated)
+values ('Avenger','Bajaj','2-WHEELER','Admin',now());
+insert into listed_vehicle (lvcl_name,lvcl_make,lvcl_type,last_updated_by,last_updated)
+values ('Discover','Bajaj','2-WHEELER','Admin',now());
+insert into listed_vehicle (lvcl_name,lvcl_make,lvcl_type,last_updated_by,last_updated)
+values ('Unicorn','Honda','2-WHEELER','Admin',now());
+insert into listed_vehicle (lvcl_name,lvcl_make,lvcl_type,last_updated_by,last_updated)
+values ('Activa','Honda','2-WHEELER','Admin',now());
+insert into listed_vehicle (lvcl_name,lvcl_make,lvcl_type,last_updated_by,last_updated)
+values ('Bullet 350','Royal Enfield','2-WHEELER','Admin',now());
+insert into listed_vehicle (lvcl_name,lvcl_make,lvcl_type,last_updated_by,last_updated)
+values ('Fazer','Yamaha','2-WHEELER','Admin',now());
+insert into listed_vehicle (lvcl_name,lvcl_make,lvcl_type,last_updated_by,last_updated)
+values ('FZ','Yamaha','2-WHEELER','Admin',now());
+
+
+  

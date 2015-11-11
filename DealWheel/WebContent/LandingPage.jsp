@@ -56,6 +56,7 @@ var pageContext = '<%=request.getContextPath()%>';
 							</button>
 						</div>
 					</div>
+					<input type="text" style="display:none;" name="selectedLocationName" id="selectedLocationId" />
 				</form>
 			
 		</div>
@@ -70,15 +71,19 @@ var pageContext = '<%=request.getContextPath()%>';
 	</ul>
 
 	<!-- Including Modal Windows for Signup and Login -->
-	<%@ include file="commonResources/CommonLoginSignUpDivBlocks"%>
+	<%@ include file="commonResources/CommonModalDivBlocks"%>
 
 	<!-- Including Common JS -->
 
 	<script src="js/CommonJS.js" type="text/javascript"></script>
 	<script>
-	var propCities = '<%= new CommonUtility().getValuesFromProperties("activeCities")%>';
+	var propCities = '<%= CommonUtility.getValuesFromProperties("activeCities")%>';
 
 	function matchLocation(){
+		var locationIdText = $('#locationId').text();
+		var cityMatchFound = 0;
+		if(' Location ' == locationIdText){
+			
 		if(city=='Bengaluru'){
 			city = "Bangalore";
 		}
@@ -87,15 +92,21 @@ var pageContext = '<%=request.getContextPath()%>';
 			for(i =0; i<activeCities.length;i++)
 				{
 					if(activeCities[i]==city){
-						alert("city match found");
-						alert($('#locationId').text());
+						cityMatchFound = 1;
 						$('#locationId').text(" "+activeCities[i]+ " ");
+						$('#selectedLocationId').val(activeCities[i]);
+						setLocationToSession(activeCities[i]);
 						break;
 					}else{
-						alert("city match not found");
+						cityMatchFound = 0;
 					}
 				}
 		}
+		if(cityMatchFound==0){
+			$("#chooseLocationDivId").modal();
+		}
+	}
+		
 	}
 	
 	</script>

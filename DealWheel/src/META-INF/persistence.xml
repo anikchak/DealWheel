@@ -9,6 +9,7 @@
 		<class>model.User</class>
 		<class>model.Vehicle</class>
 		<class>model.LoginDetail</class>
+		<class>model.ListedVehicle</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mydb"/>

@@ -50,7 +50,6 @@ $(document).ready(function() {
 	$.get("http://ipinfo.io", function (response) {
 		ip = response.ip;
 		city = response.city;
-		alert("city val="+city);
 		region = response.region;
 		matchLocation();
 	}, "jsonp");
@@ -191,6 +190,22 @@ function logoutUser(){
 
 function selectedLocation(selectedLoc){
 	$('#locationId').text(" "+selectedLoc+ " ");
+	setLocationToSession(selectedLoc);
+	$('#selectedLocationId').val(selectedLoc);
+	$("#selectedLocationCancelBtn").click();
+	$("#landingPageNavId").click();
+}
+
+function setLocationToSession(selectedLoc){
+	$.post(
+			"LocationSetting",
+			{
+				locationSelected : selectedLoc
+			},
+			function(responseText) {
+				
+			});
+	
 }
 
 

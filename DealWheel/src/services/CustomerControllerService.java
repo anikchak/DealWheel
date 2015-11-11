@@ -23,6 +23,7 @@ import javax.persistence.Query;
 
 import model.Address;
 import model.Bookingshistory;
+import model.ListedVehicle;
 import model.LoginDetail;
 import model.User;
 import model.Vehicle;
@@ -208,7 +209,7 @@ public class CustomerControllerService {
 	 * @return Map: key - holds the vehicle details, value - holds location details for the vehicles
 	 */
 	@SuppressWarnings({"unchecked", "rawtypes" })
-	public Map fetchSearchResult(Date from, Date to) {
+	public Map fetchSearchResult(Date from, Date to,String selectedLocation) {
 		logger.info("Inside Fetch Search Result");
 		Map displayResultMap = null;
 		try {
@@ -221,7 +222,7 @@ public class CustomerControllerService {
 				q.setParameter(UPCOMING, UPCOMING);
 				q.setParameter(VIEWING, VIEWING);
 				q.setParameter(ADDR_TYPE, PICKUP);
-				q.setParameter("addrCity", "bangalore".toUpperCase());
+				q.setParameter("addrCity", selectedLocation.toUpperCase());
 
 				List<Object[]> searchResultSet = (List<Object[]>) q
 						.getResultList();
@@ -256,11 +257,12 @@ public class CustomerControllerService {
 			Vehicle v = (Vehicle) o[0];
 			Address a = (Address) o[1];
 			User u  = (User) o[2];
+			ListedVehicle lv = (ListedVehicle) o[3];
 			if (displaySearchResultMap != null) {
-				String key = v.getVhclAddressId()+"#"+v.getVhclName();
+				String key = v.getVhclAddressId()+"#"+lv.getLvclName();
 				String value = "vehcileImageURL"+"#"+
-								v.getVhclName()+"#"+
-								v.getVhclMake()+"#"+
+								lv.getLvclName()+"#"+
+								lv.getLvclMake()+"#"+
 								v.getVhclPerDayCost()+"#"+
 								v.getVhclSecurityDeposit()+"#"+
 								u.getUserName()+"#"+
@@ -411,7 +413,8 @@ public class CustomerControllerService {
 		}
 		return (updateStatus == 1) ? true : false;
 	}
-	 
+	
+	/*
 	 @SuppressWarnings("unchecked")
 	public Map fetchStaticData() {
 		logger.info("Inside method fetchStaticData");
@@ -439,7 +442,7 @@ public class CustomerControllerService {
 
 		return staticVehicleDetails;
 	}
-	 
+	 */
 	 @SuppressWarnings("unchecked")
 	public List<Object[]> getBookings(String uName) {
 		logger.info("Inside getbookings()");

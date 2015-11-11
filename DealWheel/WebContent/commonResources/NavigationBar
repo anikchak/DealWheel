@@ -18,13 +18,24 @@
         %>
         <li class="" >
 			<li class="dropdown" >
-				<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:#fff;font-size:13px;text-transform:uppercase;"><span class="glyphicon glyphicon-map-marker"></span><span id="locationId"> Location </span><span class="caret"></span></a>
+				<%
+				String selectedLocation = (String)session.getAttribute("selectedLocation"); 
+				if(selectedLocation!=null){
+				%>
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:#fff;font-size:13px;text-transform:uppercase;"><span class="glyphicon glyphicon-map-marker"></span><span id="locationId" name="locationSpanName"> <%=selectedLocation%> </span><span class="caret"></span></a>
+				<%
+				}else{
+				%>
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:#fff;font-size:13px;text-transform:uppercase;"><span class="glyphicon glyphicon-map-marker"></span><span id="locationId" name="locationSpanName"> Location </span><span class="caret"></span></a>
+				<%
+				}
+				%>
 					<ul class="dropdown-menu">
 						<%
 						for(int i=0;i<activeCities.length;i++)
 							{
 						%>
-						<li><a href="#" style="color:#687074;font-size:13px;text-transform:uppercase;" onclick="selectedLocation('<%=activeCities[i]%>')"><%=activeCities[i]%></a></li>
+						<li><a href="${pageContext.request.contextPath}/LandingPage.jsp" style="color:#687074;font-size:13px;text-transform:uppercase;" onclick="selectedLocation('<%=activeCities[i]%>')"><%=activeCities[i]%></a></li>
 						<%
 							}
 						%>

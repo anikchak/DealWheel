@@ -29,6 +29,7 @@ public class CommonUtility {
 	 * The method is used to enter records in Bookingdetails table
 	 * */
 
+	@SuppressWarnings("unchecked")
 	public long lockRecord(HttpServletRequest request) {
 		System.out.println("Inside lock record");
 		CustomerControllerService s = new CustomerControllerService();
@@ -183,7 +184,7 @@ public class CommonUtility {
 
 	}
 	
-	public String[] activeCities(){
+	public static String[] activeCities(){
 		
 		String activeCities[] = null;
 		String value = getValuesFromProperties("activeCities");
@@ -195,7 +196,7 @@ public class CommonUtility {
 		return activeCities;
 	}
 	
-	public String getValuesFromProperties(String searchKey){
+	public static String getValuesFromProperties(String searchKey){
 		String value = null;
 		//Reading city values from resource bundle
 		ResourceBundle rb = ResourceBundle.getBundle("properties.applicationpropertybundle");
