@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Welcome Vendor</title>
-<script src="jquery-1.11.3.min.js"></script>
+<script src="js/jquery-1.11.3.min.js"></script>
 <script>
 $(document).ready(function(){
 	$("#login_error").hide();
@@ -45,9 +45,6 @@ $(document).ready(function(){
 				return false;
 			}
 		}
-			
-		
-		
 	}
 	
 	function validateSignUp(){
@@ -101,7 +98,7 @@ $(document).ready(function(){
 <tr><td colspan="2" align="center"><div>Vendor Login</div></td></tr>
 <tr><td><div>Email</div></td><td><div><input type="text" name="loginEmail" id="loginEmail"></div></td></tr>
 <tr><td><div>Password</div></td><td><div><input type="password" name="loginPassword"></div></td></tr>
-<tr><td></td><td><div id="login_error" name="login_Error" style="color: red">ONE</div></td></tr>
+<tr><td></td><td><div id="login_error" name="login_Error" style="color: red"></div></td></tr>
 <tr><td colspan="2" align="center"><input type="submit" id="login" value="Log In"></td></tr>
 </table>
 </div>
@@ -111,7 +108,7 @@ $(document).ready(function(){
 <tr><td><div>Email</div></td><td><div><input type="text" name="email"></div></td></tr>
 <tr><td><div>Password</div></td><td><div><input type="password" name="password"></div></td></tr>
 <tr><td><div>Confirm Password</div></td><td><div><input type="password" name="confirmPassword"></div></td></tr>
-<tr><td></td><td><div id="signup_error" name="signup_error" style="color: red">TWO</div></td></tr>
+<tr><td></td><td><div id="signup_error" name="signup_error" style="color: red"></div></td></tr>
 <tr><td colspan="2" align="center"><input type="submit" id="signup" value="Sign Up"></td></tr>
 </table>
 </div>

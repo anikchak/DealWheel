@@ -2,9 +2,6 @@ package servlet;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -18,7 +15,6 @@ import model.User;
 import services.CustomerControllerService;
 import services.utility.CommonUtility;
 import services.utility.GenericConstant;
-import services.utility.MessageBundle;
 
 /**
  * Servlet implementation class Login
