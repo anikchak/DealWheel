@@ -1,0 +1,35 @@
+<form class="form-inline" role="form" action="${pageContext.request.contextPath}/Search" method="post">
+					<div class="text-center">
+ 						<div class="form-group has-success has-feedback date">
+							<label for="usr" style="color: #687074;">Pickup Date:</label> <input type="text"
+								class="form-control" id="pickupDate" name="fromDate"
+								placeholder="Enter Pickup Date" onchange="defaultDropDate()"> <span
+								class="glyphicon glyphicon-calendar form-control-feedback"></span>
+						</div>
+						<div class="form-group has-success has-feedback date">
+							<label for="usr" style="color: #687074;"> Dropoff Date:</label> <input type="text"
+								class="form-control" id="dropoffDate" name="toDate"
+								placeholder="Enter Dropoff Date"> 
+								<span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+						</div>
+						<div class="form-group ">
+							<button type="submit" class="btn btn-md btn-info">
+								<span class="glyphicon glyphicon-search"></span> Search
+							</button>
+						</div>
+						<%
+						String currentPage = (String)session.getAttribute("currentPage");
+						if(currentPage!=null && !"LandingPage".equalsIgnoreCase(currentPage)){
+						%>
+						<div class="form-group ">
+							<button type="button" class="btn btn-md btn-info" onclick="modifySearchCriteria('cancel')">
+								<span class="glyphicon glyphicon-remove"></span> Cancel
+							</button>
+						</div>
+						<%
+						}
+						%>
+						
+					</div>
+					<input type="text" style="display:none;" name="selectedLocationName" id="selectedLocationId" />
+				</form>

@@ -25,7 +25,9 @@ var pageContext = '<%=request.getContextPath()%>';
 </head>
 
 <body>
-
+	<% session.setAttribute("currentPage","LandingPage");
+	new CustomerControllerService().cleanBookings();
+	%>
 	<!-- Wrap all page content here -->
 	<div id="wrap" style="min-height: 85%;">
 		<!-- Nav bar inclusion starts -->
@@ -36,6 +38,8 @@ var pageContext = '<%=request.getContextPath()%>';
 		<div class="container">
 			<h3 class="text-center">Some content/image goes here</h3>
   				<br>
+  				<%@ include file="commonResources/SearchCriteriaLayout"%>
+  				<!-- 
 				<form class="form-inline" role="form" action="${pageContext.request.contextPath}/Search" method="post">
 					<div class="text-center">
  						<div class="form-group has-success has-feedback date">
@@ -58,7 +62,7 @@ var pageContext = '<%=request.getContextPath()%>';
 					</div>
 					<input type="text" style="display:none;" name="selectedLocationName" id="selectedLocationId" />
 				</form>
-			
+			-->
 		</div>
 	</div>
 	<!--/wrap-->
@@ -74,41 +78,11 @@ var pageContext = '<%=request.getContextPath()%>';
 	<%@ include file="commonResources/CommonModalDivBlocks"%>
 
 	<!-- Including Common JS -->
-
-	<script src="js/CommonJS.js" type="text/javascript"></script>
 	<script>
 	var propCities = '<%= CommonUtility.getValuesFromProperties("activeCities")%>';
-
-	function matchLocation(){
-		var locationIdText = $('#locationId').text();
-		var cityMatchFound = 0;
-		if(' Location ' == locationIdText){
-			
-		if(city=='Bengaluru'){
-			city = "Bangalore";
-		}
-		if(propCities!=null){
-			var activeCities = propCities.split("#",-1);
-			for(i =0; i<activeCities.length;i++)
-				{
-					if(activeCities[i]==city){
-						cityMatchFound = 1;
-						$('#locationId').text(" "+activeCities[i]+ " ");
-						$('#selectedLocationId').val(activeCities[i]);
-						setLocationToSession(activeCities[i]);
-						break;
-					}else{
-						cityMatchFound = 0;
-					}
-				}
-		}
-		if(cityMatchFound==0){
-			$("#chooseLocationDivId").modal();
-		}
-	}
-		
-	}
-	
 	</script>
-</body>
+	<script src="js/CommonJS.js" type="text/javascript"></script>
+	
+	
+ </body>
 </html>

@@ -10,8 +10,11 @@ import dao.UserDAOImpl;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -297,6 +300,7 @@ public class CustomerControllerService {
 		logger.info("Map size= " + displaySearchResultMap.size());
 		return displaySearchResultMap;
 	}
+	 
 	 
 	 /**
 	  * This method is used to lock the records while the user is in booking process for a specified time-duration to maintain concurrency

@@ -42,12 +42,8 @@
 					</ul>
 			</li>
 		</li>
+        
         <%
-        	
-        %>
-        <%
-							new CustomerControllerService().cleanBookings();
-							session.setAttribute(GenericConstant.COMINGFROMPAGE, "LandingPage");
 							if(session.getAttribute("LoggedInUserDetailsObject")!=null){
 								List<User> validUserDetails = (List<User>)session.getAttribute("LoggedInUserDetailsObject");
 								if(validUserDetails!=null & validUserDetails.size()>0){

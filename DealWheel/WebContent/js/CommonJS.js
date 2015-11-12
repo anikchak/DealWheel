@@ -47,13 +47,14 @@ $(document).ready(function() {
 		clearBtn : "true",
 		title : "pickup",
 	});
+	/*
 	$.get("http://ipinfo.io", function (response) {
 		ip = response.ip;
 		city = response.city;
 		region = response.region;
 		matchLocation();
 	}, "jsonp");
-	
+	*/
 });
 
 //This function is used to default the drop-off date to (start-date + 1)
@@ -206,6 +207,18 @@ function setLocationToSession(selectedLoc){
 				
 			});
 	
+}
+
+function modifySearchCriteria(operation){
+	if(operation=='modify'){
+		$('#readOnlySearchDataDivId').hide();
+		$('#modifySearchDataDivId').show();
+	}else if (operation=='cancel'){
+		$('#readOnlySearchDataDivId').show();
+		$('#modifySearchDataDivId').hide();
+		$('#pickupDate').val("");
+		$('#dropoffDate').val("");
+	}
 }
 
 

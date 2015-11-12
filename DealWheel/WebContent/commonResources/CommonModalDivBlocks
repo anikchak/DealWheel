@@ -128,5 +128,3 @@
 </form>
 <!-- Logout form ends -->
 
-
-<a href="${pageContext.request.contextPath}/LandingPage.jsp" id="landingPageNavId"/>

@@ -54,7 +54,7 @@ public class Login extends HttpServlet {
 		String pwd = request.getParameter(GenericConstant.PASSWORD);
 		
 		String authType = request.getParameter(GenericConstant.AUTH_TYPE);
-		String comingFromPage = (String) request.getSession().getAttribute(GenericConstant.COMINGFROMPAGE);
+		String comingFromPage = (String) request.getSession().getAttribute("currentPage");
 		HttpSession session = null;
 		String msg=null;
 		System.out.println("uName="+uName);

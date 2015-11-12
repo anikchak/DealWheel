@@ -171,8 +171,11 @@ public class CommonUtility {
 	public static String getPageName(String comingFromPage){
 		if("LandingPage".equalsIgnoreCase(comingFromPage)){
 			return "/LandingPage.jsp";
+		}else if("SearchResult".equalsIgnoreCase(comingFromPage)){
+			return "/SearchResult.jsp";
+		}else{
+			return "/LandingPage.jsp";
 		}
-		return "/LandingPage.jsp";
 	}
 	
 	public static boolean validateEmail(final String hex) {
