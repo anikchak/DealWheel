@@ -1,33 +1,29 @@
 package model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.Date;
 import java.math.BigInteger;
-import static services.utility.GenericConstant.*;
+
+import javax.persistence.*;
+
+import java.util.Date;
 
 
 /**
- * The persistent class for the vehicles database table.
+ * The persistent class for the listed_vehicle database table.
  * 
  */
 @Entity
 @Table(name="listed_vehicle")
-@NamedQueries({
-	@NamedQuery(name=LISTED_VEHICLE_GET_DETAILS, query="SELECT lv FROM ListedVehicle lv where lv.lvclName= :vehicleName "
-			+ "AND lv.lvclMake = :makerName AND lv.lvclType = :vehicleType"),
-	@NamedQuery(name=LISTED_VEHICLE_GET_NAMES, query="SELECT lv.lvclName FROM ListedVehicle lv where lv.lvclMake = :makerName"),
-	@NamedQuery(name=LISTED_VEHICLE_GET_MAKES, query="SELECT DISTINCT lv.lvclMake FROM ListedVehicle lv")
-	})
+@NamedQuery(name="ListedVehicle.findAll", query="SELECT l FROM ListedVehicle l")
 public class ListedVehicle implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="LISTED_VEHICLES_VHCLID_GENERATOR", sequenceName="KEYSEQ")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="LISTED_VEHICLES_VHCLID_GENERATOR")
+	@SequenceGenerator(name="LISTED_VEHICLE_LVCLID_GENERATOR", sequenceName="KEYSEQ")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="LISTED_VEHICLE_LVCLID_GENERATOR")
 	@Column(name="LVCL_ID")
 	private BigInteger lvclId;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="LAST_UPDATED")
 	private Date lastUpdated;
@@ -35,17 +31,23 @@ public class ListedVehicle implements Serializable {
 	@Column(name="LAST_UPDATED_BY")
 	private String lastUpdatedBy;
 
-	@Column(name="LVCL_NAME")
-	private String lvclName;
+	@Column(name="LVCL_IMG_URL")
+	private String lvclImgUrl;
 
 	@Column(name="LVCL_MAKE")
 	private String lvclMake;
 
+	@Column(name="LVCL_NAME")
+	private String lvclName;
+
 	@Column(name="LVCL_TYPE")
 	private String lvclType;
 
+	public ListedVehicle() {
+	}
+
 	public BigInteger getLvclId() {
-		return lvclId;
+		return this.lvclId;
 	}
 
 	public void setLvclId(BigInteger lvclId) {
@@ -53,7 +55,7 @@ public class ListedVehicle implements Serializable {
 	}
 
 	public Date getLastUpdated() {
-		return lastUpdated;
+		return this.lastUpdated;
 	}
 
 	public void setLastUpdated(Date lastUpdated) {
@@ -61,35 +63,43 @@ public class ListedVehicle implements Serializable {
 	}
 
 	public String getLastUpdatedBy() {
-		return lastUpdatedBy;
+		return this.lastUpdatedBy;
 	}
 
 	public void setLastUpdatedBy(String lastUpdatedBy) {
 		this.lastUpdatedBy = lastUpdatedBy;
 	}
 
-	public String getLvclName() {
-		return lvclName;
+	public String getLvclImgUrl() {
+		return this.lvclImgUrl;
 	}
 
-	public void setLvclName(String lvclName) {
-		this.lvclName = lvclName;
+	public void setLvclImgUrl(String lvclImgUrl) {
+		this.lvclImgUrl = lvclImgUrl;
 	}
 
 	public String getLvclMake() {
-		return lvclMake;
+		return this.lvclMake;
 	}
 
 	public void setLvclMake(String lvclMake) {
 		this.lvclMake = lvclMake;
 	}
 
+	public String getLvclName() {
+		return this.lvclName;
+	}
+
+	public void setLvclName(String lvclName) {
+		this.lvclName = lvclName;
+	}
+
 	public String getLvclType() {
-		return lvclType;
+		return this.lvclType;
 	}
 
 	public void setLvclType(String lvclType) {
 		this.lvclType = lvclType;
 	}
-	
+
 }

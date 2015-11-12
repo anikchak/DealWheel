@@ -263,7 +263,7 @@ public class CustomerControllerService {
 			ListedVehicle lv = (ListedVehicle) o[3];
 			if (displaySearchResultMap != null) {
 				String key = v.getVhclAddressId()+"#"+lv.getLvclName();
-				String value = "vehcileImageURL"+"#"+
+				String value =  lv.getLvclImgUrl()+"#"+
 								lv.getLvclName()+"#"+
 								lv.getLvclMake()+"#"+
 								v.getVhclPerDayCost()+"#"+
