@@ -224,7 +224,7 @@ public class CustomerControllerService {
 				q.setParameter(FROMDATE, from);
 				q.setParameter(UPCOMING, UPCOMING);
 				q.setParameter(VIEWING, VIEWING);
-				q.setParameter(ADDR_TYPE, PICKUP);
+				//q.setParameter(ADDR_TYPE, PICKUP);
 				q.setParameter("addrCity", selectedLocation.toUpperCase());
 
 				List<Object[]> searchResultSet = (List<Object[]>) q
