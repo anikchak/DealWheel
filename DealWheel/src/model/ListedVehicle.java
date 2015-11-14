@@ -2,7 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.math.BigInteger;
-
+import static services.utility.GenericConstant.*;
 import javax.persistence.*;
 
 import java.util.Date;
@@ -14,7 +14,13 @@ import java.util.Date;
  */
 @Entity
 @Table(name="listed_vehicle")
-@NamedQuery(name="ListedVehicle.findAll", query="SELECT l FROM ListedVehicle l")
+@NamedQueries({
+	@NamedQuery(name=LISTED_VEHICLE_GET_DETAILS, query="SELECT lv FROM ListedVehicle lv where lv.lvclName= :vehicleName "
+			+ "AND lv.lvclMake = :makerName AND lv.lvclType = :vehicleType"),
+	@NamedQuery(name=LISTED_VEHICLE_GET_NAMES, query="SELECT lv.lvclName FROM ListedVehicle lv where lv.lvclMake = :makerName"),
+	@NamedQuery(name=LISTED_VEHICLE_GET_MAKES, query="SELECT DISTINCT lv.lvclMake FROM ListedVehicle lv"),
+	@NamedQuery(name=LISTED_VEHICLE_FIND_ALL, query="SELECT l FROM ListedVehicle l")
+	})
 public class ListedVehicle implements Serializable {
 	private static final long serialVersionUID = 1L;
 

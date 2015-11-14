@@ -1,3 +1,4 @@
+<%@page import="java.math.BigInteger"%>
 <%@page import="dao.VehicleDAOImpl"%>
 <%@page import="model.Vehicle"%>
 <%@page import="java.util.List"%>
@@ -12,10 +13,13 @@
 <body>
 <%@ include file="VendorTabs.jsp" %>
 <% List<Object[]> vehicleDetailList = new VehicleDAOImpl<Vehicle>().getVehicleDetailsForUserId(user.getUserId()); %>
+<form action="${pageContext.request.contextPath}/DeleteVehicle" method="post">
 <table border="1">
-<th>Vehicle Name</th><th>Vehicle Manufacturer</th><th>Registration No</th><th>Year Of Manufacture</th><th>Per Day Cost(Rs)</th><th>Security Deposit(Rs)</th><th>Pickup Location</th>
-<% for(Object[] vehicleDetail : vehicleDetailList ){ %>
+<th>Delete</th><th>Vehicle Name</th><th>Vehicle Manufacturer</th><th>Registration No</th><th>Year Of Manufacture</th><th>Per Day Cost(Rs)</th><th>Security Deposit(Rs)</th><th>Pickup Location</th>
+<% int itr = 0;
+for(Object[] vehicleDetail : vehicleDetailList ){ %>
 <tr>
+<td><input type="checkbox" name="check<%=itr%>" value="Yes"></td>
 <td><%= (String)vehicleDetail[0] %></td>
 <td><%= (String)vehicleDetail[1] %></td>
 <td><%= (String)vehicleDetail[2] %></td>
@@ -23,11 +27,17 @@
 <td><%= (Integer)vehicleDetail[4] %></td>
 <td><%= (Integer)vehicleDetail[5] %></td>
 <td><table>
-<tr><td><%=(String)vehicleDetail[6]+", " %></td><td><%=(String)vehicleDetail[7]+", " %></td><td><%=(String)vehicleDetail[8]+", " %></td></tr>
-<tr><td><%=(String)vehicleDetail[9]+", " %></td><td><%=(String)vehicleDetail[10]+", " %></td><td><%=(String)vehicleDetail[11]+", " %></td></tr>
-<tr><td><%=(String)vehicleDetail[12]+" - " %></td><td><%=(Integer)vehicleDetail[13] %></td><td></td></tr>
-</table></td></tr>
-<%} %>
+<tr><td><%=(String)vehicleDetail[6]+"," %></td><td><%=(String)vehicleDetail[7]+"," %></td><td><%=(String)vehicleDetail[8]+"," %></td></tr>
+<tr><td><%=(String)vehicleDetail[9]+"," %></td><td><%=(String)vehicleDetail[10]+"," %></td><td><%=(String)vehicleDetail[11]+"," %></td></tr>	
+<tr><td><%=(String)vehicleDetail[12]+"-" %></td><td><%=(Integer)vehicleDetail[13] %></td><td></td></tr>
+</table></td>
+</tr>
+<tr><td colspan="8"><input type='hidden' name='arrayList'  value=<%=(BigInteger)vehicleDetail[14] %>></td></tr>
+<% itr ++;
+} %>
 </table>
+<center><input type="submit" name="Delete" value="Delete"></center>
+</form>
+<center><a href="AddVehicle.jsp"><button>Add New Vehicle</button></a></center>
 </body>
 </html>

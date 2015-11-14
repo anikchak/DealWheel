@@ -16,7 +16,7 @@ import static services.utility.GenericConstant.*;
 @NamedQueries({
 	@NamedQuery(name=VEHICLE_GET_VEHICLE_DETAILS_FOR_USER, 
 		query="SELECT lv.lvclName, lv.lvclMake, v.vhclRegistrationNo, v.vhclYearOfManufacture, v.vhclPerDayCost, v.vhclSecurityDeposit, "
-				+ "a.addrLine1, a.addrLine2, a.addrLine3, a.addrLocality, a.addrCity, a.addrState, a.addrCountry, a.addrPinCode "
+				+ "a.addrLine1, a.addrLine2, a.addrLine3, a.addrLocality, a.addrCity, a.addrState, a.addrCountry, a.addrPinCode, v.vhclId "
 				+ "FROM Vehicle v JOIN Address a ON v.vhclAddressId = a.addrId JOIN User u ON a.userId = u.userId JOIN ListedVehicle lv ON v.listedVhclId = lv.lvclId "
 				+ "WHERE u.userId = :userId ")
 })

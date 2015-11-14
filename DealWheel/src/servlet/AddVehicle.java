@@ -1,7 +1,7 @@
 package servlet;
 
 import static services.utility.GenericConstant.ADDRESS_MODEL;
-import static services.utility.GenericConstant.NAV_TO_VENDOR_HOME_PAGE;
+import static services.utility.GenericConstant.NAV_TO_DISPLAY_VEHICLE_PAGE;
 import static services.utility.GenericConstant.USER_MODEL;
 
 import java.io.IOException;
@@ -66,7 +66,7 @@ public class AddVehicle extends HttpServlet {
 			Vehicle addedVehicle = controller.addNewVehicle(params);
 			
 			if(addedVehicle != null){
-					resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_HOME_PAGE);
+					resp.sendRedirect(req.getContextPath()+NAV_TO_DISPLAY_VEHICLE_PAGE);
 				}
 		}catch(Exception e){
 			System.out.println("ERROR"+e);
