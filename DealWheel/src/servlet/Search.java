@@ -69,15 +69,22 @@ public class Search extends HttpServlet {
 			System.out.println("Exception while searching vehicles");
 		}
 		
+		HttpSession session = request.getSession();
+		if(session!=null){
+			session.setAttribute(GenericConstant.FROMDATESTRING, fromDateString);
+			session.setAttribute(GenericConstant.TODATESTRING, toDateString);
+		}
+		 
 		if(displaySearchResultMap !=null){
-			HttpSession session = request.getSession();
 			if(session !=null){
 				session.setAttribute(GenericConstant.DISPLAYSEARCHRESULTMAP, displaySearchResultMap);
-				session.setAttribute(GenericConstant.FROMDATESTRING, fromDateString);
-				session.setAttribute(GenericConstant.TODATESTRING, toDateString);
 				response.sendRedirect(pagecontext+GenericConstant.NAV_TO_SEARCHRESULT_PAGE);
 			}
+		}else {
+			if(session !=null){
+				session.setAttribute(GenericConstant.DISPLAYSEARCHRESULTMAP, null);
+				response.sendRedirect(pagecontext+GenericConstant.NAV_TO_SEARCHRESULT_PAGE);
 		}
 	}
-	
+  }
 }

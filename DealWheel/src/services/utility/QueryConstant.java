@@ -14,8 +14,8 @@ public class QueryConstant {
 	public static String LIST_AVAILABLE_VEHICLES = "SELECT v, a, u, lv "
 			+ "FROM Vehicle v ,  Address a , User u , ListedVehicle lv WHERE v.vhclId NOT IN "
 			+ "(SELECT bh.bkngVehicle FROM Bookingshistory bh WHERE bh.bkngFromDate <= :toDate AND bh.bkngToDate >= :fromDate "
-			+ "AND bh.bkngStatus  IN (:UPCOMING,:VIEWING)) AND a.addrId = v.vhclAddressId AND "
-			//+ "a.addrType = :addrType "
+			+ "AND bh.bkngStatus  IN (:UPCOMING,:VIEWING)) AND a.addrId = v.vhclAddressId "
+			//+ "AND a.addrType = :addrType "
 			+ "AND u.userId = a.userId AND upper(a.addrCity) = :addrCity AND v.listedVhclId = lv.lvclId "
 			+ "GROUP BY lv.lvclName,v.vhclAddressId,u.userId "
 			+ "ORDER BY v.vhclPerDayCost,lv.lvclName";

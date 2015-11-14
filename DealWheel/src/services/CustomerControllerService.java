@@ -233,7 +233,8 @@ public class CustomerControllerService {
 						+ searchResultSet.size());
 				if (searchResultSet != null && searchResultSet.size() > 0) {
 					displayResultMap = prepareSearchResultDisplay(searchResultSet);
-
+				}else if (searchResultSet != null && searchResultSet.size() == 0){
+					displayResultMap = null;
 				}
 			}
 		} catch (Exception e) {
@@ -279,22 +280,7 @@ public class CustomerControllerService {
 					displaySearchResultMap.put(key, value);
 				}
 			}
-			/*
-			if (displaySearchResultMap != null) {
-				String locationValue = null;
-				String key = v.getVhclName() + DOLLAR + v.getVhclMake() + DOLLAR
-						+ v.getVhclPerDayCost() + DOLLAR
-						+ v.getVhclSecurityDeposit();
-				if (displaySearchResultMap.containsKey(key)) {
-					locationValue = (String) displaySearchResultMap.get(key);
-					locationValue = locationValue + DOLLAR + a.getAddrLocality();
-				} else {
-					locationValue = a.getAddrLocality();
-				}
-				locationValue = locationValue + PERCENT + v.getVhclId();
-				displaySearchResultMap.put(key, locationValue);
-			}
-*/
+
 		}
 		logger.info("Map Values= " + displaySearchResultMap);
 		logger.info("Map size= " + displaySearchResultMap.size());

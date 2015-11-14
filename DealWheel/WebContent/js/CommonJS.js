@@ -47,14 +47,7 @@ $(document).ready(function() {
 		clearBtn : "true",
 		title : "pickup",
 	});
-	/*
-	$.get("http://ipinfo.io", function (response) {
-		ip = response.ip;
-		city = response.city;
-		region = response.region;
-		matchLocation();
-	}, "jsonp");
-	*/
+	 $('[data-toggle="tooltip"]').tooltip();   
 });
 
 //This function is used to default the drop-off date to (start-date + 1)

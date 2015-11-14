@@ -112,10 +112,9 @@
   		</div>
 		<!-- Modify Search Div Ends -->
 		<!-- Begin page content -->
-		<div class="container text-center">
+		
 			<form method="post" id="bookingFormId" action="${pageContext.request.contextPath}/ConfirmBooking">
 				
-				<table border="1">
 					<%
 						Map displaySearchResultMap = (Map) session.getAttribute(GenericConstant.DISPLAYSEARCHRESULTMAP);
 						if (displaySearchResultMap != null) {
@@ -129,32 +128,114 @@
 								// String valueSplitDollar[] = value.split(GenericConstant.DOLLARFORSPLIT,-1);
 								String valueSplitHash[] = value.split("#", -1);
 					%>
-					<tr>
-						<td>
-							<div>
-								Vehicle Image URL= <%=valueSplitHash[0]%><br> 
-								Vehicle Name = <%=valueSplitHash[1]%><br> 
-								Vehicle Make = <%=valueSplitHash[2]%><br> 
-								Per day cost=<%=valueSplitHash[3]%><br> 
-								Security cost= <%=valueSplitHash[4]%><br> 
-								Vendor Name= <%=valueSplitHash[5]%><br> 
-								Pickup= <%=valueSplitHash[6]%><br> 
-								Complete Address= <%=valueSplitHash[7]%><br>
-								<button type="button" onclick="selectedVehicle('<%=key%>')">Book</button>
-							</div>
-						</td>
-					</tr>
+						<br>
+						<div class="vehicleDisplay" style="border-color:#85b213;border:1px solid #85b213;border-radius:4px;">
+							<!-- Start of row 1 div -->
+							<div class="row">
+
+								<div class="col-md-4" style="padding:10px;float:left;">
+									<img class="" src="http://www.kcls.org/images/loaders/inspiroo_logo_loader_pop.gif" 
+									alt="Logo" style="width:150px;height:150px;border:1px solid #85b213;border-radius:4px;"/>
+								</div> <!-- end of image div -->
+
+								<!-- Start of vehicle detail div -->
+								<div class="col-md-8">
+
+									<!-- Vehicle details -->
+									<div class="col-md-8 col-sm-8 col-xs-8" style="padding:10px;float:left">
+										<div class="row">
+											<span style="font-size:16.5px;font-weight:400;color: #687074;"><%=valueSplitHash[2]%></span> 
+											<span style="font-size:17.5px;font-weight:500;color: #687074;text-transform:uppercase;"><%=valueSplitHash[1]%></span>
+										</div>
+										<div class="row">
+											<span style="font-size:14px;font-weight:400;color: #687074;"><%=valueSplitHash[5]%></span>
+										</div>
+
+										<div class="row">
+											<br/>
+											<span style="font-size:17px;font-weight:500;color: #687074;" data-toggle="tooltip" 
+											title="<%=valueSplitHash[7]%>" data-placement="bottom">
+											<span class="glyphicon glyphicon-map-marker" style="color: rgba(217, 83, 79, 1);"></span>
+											<%=valueSplitHash[6]%>
+											</span>
+										</div>
+
+									</div>
+									<!-- Vehicle details ends-->
+
+									<!-- Price div starts-->
+									<div class="col-md-4 col-sm-4 col-xs-4 pull-right" style="padding:10px;float:left;">
+
+									<!--Start of per day cost-->
+										<div class="row">
+											<span style="font-size:11px;font-weight:600;color: rgba(217, 83, 79, 1);">Per Day Cost:</span> 
+											<span style="font-size:15px;font-weight:600;color: #687074;">
+												<span style='font-family:Arial;'>&#8377;</span> 
+												<%=valueSplitHash[3]%>
+											</span>
+										</div>
+
+									<!--End of per day cost-->
+
+									<!--Start of Security-->
+										<div class="row">
+											<span style="font-size:11px;font-weight:600;color: rgba(217, 83, 79, 1);">Security Deposit**:</span> 
+											<span style="font-size:15px;font-weight:600;color: #687074;"><span style='font-family:Arial;'>&#8377;</span> 
+												<%=valueSplitHash[4]%>
+											</span>
+										</div>
+
+									<!--End of Security-->
+
+									<!--Start of Total payable amnt-->
+										<div class="row">
+											<span style="font-size:11px;font-weight:600;color: rgba(217, 83, 79, 1);" data-toggle="tooltip" 
+											title="Payable Amount = Days * Per Day Cost" data-placement="bottom">Payable amount:</span> 
+											<span style="font-size:15px;font-weight:600;color: #687074;" data-toggle="tooltip" 
+											title="Payable Amount = <%=noOfDays%> * <%=Long.parseLong(valueSplitHash[3]) %>" data-placement="bottom">
+												<span style='font-family:Arial;'>&#8377;</span> <%=(noOfDays*Long.parseLong(valueSplitHash[3])) %>
+											</span>
+										</div>
+
+									<!--End of Total payable amnt-->
+
+									<!--Start of Book-->
+										<div class="row">
+											<br/>
+											<button type="button" class="btn btn-md btn-primary"
+											style="background-color: #85b213;">
+											<span class="glyphicon glyphicon-ok"></span> Book
+											</button>
+										</div>
+
+									<!--End of Book-->
+
+									</div><!-- Price div end --> 
+								</div> <!-- End of vehicle detail div -->
+							</div> <!-- End of row 1 div -->
+
+							<div class="row"><!-- Start of row 2 div -->
+								<span class="pull-right" style="color: rgba(217, 83, 79, 1);font-size:12px;">** - Security deposit to be collected/refunded by vendor during vehicle pickup/dropoff . </span>
+							</div> <!-- End of row 2 div -->
+
+						</div>
 					<%
 						count++;
 							}
+						}else{
+					%>
+					<div class = "container text-center">
+						<h3 style="color: rgba(217, 83, 79, 1);">Oops..!!</h3>
+						<span style="font-size:15px;font-weight:600;color: #687074;"> All our vehicles are busy for the specified date range. Kindly modify your search criteria to view other available vehicles .</span>
+					</div>
+					<%
 						}
 					%>
-				</table>
 				<input type="text" id="selectedVehicleDetailsId" name="selectedVehicleDetails" style="display: none;" />
 			</form>
-		</div>
-	</div>
-	<!--/wrap-->
+		
+	</div><!--/wrap-->
+	
 	<!-- Footer inclusion starts -->
 	<%@ include file="commonResources/Footer"%>
 	<!-- Footer inclusion ends -->
@@ -174,6 +255,8 @@
 	var propCities = '<%= CommonUtility.getValuesFromProperties("activeCities")%>';
 	</script>
 	<script src="js/CommonJS.js" type="text/javascript"></script>
-	
+	<style>
+		.vehicleDisplay{padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto}@media (min-width:768px){.vehicleDisplay{width:750px}}@media (min-width:992px){.vehicleDisplay{width:750px}}@media (min-width:1200px){.vehicleDisplay{width:750px}}
+	</style>
 </body>
 </html>
