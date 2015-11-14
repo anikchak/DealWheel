@@ -43,6 +43,8 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
     public T insert(final T t) {
     	EntityTransaction txn = null;
     	try{
+    		if(!em.isOpen())
+    			em = emf.createEntityManager();
     		txn = em.getTransaction();
         	if(!txn.isActive())
         		txn.begin();
@@ -62,12 +64,15 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
     public void delete(final Object id) {
     	EntityTransaction txn = null;
     	try{
+    		if(!em.isOpen())
+    			em = emf.createEntityManager();
     		txn = em.getTransaction();
         	if(!txn.isActive())
         		txn.begin();
         	em.remove(em.getReference(type, id));
         	txn.commit();
     	}catch(Exception e){
+    		System.out.println(e);
     		if(txn.isActive())
     			txn.rollback();
     	}finally{
@@ -85,6 +90,8 @@ public class BaseDAOImpl<T> implements BaseDAO<T> {
     public T update(final T t) {
     	EntityTransaction txn = null;
     	try{
+    		if(!em.isOpen())
+    			em = emf.createEntityManager();
     		txn = em.getTransaction();
         	if(!txn.isActive())
         		txn.begin();

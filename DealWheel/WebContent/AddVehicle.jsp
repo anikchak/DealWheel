@@ -67,7 +67,7 @@ $(document).ready(function(){
 <tr><td colspan="3"><label><%=address.getAddrLine3() %></label></td><td colspan="2"><label><%=address.getAddrLocality()%></label></td></tr>
 <tr><td colspan="3"><label><%=address.getAddrCity() %></label></td><td colspan="2"><label><%=address.getAddrState() %></label></td></tr>
 <tr><td colspan="3"><label><%=address.getAddrCountry() %></label></td><td colspan="2"><label><%=address.getAddrPinCode() %></label></td></tr>
-<tr><td colspan="2"><input type="checkbox" id="useDifferentAddress" value="Yes"> Use different address for pickup</td></tr>
+<tr><td colspan="2"><input type="checkbox" id="useDifferentAddress" name="useDifferentAddress" value="Yes"> Use different address for pickup</td></tr>
 <tr><td colspan="2"><div id="differentAddress" style="display:none"> <table>
 <tr><td>Address Line 1</td><td><input type="text" id="addr1" name="addr1"></td></tr>
 <tr><td>Address Line 2</td><td><input type="text" id="addr2" name="addr2"></td></tr>

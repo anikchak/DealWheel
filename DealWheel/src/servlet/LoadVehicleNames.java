@@ -20,7 +20,6 @@ public class LoadVehicleNames extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
 		ListedVehicleDAOImpl<ListedVehicle> lvDAO = new ListedVehicleDAOImpl<ListedVehicle>();
 		List<String> list = lvDAO.getVehiclesForMakers(req.getParameter("vehicleMake"));
 		req.setAttribute("list", list);
