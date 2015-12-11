@@ -55,6 +55,7 @@ public class GenericConstant {
 	public static final String NAV_TO_VENDORLOGINSIGNUP_PAGE = "/VendorLoginSignUp.jsp";
 	public static final String NAV_TO_VENDORREGISTRATION_PAGE = "/VendorRegister.jsp";
 	public static final String NAV_TO_VENDOR_HOME_PAGE = "/VendorHome.jsp";
+	public static final String NAV_TO_VENDOR_BOOKINGS_PAGE = "/VendorBookingHistory.jsp";
 	public static final String NAV_TO_ADD_VEHICLE_PAGE = "/AddVehicle.jsp";
 	public static final String NAV_TO_DISPLAY_VEHICLE_PAGE = "/VendorDisplayVehicles.jsp";
 	public static final String NAV_TO_MYBOOKINGS_PAGE = "/MyBookings.jsp";
@@ -79,6 +80,7 @@ public class GenericConstant {
 	public static final String VEHICLE_GET_VEHICLE_DETAILS_FOR_USER = "Vehicle.findVehicleDetailForUserId";
 	
 	public static final String BOOKING_HISTORY_FIND_ALL = "Bookingshistory.findAll";
+	public static final String BOOKING_HISTORY_FOR_VENDOR = "Bookingshistory.findAllForVendor";
 	public static final String BOOKING_HISTORY_FIND_BOOKING_BY_SEQ = "Bookingshistory.findBookingSeq";
 	public static final String BOOKING_HISTORY_UPDATE = "Bookingshistory.UpdateBooking";
 	

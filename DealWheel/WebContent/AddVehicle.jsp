@@ -33,7 +33,10 @@ $(document).ready(function(){
             type : 'POST',
             dataType : 'html',
             success : function(response) {
-                $('#vehicleName').append($('<option></option>').val(response).html(response));
+            	var splitResult=response.split(":");
+            	for (var i=0; i < splitResult.length; i++) {
+            		$('#vehicleName').append($('<option></option>').val(splitResult[i]).html(splitResult[i]));
+            	}
             },
             error : function(request, textStatus, errorThrown) {
                 alert(errorThrown);

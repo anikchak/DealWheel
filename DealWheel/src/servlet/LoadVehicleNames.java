@@ -22,8 +22,13 @@ public class LoadVehicleNames extends HttpServlet {
 			throws ServletException, IOException {
 		ListedVehicleDAOImpl<ListedVehicle> lvDAO = new ListedVehicleDAOImpl<ListedVehicle>();
 		List<String> list = lvDAO.getVehiclesForMakers(req.getParameter("vehicleMake"));
-		req.setAttribute("list", list);
-		resp.getWriter().write(list.get(0));
+		StringBuilder sb = new StringBuilder();
+		for(String name : list){
+			sb.append(name);
+			sb.append(":");
+		}
+		sb.deleteCharAt(sb.length()-1);
+		resp.getWriter().write(sb.toString());
 	}
 	
 	@Override

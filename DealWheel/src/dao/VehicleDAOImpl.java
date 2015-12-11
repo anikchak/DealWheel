@@ -33,7 +33,7 @@ public class VehicleDAOImpl<T>  extends  BaseDAOImpl<Vehicle> implements Vehicle
 	public List<Object[]> getVehicleDetailsForUserId(BigInteger userId) {
 		logger.debug("Fetching all the Vehicle detail for userId "+userId);
 		Query q = em.createNamedQuery(VEHICLE_GET_VEHICLE_DETAILS_FOR_USER);
-		q.setParameter("userId", userId);
+		q.setParameter("vendorId", userId);
 		List<Object[]> vehicleDetails = q.getResultList();
 		return vehicleDetails;
 	}
