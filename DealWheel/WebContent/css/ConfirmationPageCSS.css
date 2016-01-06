@@ -1,0 +1,13 @@
+@CHARSET "ISO-8859-1";
+
+.panel{
+	border:1px solid #85b213;
+	}
+	
+.panel-default
+	{
+	border-color:#85b213
+	}
+.panel-default>.panel-heading{
+	background-color:#fff;border-color:#85b213
+	}

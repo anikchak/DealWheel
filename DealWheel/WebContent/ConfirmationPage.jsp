@@ -6,6 +6,7 @@
 
 <head>
 <link href="css/LandingPageCSS.css" rel="stylesheet" type="text/css" />
+<link href="css/ConfirmationPageCSS.css" rel="stylesheet" type="text/css" />
 <title>BookMyRide: Booking Confirmation</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -169,13 +170,6 @@ var pageContext = '<%=request.getContextPath()%>';
 	var propCities = '<%= CommonUtility.getValuesFromProperties("activeCities")%>';
 	</script>
 	<script src="js/CommonJS.js" type="text/javascript"></script>
-	<style>
-	.panel{
-	border:1px solid #85b213;
-	}
-	.panel-default{border-color:#85b213}
-	.panel-default>.panel-heading{background-color:#fff;border-color:#85b213}
-	</style>
 	
- </body>
+	</body>
 </html>

@@ -131,10 +131,10 @@ if(userName == null){
     			  <hr style="border-color:#85b213;width:50%;">
     			</div>
     			<div class="row " style="">
-    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Per Day Cost = </span><span id="perDayCostId"><%=v.getVhclPerDayCost() %></span><br>
-    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Refundable Security Deposit = </span><span id="securityDepositId"><%=v.getVhclSecurityDeposit() %></span><br>
-    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Number of Booking Days = </span><span id="noOfDaysId"><%=noOfDays %></span><br>
-    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Payable Amount <span style="color: rgba(217, 83, 79, 1);font-size:12px;">(No. of Days * Per Day Cost)</span> = </span><span id="payableAmount"><%=(noOfDays*v.getVhclPerDayCost())%></span><br>
+    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Per Day Cost = </span><span id="perDayCostId" style="color:#687074;font-weight:bold;font-size:15.5px;"><%=v.getVhclPerDayCost() %></span><br>
+    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Refundable Security Deposit = </span><span id="securityDepositId" style="color:#687074;font-weight:bold;font-size:15.5px;"><%=v.getVhclSecurityDeposit() %></span><br>
+    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Number of Booking Days = </span><span id="noOfDaysId" style="color:#687074;font-weight:bold;font-size:15.5px;"><%=noOfDays %></span><br>
+    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Payable Amount <span style="color: rgba(217, 83, 79, 1);font-size:12px;">(No. of Days * Per Day Cost)</span> = </span><span id="payableAmount" style="color:#687074;font-weight:bold;font-size:15.5px;"><%=(noOfDays*v.getVhclPerDayCost())%></span><br>
     				<hr style="border-color:#85b213;width:50%;">
     			</div>
     			<div class="row text-center" >
@@ -202,47 +202,8 @@ if(userName == null){
 
 	<script>
 	var propCities = '<%= CommonUtility.getValuesFromProperties("activeCities")%>';
-	function modifySearchCriteriaInReview(){
-		$("#modifyBtnId").hide();
-		$("#reviewModifyDivId").show();
-		$("#paymentBtnId").hide();
-	}
-	
-	var value = 100;
-	var progress = setInterval(function(){
-		$('.progress-bar')
-        	.css('width', value+'%')
-        	.attr('aria-valuenow', value); 
-		value = value-1;
-		if(value<0){
-		clearInterval(progress);
-		 $("#sessionTimeOutModalId").modal({
-			 backdrop: 'static',
-			   keyboard: false
-			 });
-		}
-		else if(value<11 && value>=0){
-		$("#progressBarId").addClass('progress-bar-danger');
-		}
-		else if(value>=11 && value<51){
-		$("#progressBarId").addClass('progress-bar-warning');
-		}
-	},1200);
-	
-	function sessionTimedOut(){
-		$("#logoutFormId").submit();
-	}
-	
-	function proceedWithPayment(){
-	/*	var vehicleDetails = $("#fetchSelectedVehicleId").val()+"#"+$("#vehicleMakeId").text()+"#"+$("#vehicleNameId").text()+"#"+$("#startDateDetailsId").text()+"#"
-			+$("#endDateDetailsId").text()+"#"+$("#addressDetailsId").text()+"#"+$("#perDayCostId").text()+"#"+$("#securityDepositId").text()+"#"
-			+$("#noOfDaysId").text()+"#"+$("#payableAmount").text();
-		$("#vehicleDetailId").val(vehicleDetails);
-		*/
-		$("#orderLocationId").val($("#locationId").text());
-		$("#confirmationSummaryFormId").submit();
-	}
-</script>
+	</script>
+	<script src="js/ReviewBookingJS.js" type="text/javascript"></script>
 	<!-- Including Common JS -->
 	<script src="js/CommonJS.js" type="text/javascript"></script>
 
