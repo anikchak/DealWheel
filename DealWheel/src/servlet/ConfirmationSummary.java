@@ -2,6 +2,8 @@ package servlet;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -51,22 +53,30 @@ public class ConfirmationSummary extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		System.out.println("Hitting Confirmation Summary post method");
-		String paymentStatus = request.getParameter("paymentOption");
-		System.out.println("Payment Status="+paymentStatus);
+		String paymentStatus = "success";
 		String pageContext = request.getContextPath();
 		if(paymentStatus!=null && "success".equalsIgnoreCase(paymentStatus)){
 			HttpSession session = request.getSession();
-			long tempBookingseq = (Long)session.getAttribute(GenericConstant.TEMPBOOKINGSEQ);
+			String tempBookingseq = (String)request.getParameter("tempSelectedVehicle");
+			//String vehicleDetails = (String)request.getParameter("vehicleDetail");
+			String orderLocationName = (String)request.getParameter("orderLocationName");
 			System.out.println("tempBookingseq="+tempBookingseq);
+			//System.out.println("vehicleDetails="+vehicleDetails);
+			System.out.println("orderLocationName="+orderLocationName);
+			String hexString = "Order-"+tempBookingseq;
+			String bookingId = orderLocationName+" - "+String.format("%x", new BigInteger(1, hexString.getBytes(StandardCharsets.UTF_8)));
 			CustomerControllerService s = new CustomerControllerService();
-			boolean status = s.updateBookingWithOrderIdonSuccess(tempBookingseq,"ORD-KA-BLR-"+tempBookingseq,(String) request.getSession().getAttribute(GenericConstant.USERNAME));
+			//if()
+			boolean status = s.updateBookingWithOrderIdonSuccess(Long.parseLong(tempBookingseq),bookingId,(String) request.getSession().getAttribute(GenericConstant.USERNAME));
 			if(status){
-				request.getSession().setAttribute("BookingOrderId", "ORD-KA-BLR-"+tempBookingseq);
+				request.getSession().setAttribute("tempBookingOrderId", tempBookingseq);
 				response.sendRedirect(pageContext+"/ConfirmationPage.jsp");
+				
 				//new CommonUtility().sendEmailNotification("ORD-KA-BLR-"+tempBookingseq) ;
 			}else{
 				response.sendRedirect(pageContext+"/BookingError.jsp");
 			}
+			
 		}else{
 			response.sendRedirect(pageContext+"/BookingError.jsp");
 		}

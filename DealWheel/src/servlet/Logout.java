@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import services.CustomerControllerService;
+
 /**
  * Servlet implementation class Logout
  */
@@ -42,16 +44,21 @@ public class Logout extends HttpServlet {
 		response.setContentType("text/html");
         String pagecontext = request.getContextPath();
        
+        String pageId = (String)request.getSession().getAttribute("currentPage");
+        System.out.println("Logout.java: tempBookingId="+(String)request.getParameter("fetchSelectedVehicle"));
+        //If logout flow is invoked from Review Page then clearing the held vehicle first 
+        if("ReviewBooking".equalsIgnoreCase(pageId)){
+        	if((String)request.getParameter("fetchSelectedVehicle") != null){
+        	new CustomerControllerService().cleanBookingUsingTempBookingId((String)request.getParameter("fetchSelectedVehicle"));
+        	}
+        }
         //invalidate the session if exists
         HttpSession session = request.getSession(false);
-      //  
         if(session != null){
             session.invalidate();
         }
         
         response.sendRedirect(pagecontext+"/LandingPage.jsp");
-      //  RequestDispatcher rd = request.getRequestDispatcher("/LandingPage.jsp");
-      //  rd.include(request, response);
-	}
+    }
 
 }
