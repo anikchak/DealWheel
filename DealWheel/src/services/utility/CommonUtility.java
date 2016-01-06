@@ -30,7 +30,7 @@ public class CommonUtility {
 	 * */
 
 	@SuppressWarnings("unchecked")
-	public long lockRecord(HttpServletRequest request) {
+	public static long lockRecord(HttpServletRequest request) {
 		System.out.println("Inside lock record");
 		CustomerControllerService s = new CustomerControllerService();
 		System.out.println("Username="
@@ -44,12 +44,10 @@ public class CommonUtility {
 						"selectedVehicleDetails"));
 		long loggedInUserId = 0L;
 		// Logged in user details
-		System.out.println(request.getSession().getAttribute(
-				"LoggedInUserDetailsObject"));
+		System.out.println(request.getSession().getAttribute("LoggedInUserDetailsObject"));
 
 		if (request.getSession().getAttribute("LoggedInUserDetailsObject") != null) {
-			List<User> validUserDetails = (List<User>) request.getSession()
-					.getAttribute("LoggedInUserDetailsObject");
+			List<User> validUserDetails = (List<User>) request.getSession().getAttribute("LoggedInUserDetailsObject");
 			if (validUserDetails != null & validUserDetails.size() > 0) {
 				for (User u : validUserDetails) {
 					loggedInUserId = u.getUserId().longValue();
@@ -73,11 +71,10 @@ public class CommonUtility {
 					String vehicleDetails[] = null;
 					if ((String) request.getSession().getAttribute(
 							"selectedVehicleDetails") != null) {
-						vehicleDetails = ((String) request.getSession()
-								.getAttribute("selectedVehicleDetails")).split(
-								"\\$", -1);
+						//Vehicle details contains vehicleAddress and listedVehicleId in vehicleAddress#listedVehicleId format
+						vehicleDetails = ((String) request.getSession().getAttribute("selectedVehicleDetails")).split("#", -1);
 						tempBookingId = s.updateBooking("VIEWING", fromDate,
-								toDate, vehicleDetails[0], (String) request
+								toDate, vehicleDetails[0],vehicleDetails[1], (String) request
 										.getSession().getAttribute("username"),
 								loggedInUserId);
 					}
@@ -173,7 +170,10 @@ public class CommonUtility {
 			return "/LandingPage.jsp";
 		}else if("SearchResult".equalsIgnoreCase(comingFromPage)){
 			return "/SearchResult.jsp";
-		}else{
+		}else if("ReviewBooking".equalsIgnoreCase(comingFromPage)){
+			return "/ReviewBooking.jsp";
+		}
+		else{
 			return "/LandingPage.jsp";
 		}
 	}
@@ -183,6 +183,7 @@ public class CommonUtility {
 		Matcher matcher = null;
 		pattern = Pattern.compile(GenericConstant.EMAIL_PATTERN);
 		matcher = pattern.matcher(hex);
+		System.out.println("validateEmail return result="+matcher.matches());
 		return matcher.matches();
 
 	}
@@ -191,7 +192,6 @@ public class CommonUtility {
 		
 		String activeCities[] = null;
 		String value = getValuesFromProperties("activeCities");
-		System.out.println("Value: " + value);
 		if(value!=null){
 			activeCities =value.split("#",-1);
 		}
@@ -206,6 +206,19 @@ public class CommonUtility {
 		if(rb.containsKey(searchKey)){
 			value = rb.getString(searchKey);
 		}
+		//System.out.println("Value from resource bndl="+value);
 		return value;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List fetchVehicleUsingTempBooking(String tempBookingId){
+		System.out.println("Inside fetchVehicleUsingTempBooking");
+		System.out.println("Temp booking Id="+Long.parseLong(tempBookingId));
+		CustomerControllerService s = new CustomerControllerService();
+		List<Object[]> vehicleDetailsUsingTempBookingId = null;
+		if(tempBookingId!=null){
+			vehicleDetailsUsingTempBookingId = (List<Object[]>)s.fetchVehicleUsingTempBooking(tempBookingId);
+		}
+		return vehicleDetailsUsingTempBookingId;
 	}
 }

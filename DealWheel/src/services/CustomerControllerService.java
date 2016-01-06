@@ -10,6 +10,7 @@ import dao.UserDAOImpl;
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -212,9 +213,9 @@ public class CustomerControllerService {
 	 * @return Map: key - holds the vehicle details, value - holds location details for the vehicles
 	 */
 	@SuppressWarnings({"unchecked", "rawtypes" })
-	public Map fetchSearchResult(Date from, Date to,String selectedLocation) {
+	public Map<String, String> fetchSearchResult(Date from, Date to,String selectedLocation) {
 		logger.info("Inside Fetch Search Result");
-		Map displayResultMap = null;
+		Map<String, String> displayResultMap = null;
 		try {
 			if (em != null) {
 				
@@ -251,10 +252,10 @@ public class CustomerControllerService {
 	 * @return Map: key - holds the vehicle details, value - holds location details for the vehicles
 	 */
 	 @SuppressWarnings({ "unchecked", "rawtypes" })
-	public Map prepareSearchResultDisplay(List<Object[]> searchResultSet) {
+	public Map<String, String> prepareSearchResultDisplay(List<Object[]> searchResultSet) {
 		logger.info("prepareSearchResultDisplay method invoked");
 
-		Map displaySearchResultMap = new HashMap();
+		Map<String, String> displaySearchResultMap = new HashMap<String, String>();
 		int len = searchResultSet.size();
 		for (Object[] o : searchResultSet) {
 			// Vehicle v = (Vehicle)searchResultSet.get(i);
@@ -263,7 +264,7 @@ public class CustomerControllerService {
 			User u  = (User) o[2];
 			ListedVehicle lv = (ListedVehicle) o[3];
 			if (displaySearchResultMap != null) {
-				String key = v.getVhclAddressId()+"#"+lv.getLvclName();
+				String key = v.getVhclAddressId()+"#"+lv.getLvclId();
 				String value =  lv.getLvclImgUrl()+"#"+
 								lv.getLvclName()+"#"+
 								lv.getLvclMake()+"#"+
@@ -273,7 +274,7 @@ public class CustomerControllerService {
 								a.getAddrLocality()+" ,"+a.getAddrCity()+"#"+
 								a.getAddrLine1()+"\n"+
 								((a.getAddrLine2()!=null && (!a.getAddrLine2().isEmpty() || "null".equalsIgnoreCase(a.getAddrLine2())))?(a.getAddrLine2()+"\n"):"")+
-								((a.getAddrLine2()!=null && (!a.getAddrLine2().isEmpty() || "null".equalsIgnoreCase(a.getAddrLine2()) ))?(a.getAddrLine3()+"\n"):"")+
+								((a.getAddrLine3()!=null && (!a.getAddrLine3().isEmpty() || "null".equalsIgnoreCase(a.getAddrLine3()) ))?(a.getAddrLine3()+"\n"):"")+
 								a.getAddrLocality()+"\n"+a.getAddrCity()+" - "+a.getAddrPinCode()+"\n"+a.getAddrState()+"\n"+a.getAddrCountry();
 				
 				if (!displaySearchResultMap.containsKey(key)) {
@@ -282,7 +283,7 @@ public class CustomerControllerService {
 			}
 
 		}
-		logger.info("Map Values= " + displaySearchResultMap);
+		//logger.info("Map Values= " + displaySearchResultMap);
 		logger.info("Map size= " + displaySearchResultMap.size());
 		return displaySearchResultMap;
 	}
@@ -299,36 +300,46 @@ public class CustomerControllerService {
 	  * @return temporary booking id
 	  */
 	public long updateBooking(String lockingcode, Date fromDate, Date toDate,
-			String vehicleName, String usernm, long userId) {
-		System.out.println("lockingcode=" + lockingcode + "\nfromDate="
-				+ fromDate + "\ntoDate=" + toDate + "\nvehicleName="
-				+ vehicleName + "\nusernm=" + usernm);
+			String vehicleAddress, String listedVehicleId, String usernm, long userId) {
+			logger.info("lockingcode=" + lockingcode + "\nfromDate="
+				+ fromDate + "\ntoDate=" + toDate + "\nlistedVehicleId="
+				+ listedVehicleId + "\nvehicleAddress="+vehicleAddress+"\nusernm=" + usernm);
 		String lastRowId = null;
+		List<BigInteger> bookingVehicleList = new ArrayList<BigInteger>();
 		try {
 			if (em != null) {
-				et.begin();
-				Query q = em
-						.createNativeQuery("insert into bookingshistory (BKNG_STATUS,BKNG_FROM_DATE,BKNG_TO_DATE,BKNG_VEHICLE,BKNG_CREATION_DATE,LAST_UPDATED_BY,LAST_UPDATED,USER_ID) "
-								+ "select ?1,?2,?3,v.vhcl_id,now(),?4,now(),?5 "
-								+ "from vehicles v where v.vhcl_name=?6 and v.vhcl_id not in ( "
-								+ "SELECT bh.BKNG_VEHICLE FROM bookingshistory bh WHERE "
-								+ "bh.BKNG_FROM_DATE <= ?3 AND bh.BKNG_TO_DATE >= ?2 AND bh.BKNG_STATUS  IN (?7,?8)) limit 1");
-
-						
-				q.setParameter(1, lockingcode);
-				q.setParameter(2, fromDate);
-				q.setParameter(3, toDate);
-				q.setParameter(4, usernm);
-				q.setParameter(5, userId);
-				q.setParameter(6, vehicleName);
-
-				q.setParameter(7, toDate);
-				q.setParameter(8, fromDate);
-
-				int entryUpdate = q.executeUpdate();
-				logger.info("value post update=" + entryUpdate);
-				et.commit();
-				if (entryUpdate == 1) {
+				Query getVehicleDetail = em.createQuery("select v,lv from Vehicle v, ListedVehicle lv where lv.lvclId = v.listedVhclId and "
+							+ "v.listedVhclId = :listedVechileId and v.vhclAddressId = :vehicleAddressId and v.vhclId NOT IN (SELECT bh.bkngVehicle FROM Bookingshistory bh WHERE "
+							+ "bh.bkngFromDate <= :toDate AND bh.bkngToDate >= :fromDate AND bh.bkngStatus IN (:UPCOMING,:VIEWING)) ");
+				
+				getVehicleDetail.setParameter(TODATE, toDate);
+				getVehicleDetail.setParameter(FROMDATE, fromDate);
+				getVehicleDetail.setParameter(UPCOMING, UPCOMING);
+				getVehicleDetail.setParameter(VIEWING, VIEWING);
+				getVehicleDetail.setParameter("listedVechileId", new BigInteger(listedVehicleId));
+				getVehicleDetail.setParameter("vehicleAddressId", new BigInteger(vehicleAddress));
+				List<Object[]> vehicleDetailList = (List<Object[]>) getVehicleDetail.setMaxResults(1).getResultList();
+				logger.info("Update Booking: vehicle details list="+vehicleDetailList);
+				if(vehicleDetailList!=null){
+					for(Object[] o : vehicleDetailList){
+						logger.info("Update Booking: Starting insertion into Bookingshistory");
+						Vehicle v = (Vehicle)o[0];
+						ListedVehicle lv = (ListedVehicle)o[1];
+						et.begin();
+						Bookingshistory bh = new Bookingshistory();
+						bh.setBkngStatus(VIEWING);
+						bh.setBkngFromDate(fromDate);
+						bh.setBkngToDate(toDate);
+						bh.setBkngVehicle(v.getVhclId());
+						bh.setBkngCreationDate(new Date());
+						bh.setLastUpdatedBy(usernm);
+						bh.setLastUpdated(new Date());
+						bh.setUserId((int)userId);
+						em.persist(bh);
+						et.commit();
+					}
+				}
+				
 					Query seqQuery = em
 							.createNamedQuery(BOOKING_HISTORY_FIND_BOOKING_BY_SEQ);
 					List rowIdList = (List) seqQuery.setMaxResults(1)
@@ -337,7 +348,6 @@ public class CustomerControllerService {
 						lastRowId = (String) rowIdList.get(0);
 					}
 					logger.info("Last Row=" + lastRowId);
-				}
 			}
 		} catch (Exception e) {
 			logger.error("Exception occured while inserting record in updateBooking()");
@@ -353,7 +363,7 @@ public class CustomerControllerService {
 	  */
 	public void cleanBookings() {
 		logger.info("cleanBookings called..!!!");
-		int cleanStatus = 0;
+		int cleanStatus = 0,deletedRecStatus = 0;
 		try {
 			if (em != null) {
 				et.begin();
@@ -363,6 +373,12 @@ public class CustomerControllerService {
 				q.setParameter(2, MessageBundle.TICKERVALUE);
 				q.setParameter(3, VIEWING);
 				cleanStatus = q.executeUpdate();
+				
+				if(cleanStatus>0){
+					Query deleteTimedOutRecs = em.createNativeQuery("delete from bookingshistory where bkng_status = ?1");
+					deleteTimedOutRecs.setParameter(1, TIMEDOUT);
+					deletedRecStatus = deleteTimedOutRecs.executeUpdate();
+				}
 				et.commit();
 			}
 		} catch (Exception e) {
@@ -370,7 +386,7 @@ public class CustomerControllerService {
 		} finally {
 			em.close();
 		}
-		logger.info("Clean Status=" + cleanStatus);
+		logger.info("Clean Status=" + cleanStatus+ "\tdeletedRecStatus="+deletedRecStatus);
 	}
 	 
 	public boolean updateBookingWithOrderIdonSuccess(long tempBookingSeq,String generatedOrderId,String uName) {
@@ -392,8 +408,8 @@ public class CustomerControllerService {
 				Query q1= em.createNativeQuery(QueryConstant.GET_USER_EMAIL);
 				q1.setParameter(1,uName);
 				uMail = (String) q1.getSingleResult();
-				System.out.println("User Email"+uMail);
-				cu.sendEmailNotification(generatedOrderId,uMail);
+				logger.info("User Email"+uMail);
+				//cu.sendEmailNotification(generatedOrderId,uMail);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -404,35 +420,6 @@ public class CustomerControllerService {
 		return (updateStatus == 1) ? true : false;
 	}
 	
-	/*
-	 @SuppressWarnings("unchecked")
-	public Map fetchStaticData() {
-		logger.info("Inside method fetchStaticData");
-		Map staticVehicleDetails = new HashMap();
-		try {
-			if (em != null) {
-				Query q = em.createNamedQuery(VEHICLE_FIND_ALL);
-				List<Vehicle> resultList = (List<Vehicle>) q.getResultList();
-				if (resultList != null & resultList.size() > 0) {
-					for (Vehicle veh : resultList) {
-						staticVehicleDetails.put(
-								veh.getVhclName(),
-								veh.getVhclMake() + GenericConstant.HASH
-										+ veh.getVhclPerDayCost() + GenericConstant.HASH
-										+ veh.getVhclSecurityDeposit());
-					}
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			logger.info("Finally invoked");
-			em.close();
-		}
-
-		return staticVehicleDetails;
-	}
-	 */
 	 @SuppressWarnings("unchecked")
 	public List<Object[]> getBookings(String uName) {
 		logger.info("Inside getbookings()");
@@ -457,5 +444,52 @@ public class CustomerControllerService {
 		int cleanStatus = q.executeUpdate();
 		et.commit();
 	} 
-	 
+	
+	/**
+	 * This method is used to fetch selected vehicle related details using the temporarily generated booking id
+	 * @param tempbookingid
+	 * @return List - Having details about vehicle which will be displayed for review
+	 */
+	@SuppressWarnings("unchecked")
+	public List fetchVehicleUsingTempBooking(String tempBookingId){
+		List<Object[]> fetchedVehicleList = null;
+		try{
+			if (em != null) {
+				Query q = em.createQuery(QueryConstant.GET_FULL_VEHICLE_DETAILS_USING_BOOKING_ID);
+				q.setParameter("BOOKINGID", tempBookingId);
+				q.setParameter(VIEWING, VIEWING);
+				q.setParameter(UPCOMING, UPCOMING);
+				fetchedVehicleList = (List<Object[]>)q.getResultList();
+				if(fetchedVehicleList!=null && fetchedVehicleList.size()==1){
+					logger.info("Fetched List Size using tempBookingId="+fetchedVehicleList.size());
+					return fetchedVehicleList;
+				}
+				else{
+					System.out.println("Fetched List Size using tempBookingId="+fetchedVehicleList.size());
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			em.close();
+		}
+		return fetchedVehicleList;
+	}
+	
+	public void cleanBookingUsingTempBookingId(String tempBookingId){
+		
+		try{
+			if(em != null){
+				et.begin();
+				Query q = em.createNativeQuery("delete from bookingshistory where bkng_seq = ?2");
+				q.setParameter(1, TIMEDOUT);
+				q.setParameter(2, tempBookingId);
+				int updateStatus = q.executeUpdate();
+				et.commit();
+				System.out.println("Update Status from cleanBookingUsingTempBookingId = "+updateStatus);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 }

@@ -1,49 +1,181 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<%@ page import="services.utility.MessageBundle" %>
-<%@ page import="services.utility.GenericConstant" %>
-<%@ page import="java.util.List" %>
-<%@ page import="model.User" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+	pageEncoding="ISO-8859-1"%>
+<%@ include file="commonResources/CommonViewImports"%>
+<!DOCTYPE html>
 <html>
+
 <head>
+<link href="css/LandingPageCSS.css" rel="stylesheet" type="text/css" />
+<title>BookMyRide: Booking Confirmation</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Booking Confirmed</title>
-</head>
-<body>
-<%
-String pagecontext = request.getContextPath();
-String userName = null;
-String sessionID = null;
-String confirmedBookingId=null;
-if(session.getAttribute("LoggedInUserDetailsObject")!=null){
-List<User> validUserDetails = (List<User>)session.getAttribute("LoggedInUserDetailsObject");
-if(validUserDetails!=null & validUserDetails.size()>0){
-	for(User u : validUserDetails){
-		userName = u.getUserEmail();
+<%@ include file="commonResources/CommonJSCSSInclude"%>
+<script type="text/javascript">
+var pageContext = '<%=request.getContextPath()%>';
+</script>
+
+<style>
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:focus, .navbar-default .navbar-nav > .open > a:hover
+	{
+	background-color:#85b213;
 	}
-}
-}
-	if(session.getAttribute(GenericConstant.SESSIONID)!=null)
-    sessionID = (String) session.getAttribute(GenericConstant.SESSIONID);
-	/*
-	if(session.getAttribute(GenericConstant.USERNAME)!=null)
-    userName = (String) session.getAttribute(GenericConstant.USERNAME);
-	*/
-	if(session.getAttribute("BookingOrderId")!=null)
-	    confirmedBookingId = (String) session.getAttribute("BookingOrderId");
+
+</style>
+</head>
+
+<body>
+	<% session.setAttribute("currentPage","ConfirmationPage");
+	new CustomerControllerService().cleanBookings();
+	String userName = null;
+	String sessionID = null;
+	long tempBookingId = 0;
+	session.setAttribute("currentPage", "ConfirmationPage");
+	if(session.getAttribute("LoggedInUserDetailsObject")!=null){
+	List<User> validUserDetails = (List<User>)session.getAttribute("LoggedInUserDetailsObject");
+	if(validUserDetails!=null & validUserDetails.size()>0){
+		for(User u : validUserDetails){
+			userName = u.getUserEmail();
+		}
+	}
+	}
+
+	if(userName == null){
+		response.sendRedirect(pageContext+"/BookingError.jsp");
+	}
+	
+	SimpleDateFormat format = new SimpleDateFormat(GenericConstant.DATEFORMAT);
+	long noOfDays = 0;
+	String sdtDay=null,sdtMonth=null,sdtYear=null,sdtDateNum=null,endtDay=null,endtMonth=null,endtYear=null,endtDateNum = null;
+	if (session.getAttribute(GenericConstant.FROMDATESTRING) != null && session.getAttribute(GenericConstant.TODATESTRING) != null) 
+	{
+		Date startDate = format.parse((String) session.getAttribute(GenericConstant.FROMDATESTRING));
+		Date endDate = format.parse((String) session.getAttribute(GenericConstant.TODATESTRING));
+		long duration = endDate.getTime() - startDate.getTime();
+		noOfDays = TimeUnit.MILLISECONDS.toDays(duration);
+		sdtDay = new SimpleDateFormat("EEE").format(startDate);
+		sdtMonth = new SimpleDateFormat("MMM").format(startDate);
+		sdtYear = new SimpleDateFormat("yy").format(startDate);
+		sdtDateNum = new SimpleDateFormat("dd").format(startDate);
+		endtDay = new SimpleDateFormat("EEE").format(endDate);
+		endtMonth = new SimpleDateFormat("MMM").format(endDate);
+		endtYear = new SimpleDateFormat("yy").format(endDate);
+		endtDateNum = new SimpleDateFormat("dd").format(endDate);
+	}
 %>
-<span style="float: right;"> Welcome <span style="font-size: 20px;font-weight: bold;color: BLUE;"><%=userName.toUpperCase() %></span></span>
-<br>
-<br>
+	<!-- Wrap all page content here -->
+	<div id="wrap" style="min-height:85%;">
+		<!-- Nav bar inclusion starts -->
+		<%@ include file="commonResources/NavigationBar"%>
+		<!-- Nav bar inclusion ends -->
+		
+		<!-- Begin page content -->
+		<div class="container">
+			<%	
+			String fetchSelectedVehicle = (String)session.getAttribute("tempBookingOrderId");
+		    if(fetchSelectedVehicle!=null && !"".equalsIgnoreCase(fetchSelectedVehicle)){
+			session.setAttribute("tempLockedVehicle", fetchSelectedVehicle);
+			List<Object[]> vehicleDetailsList = (List<Object[]>)CommonUtility.fetchVehicleUsingTempBooking(fetchSelectedVehicle);
+			if(vehicleDetailsList!=null && vehicleDetailsList.size()==1){
+				Vehicle v = (Vehicle)((Object)vehicleDetailsList.get(0)[0]);
+				ListedVehicle lv = (ListedVehicle)((Object)vehicleDetailsList.get(0)[1]);
+				Bookingshistory bh = (Bookingshistory)((Object)vehicleDetailsList.get(0)[2]);
+				Address a = (Address)((Object)vehicleDetailsList.get(0)[3]);
+				User u = (User)((Object)vehicleDetailsList.get(0)[4]);
+			
+			%>
+  			<div class="panel panel-default">
+  			 <div class="panel-heading">
+    	 	 <span style="color:#85b213;font-size:16px;font-weight: bold;">Congratulations..!!!</span> 
+    	 	 <span style="color:#687074;font-size:14px;">Booking Successful </span>
+    	 	 <span style="float:right">
+    	 	 <span style="color:rgba(217, 83, 79, 1);">Booking Id:</span> 
+    		 <span style="color:#687074;font-size:18px;font-weight: bold;"><%=bh.getBkngNumber() %></span>
+    		 </span>
+    	 	 </div>
+  			</div>
+  			<div class="panel-body" >
+  			 <div class="row ">
+    	 		<div class="col-md-4 col-sm-4 col-xs-4 text-center">
+				<img class="" src="http://www.kcls.org/images/loaders/inspiroo_logo_loader_pop.gif" 
+									alt="Logo" style="width:80px;height:80px;"/>
+				<span style="color: #687074; font-weight:500;text-transform:uppercase;font-size:12px;" id="vehicleMakeId"><%=lv.getLvclMake() %></span>
+				<span style="color: #687074; font-weight:bold;text-transform:uppercase;font-size:14.5px;" id="vehicleNameId"><%=lv.getLvclName() %></span>
+				</div>
+				<div class="col-md-4 col-sm-4 col-xs-4 text-center" >
+					<span class="glyphicon glyphicon-calendar" style="color:#85b213;font-size:12px;"></span> 
+    				<span style="color: #687074; font-weight:500;text-transform:uppercase;" id="startDateDetailsId">
+    					<span style="font-size:11.5px;"><%=sdtDay%>, </span>
+    					<span style="font-size:14px;font-weight:600;"><%=sdtDateNum%> </span>
+    					<span style="font-size:12px;"><%=sdtMonth%>'<%=sdtYear%></span>
+    				</span>
+    				<br>
+    				<span style="color: #687074;"> -- <span style="font-weight:bold;font-size:15px;">To</span> --  </span>
+    				<br>
+    				<span class="glyphicon glyphicon-calendar" style="color:#85b213;font-size:12px;"></span> 
+    				<span style="color: #687074; font-weight:500;text-transform:uppercase;" id="endDateDetailsId">
+    					<span style="font-size:11.5px;"><%=endtDay%>, </span>
+    					<span style="font-size:14px;font-weight:600;"><%=endtDateNum%> </span>
+    					<span style="font-size:12px;"><%=endtMonth%>'<%=endtYear%></span>
+    				</span>
+				</div>
+				<div class="col-md-4 col-sm-4 col-xs-4 " >
+					<span class="glyphicon glyphicon-map-marker" style="color:#85b213;font-size:14px;"></span> 
+    				<span style="color: #687074;font-size:11px;text-transform:uppercase;" id="addressDetailsId" data-toggle="tooltip" title="Pickup Location" data-placement="bottom">
+    				<%=a.getAddrLine1() %>,
+    				<%=((a.getAddrLine2()!=null && (!a.getAddrLine2().isEmpty() || "null".equalsIgnoreCase(a.getAddrLine2())))?(a.getAddrLine2()+","):"") %>  
+    				<%=((a.getAddrLine3()!=null && (!a.getAddrLine3().isEmpty() || "null".equalsIgnoreCase(a.getAddrLine3()) ))?(a.getAddrLine3()+","):"") %><br/>
+    				<span style="font-weight:bold;"><%=a.getAddrLocality() %></span>, 
+    				<span style="font-size:11px; font-weight:bold;"><%=a.getAddrCity() %></span> - <%=a.getAddrPinCode() %>, <br/>
+    				<%=a.getAddrState() %>, 
+    				<%=a.getAddrCountry() %> 
+    				</span>
+				</div>
+				<br>
+			</div>	
+			<div class="row">
+				<hr style="border-color:#85b213;width:90%;">
+			</div>
+			<div class="row">
+			 <div class="row">
+			    <span style="float:right;padding-right:5%;"><span style="color:#687074;font-size:12px;text-transform:uppercase;">Amount Paid = </span><span id="payableAmount" style="color:#687074;font-size:16px;font-weight:bold;"><%=(noOfDays*v.getVhclPerDayCost())%></span></span><br>
+			 </div>
+			 <div class="row">
+				<span style="float:right;padding-right:5%;"><span style="color:#687074;font-size:12px;text-transform:uppercase;">Refundable Security Deposit <span style="color:rgba(217, 83, 79, 1);font-size:10px;">(to be paid during vehicle pick-up)</span> = </span><span id="securityDepositId" style="color:#687074;font-size:16px;font-weight:bold;"><%=v.getVhclSecurityDeposit() %></span></span><br>
+			 </div>
+			</div>
+  			</div>	
+  			<%
+  			}
+  			}else{
+  				response.sendRedirect(pageContext+"/BookingError.jsp");
+  			}
+  			%>
+  		</div>
+	</div>
+	<!--/wrap-->
+	<!-- Footer inclusion starts -->
+	<%@ include file="commonResources/Footer"%>
+	<!-- Footer inclusion ends -->
+	<ul class="nav pull-right scroll-top">
+		<li><a href="#" title="Scroll to top"><span
+				class="glyphicon glyphicon-menu-up"></span></a></li>
+	</ul>
 
-<h3><%=userName.toUpperCase() %>, your confirmed booking id is: </h3><h1><%=confirmedBookingId %></h1>
-<a href="${pageContext.request.contextPath}/LandingPage.jsp">Click here for another booking</a>
+	<!-- Including Modal Windows for Signup and Login -->
+	<%@ include file="commonResources/CommonModalDivBlocks"%>
 
-<form method="post" id="logoutFormId" action="${pageContext.request.contextPath}/Logout">
-		<br>
-		<input type="submit" value="Logout"/>
-</form>
-
-</body>
+	<!-- Including Common JS -->
+	<script>
+	var propCities = '<%= CommonUtility.getValuesFromProperties("activeCities")%>';
+	</script>
+	<script src="js/CommonJS.js" type="text/javascript"></script>
+	<style>
+	.panel{
+	border:1px solid #85b213;
+	}
+	.panel-default{border-color:#85b213}
+	.panel-default>.panel-heading{background-color:#fff;border-color:#85b213}
+	</style>
+	
+ </body>
 </html>

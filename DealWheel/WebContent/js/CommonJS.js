@@ -48,6 +48,7 @@ $(document).ready(function() {
 		title : "pickup",
 	});
 	 $('[data-toggle="tooltip"]').tooltip();   
+	 
 });
 
 //This function is used to default the drop-off date to (start-date + 1)
@@ -209,10 +210,31 @@ function modifySearchCriteria(operation){
 	}else if (operation=='cancel'){
 		$('#readOnlySearchDataDivId').show();
 		$('#modifySearchDataDivId').hide();
+		$("#modifySearchDivId").hide();
+		$("#bookingSummaryMainBlockId").show();
+		$("#modifyBtnId").show();
+		$("#paymentBtnId").show();
+		$("#reviewModifyDivId").hide();
 		$('#pickupDate').val("");
 		$('#dropoffDate').val("");
 	}
 }
 
 
-
+function verifyLocationSetting(){
+	var locationIdText = $('#locationId').text();
+	if(' Location ' == locationIdText){
+		$("#chooseLocationDivId").modal();
+	}else{
+		var pickup = $("#pickupDate").val();
+		var dropoff = $("#dropoffDate").val();
+		if(pickup=="" || pickup == null){
+			$("#searchCriteriaErrorSpan").text("** Pickup date cannot be empty");
+		}else if(dropoff=="" || dropoff == null){
+			$("#searchCriteriaErrorSpan").text("** Dropoff date cannot be empty");
+		}else{
+			$("#searchCriteriaDivId").submit();
+		}
+		
+	}
+}

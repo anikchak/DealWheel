@@ -8,15 +8,13 @@ $(document).ready(function() {
 		region = response.region;
 		matchLocation();
 	}, "jsonp");
+	
 });
 function matchLocation(){
 		var locationIdText = $('#locationId').text();
 		var cityMatchFound = 0;
 		if(' Location ' == locationIdText){
-			
-		if(city=='Bengaluru'){
-			city = "Bangalore";
-		}
+		
 		if(propCities!=null){
 			var activeCities = propCities.split("#",-1);
 			for(i =0; i<activeCities.length;i++)

@@ -52,9 +52,15 @@ public class Search extends HttpServlet {
 		String fromDateString = request.getParameter(GenericConstant.FROMDATE);
 		String toDateString = request.getParameter(GenericConstant.TODATE);
 		String selectedLocation = (String)request.getSession().getAttribute("selectedLocation");
+		String comingFromPage = (String)request.getSession().getAttribute("currentPage");
 		
+		//If comingFromPage = "ReviewBooking", then the selected record must be unlocked.
+		if(comingFromPage!=null && "ReviewBooking".equalsIgnoreCase(comingFromPage)){
+		String tempLockedVehicleId = (String)request.getSession().getAttribute("tempLockedVehicle");
+		s.cleanBookingUsingTempBookingId(tempLockedVehicleId);
+		System.out.println("Coming from page = "+comingFromPage+" tempLockedVehicle="+tempLockedVehicleId);
+		}
 		try{
-			
 			System.out.println("fromDate = "+fromDateString+" endDate="+toDateString+" Selected Location="+selectedLocation);
 			SimpleDateFormat sdf = new SimpleDateFormat(GenericConstant.DATEFORMAT);
 			if(fromDateString!=null && toDateString!=null){

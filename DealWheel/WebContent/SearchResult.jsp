@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link href="css/LandingPageCSS.css" rel="stylesheet" type="text/css" />
 <title>DealWheel: Your Deal to self-drive your Wheels</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -171,7 +170,7 @@
 											<span style="font-size:11px;font-weight:600;color: rgba(217, 83, 79, 1);">Per Day Cost:</span> 
 											<span style="font-size:15px;font-weight:600;color: #687074;">
 												<span style='font-family:Arial;'>&#8377;</span> 
-												<%=valueSplitHash[3]%>
+												<span id="perDayCostId_<%=key%>"><%=valueSplitHash[3]%></span>
 											</span>
 										</div>
 
@@ -181,7 +180,7 @@
 										<div class="row">
 											<span style="font-size:11px;font-weight:600;color: rgba(217, 83, 79, 1);">Security Deposit**:</span> 
 											<span style="font-size:15px;font-weight:600;color: #687074;"><span style='font-family:Arial;'>&#8377;</span> 
-												<%=valueSplitHash[4]%>
+												<span id="securityDepositId_<%=key%>"><%=valueSplitHash[4]%></span>
 											</span>
 										</div>
 
@@ -193,7 +192,7 @@
 											title="Payable Amount = Days * Per Day Cost" data-placement="bottom">Payable amount:</span> 
 											<span style="font-size:15px;font-weight:600;color: #687074;" data-toggle="tooltip" 
 											title="Payable Amount = <%=noOfDays%> * <%=Long.parseLong(valueSplitHash[3]) %>" data-placement="bottom">
-												<span style='font-family:Arial;'>&#8377;</span> <%=(noOfDays*Long.parseLong(valueSplitHash[3])) %>
+												<span style='font-family:Arial;'>&#8377;</span> <span id="payableAmntId_<%=key%>"><%=(noOfDays*Long.parseLong(valueSplitHash[3])) %></span>
 											</span>
 										</div>
 
@@ -203,7 +202,7 @@
 										<div class="row">
 											<br/>
 											<button type="button" class="btn btn-md btn-primary"
-											style="background-color: #85b213;">
+											style="background-color: #85b213;" onclick="selectedVehicle('<%=key%>')">
 											<span class="glyphicon glyphicon-ok"></span> Book
 											</button>
 										</div>
@@ -233,12 +232,12 @@
 					%>
 				<input type="text" id="selectedVehicleDetailsId" name="selectedVehicleDetails" style="display: none;" />
 			</form>
-		
+		<!-- Footer inclusion starts -->
+	<%@ include file="commonResources/Footer"%>
+		<!-- Footer inclusion ends -->
 	</div><!--/wrap-->
 	
-	<!-- Footer inclusion starts -->
-	<%@ include file="commonResources/Footer"%>
-	<!-- Footer inclusion ends -->
+	
 	<ul class="nav pull-right scroll-top">
 		<li>
 			<a href="#" title="Scroll to top">
@@ -246,7 +245,30 @@
 			</a>
 		</li>
 	</ul>
-
+	<!-- Alert for users who are not logged in starts-->
+	<div class="modal fade" id="userNotLoggedInModalId" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content" >
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title"><img class="" src="http://htmlstream.com/preview/unify-v1.8/assets/img/logo1-default.png" alt="Logo"></h4>
+        </div>
+        <div class="modal-body text-center">
+          <p >
+          	<span style="font-size:16px;font-weight:600;color: rgba(217, 83, 79, 1);">Machaa...!!!</span>
+          	<span style="font-size:14px;font-weight:600;color: #687074;"> You are not logged in. Kindly log-in to proceed.</span>
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-md btn-primary" style="background-color: #85b213;" data-dismiss="modal" onclick="openLoginPopUp();">Ok</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+	<!-- Alert for users who are not logged in ends -->
 	<!-- Including Modal Windows for Signup and Login -->
 	<%@ include file="commonResources/CommonModalDivBlocks"%>
 
