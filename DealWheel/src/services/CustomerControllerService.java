@@ -11,11 +11,8 @@ import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -421,28 +418,40 @@ public class CustomerControllerService {
 	}
 	
 	 @SuppressWarnings("unchecked")
-	public List<Object[]> getBookings(String uName) {
-		logger.info("Inside getbookings()");
-		
+	public List<Object[]> getMyBookingsHistory(BigInteger userId) {
+		logger.info("Inside getbookings() where userId passed = "+userId);
+		List<Object[]> searchResultSet= null;
+		try{
 		em.getEntityManagerFactory().getCache().evictAll();
-		Query q = em
-				.createQuery(QueryConstant.GET_BOOKING_DETAILS,Bookingshistory.class);
-		q.setParameter(USERNAME, uName);
-		List<Object[]> searchResultSet = (List<Object[]>) q.getResultList();
-
+		Query q = em.createQuery(QueryConstant.GET_BOOKING_DETAILS);
+		q.setParameter("USERID", userId);
+		q.setParameter(UPCOMING, UPCOMING);
+		q.setParameter("COMPLETED", "COMPLETED");
+		q.setParameter("CANCELLED", "CANCELLED");
+		searchResultSet = (List<Object[]>) q.getResultList();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		return searchResultSet;
 } 
 	 
-	public void cancelbooking(String uBookId) {
+	public int cancelBooking(String uBookId) {
+		
 		logger.info("Inside cancelbooking");
 		logger.info("Bookingid passed="+uBookId);
+		int cancelStatus = 0;
+		try{
 		et.begin();
-		Query q = em
-				.createNativeQuery(QueryConstant.CANCEL_BOOKING);
-		q.setParameter(1, CANCELLED);
-		q.setParameter(2, uBookId);
-		int cleanStatus = q.executeUpdate();
+		Query q = em.createQuery(QueryConstant.CANCEL_BOOKING);
+		q.setParameter("BOOKINGSTATUS", CANCELLED);
+		q.setParameter("BOOKINGSEQ", uBookId);
+		cancelStatus = q.executeUpdate();
 		et.commit();
+		logger.info("cancelBooking: cancelStatus = "+cancelStatus);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return cancelStatus;
 	} 
 	
 	/**
@@ -492,4 +501,50 @@ public class CustomerControllerService {
 			e.printStackTrace();
 		}
 	}
+	
+	public String resetPassword(String userName, BigInteger mobileNumber){
+		System.out.println("resetPassword: Username= "+userName+ " mobileNumber="+mobileNumber);
+		try{
+		if(em!=null){
+			Query q = em.createNativeQuery("select user_id from users where user_email = ? and user_primary_contact = ?");
+			q.setParameter(1, userName);
+			q.setParameter(2, mobileNumber);
+			Long validUserDetail = (Long) q.getSingleResult();
+			if(validUserDetail!=null){
+				System.out.println("validUserDetail after fetch = "+validUserDetail);
+				String tempPwdGenerated =  Long.toHexString(Double.doubleToLongBits(Math.random()));
+				String pwdToInsert = null;
+				System.out.println("Generating random password = "+tempPwdGenerated);
+				// Secure password
+				// get Salt to be used with password
+				SecurePassword securePwd = new SecurePassword();
+				byte[] salt = securePwd.createSalt();
+				// Hashing password with salt
+				try {
+					pwdToInsert = securePwd.createHash(tempPwdGenerated, salt);
+				} catch (NoSuchAlgorithmException excep) {
+					logger.error("Exception in algorithm");
+				} catch (InvalidKeySpecException e) {
+					logger.error("Invalid Key Spec Exception");
+				}
+				et.begin();
+				Query resetPwd = em.createNativeQuery("UPDATE login_detail set LOGN_PASSWORD = ? where LOGN_USER_ID = ? ");
+				resetPwd.setParameter(1, pwdToInsert);
+				resetPwd.setParameter(2, validUserDetail);
+				int resetStatus = resetPwd.executeUpdate();
+				et.commit();
+				if(resetStatus>0){
+					return tempPwdGenerated;
+				}else{
+					return null;
+				}
+			}
+		}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
+
+

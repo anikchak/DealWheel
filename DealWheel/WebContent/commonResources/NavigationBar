@@ -63,7 +63,7 @@
 									</a>
 								</li>
 								<li>
-									<a href="${pageContext.request.contextPath}/MyBookings" style="color: #687074; font-weight:400;">
+									<a href="${pageContext.request.contextPath}/MyBookings.jsp" style="color: #687074; font-weight:400;">
 										<span class="glyphicon glyphicon-list"></span> My Bookings
 									</a>
 								</li>

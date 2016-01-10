@@ -117,7 +117,7 @@ public class CommonUtility {
 		}
 	}
 	
-	public void sendEmailNotification(String bookingNo,String uEmail) {
+	public static void sendEmailNotification(String actionCode,String bookingNo,String uEmail,String vehicleDetails,String tempBookingPswd) {
 		final String username = "bala@doctordekhoo.in";
 		final String password = "Sriramajayam1";
 
@@ -139,19 +139,23 @@ public class CommonUtility {
 				});
 
 		try {
-
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("admin@doctordekhoo.in"));
 			message.setRecipients(Message.RecipientType.TO,
 			InternetAddress.parse("anikchak@gmail.com"));
-			
+			if("confirmationEmail".equalsIgnoreCase(actionCode)){
 			message.setSubject("Confirmation: Booking Id - "+bookingNo);
-
 			message.setText("Dear Guest,"
 					+ "\n\n Your booking was successful! Booking reference id="
 					+ bookingNo
 					+ "\n\n This mail is auto-generated using Java Code.");
-
+			}else if("forgotPassword".equalsIgnoreCase(actionCode)){
+				message.setSubject("Reset password for - "+uEmail);
+				message.setText("Dear Guest,"
+						+ "\n\n Your password has been successfully reset. \n New password is ="
+						+ tempBookingPswd 
+						+ "\n\n This mail is auto-generated using Java Code.");
+			}
 			Transport.send(message);
 
 			System.out.println("Done Email");
@@ -220,5 +224,12 @@ public class CommonUtility {
 			vehicleDetailsUsingTempBookingId = (List<Object[]>)s.fetchVehicleUsingTempBooking(tempBookingId);
 		}
 		return vehicleDetailsUsingTempBookingId;
+	}
+	
+	public static List fetchMyBookingsHistory(BigInteger userId){
+		System.out.println("Inside fetchMyBookingsHistory");
+		CustomerControllerService s = new CustomerControllerService();
+		List<Object[]> myBookingsHistoryList= s.getMyBookingsHistory (userId);
+		return myBookingsHistoryList;
 	}
 }

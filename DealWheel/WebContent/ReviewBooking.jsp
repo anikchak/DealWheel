@@ -131,10 +131,10 @@ if(userName == null){
     			  <hr style="border-color:#85b213;width:50%;">
     			</div>
     			<div class="row " style="">
-    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Per Day Cost = </span><span id="perDayCostId" style="color:#687074;font-weight:bold;font-size:15.5px;"><%=v.getVhclPerDayCost() %></span><br>
-    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Refundable Security Deposit = </span><span id="securityDepositId" style="color:#687074;font-weight:bold;font-size:15.5px;"><%=v.getVhclSecurityDeposit() %></span><br>
+    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Per Day Cost = </span><span id="perDayCostId" style="color:#687074;font-weight:bold;font-size:15.5px;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclPerDayCost() %></span><br>
+    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Refundable Security Deposit = </span><span id="securityDepositId" style="color:#687074;font-weight:bold;font-size:15.5px;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclSecurityDeposit() %></span><br>
     				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Number of Booking Days = </span><span id="noOfDaysId" style="color:#687074;font-weight:bold;font-size:15.5px;"><%=noOfDays %></span><br>
-    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Payable Amount <span style="color: rgba(217, 83, 79, 1);font-size:12px;">(No. of Days * Per Day Cost)</span> = </span><span id="payableAmount" style="color:#687074;font-weight:bold;font-size:15.5px;"><%=(noOfDays*v.getVhclPerDayCost())%></span><br>
+    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Payable Amount <span style="color: rgba(217, 83, 79, 1);font-size:12px;">(No. of Days * Per Day Cost)</span> = </span><span id="payableAmount" style="color:#687074;font-weight:bold;font-size:15.5px;"><span style='font-family:Arial;'>&#8377;</span><%=(noOfDays*v.getVhclPerDayCost())%></span><br>
     				<hr style="border-color:#85b213;width:50%;">
     			</div>
     			<div class="row text-center" >

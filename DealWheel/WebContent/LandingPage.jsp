@@ -12,6 +12,7 @@
 <%@ include file="commonResources/CommonJSCSSInclude"%>
 <script type="text/javascript">
 var pageContext = '<%=request.getContextPath()%>';
+
 </script>
 <script src="js/LandingPageJS.js" type="text/javascript"></script>
 
@@ -25,7 +26,14 @@ var pageContext = '<%=request.getContextPath()%>';
 </head>
 
 <body>
-	<% session.setAttribute("currentPage","LandingPage");
+	<% 
+	String comingFromPage = (String)session.getAttribute("currentPage");
+	if("ReviewBooking".equalsIgnoreCase(comingFromPage)){
+		String lockedBookingId = (String)session.getAttribute("tempLockedVehicle");
+		System.out.println("Landing Page-lockedBookingId: "+lockedBookingId);
+		new CustomerControllerService().cleanBookingUsingTempBookingId(lockedBookingId);
+	}
+	session.setAttribute("currentPage","LandingPage");
 	new CustomerControllerService().cleanBookings();
 	%>
 	<!-- Wrap all page content here -->

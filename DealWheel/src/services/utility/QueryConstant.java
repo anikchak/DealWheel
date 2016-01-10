@@ -2,13 +2,15 @@ package services.utility;
 
 public class QueryConstant {
 
-	public static String CANCEL_BOOKING = "Update bookingshistory set bkng_status = ? where bkng_seq = ?";
-	public static String GET_BOOKING_DETAILS = "Select book,bike,pd,adds "
-			+ "from Bookingshistory book,Vehicle bike,User us,User pd,Address adds "
-			+ " where book.userId = us.userId"
-			+ " AND book.bkngVehicle = bike.vhclId"
-			+ " AND adds.addrId = bike.vhclAddressId"
-			+ " AND pd.userId = adds.userId " + "AND us.userName = :username";
+	public static String CANCEL_BOOKING = "Update Bookingshistory bh set bh.bkngStatus = :BOOKINGSTATUS where bh.bkngSeq = :BOOKINGSEQ";
+	public static String GET_BOOKING_DETAILS = "SELECT b, v, lv, a, u, vProvider FROM Bookingshistory b, Vehicle v, ListedVehicle lv, Address a, User u, User vProvider "
+			+ "WHERE u.userId = b.userId "
+			+ "AND v.vhclId = b.bkngVehicle "
+			+ "AND a.addrId = v.vhclAddressId "
+			+ "AND lv.lvclId = v.listedVhclId "
+			+ "AND vProvider.userId = a.userId "
+			+ "AND b.bkngStatus IN (:UPCOMING,:COMPLETED,:CANCELLED) "
+			+ "AND b.userId = :USERID";
 	public static String CLEAN_BOOKINGS = "update bookingshistory b set b.BKNG_STATUS = ? where TIME_TO_SEC(TIMEDIFF(NOW(),b.LAST_UPDATED))> ? and b.BKNG_STATUS in (?)";
 	public static String LIST_AVAILABLE_VEHICLES = "SELECT v, a, u, lv "
 			+ "FROM Vehicle v ,  Address a , User u , ListedVehicle lv WHERE v.vhclId NOT IN "
@@ -25,6 +27,6 @@ public class QueryConstant {
 			+ "and a.addrId = v.vhclAddressId "
 			+ "and v.listedVhclId = lv.lvclId "
 			+ "and v.vhclId = b.bkngVehicle "
-			+ "and b.bkngStatus in (:VIEWING,:UPCOMING) "
+			+ "and b.bkngStatus in (:UPCOMING,:VIEWING) "
 			+ "and b.bkngSeq = :BOOKINGID";
 }

@@ -63,6 +63,7 @@ function openLoginPopUp() {
 	$('#loginUsrname').val("");
 	$('#loginPassword').val("");
 	$("#signupCancelBtn").click();
+	$("#forgotPswdCancelBtn").click();
 	$("#loginModal").modal();
 }
 function openSignUpPopUp() {
@@ -71,7 +72,16 @@ function openSignUpPopUp() {
 	$('#signupPassword').val("");
 	$('#signupmobileNumber').val("");
 	$("#loginCancelBtn").click();
+	$("#forgotPswdCancelBtn").click();
 	$("#signupModal").modal();
+}
+
+function openForgotPswd(){
+	$('#forgotPswdErrorMsgDiv').css('display', 'none');
+	$('#forgotPswdUsrname').val("");
+	$('#forgotPswdmobileNumber').val("");
+	$("#loginCancelBtn").click();
+	$("#forgotPasswordModal").modal();
 }
 
 function submitForAuthentication(authType, pageContext) {
@@ -116,8 +126,7 @@ function submitForAuthentication(authType, pageContext) {
 			$('#signupErrorMsgSpan').html("Enter value for all fields");
 			$('#signupErrorMsgDiv').css('display', 'block');
 		} else {
-			$
-					.post(
+			$.post(
 							"Login",
 							{
 								username : $('#signupUsername').val(),
@@ -175,9 +184,71 @@ function submitForAuthentication(authType, pageContext) {
 							});
 
 		}
+	}else if(authType == 'forgotPassword'){
+		if (($('#forgotPswdUsrname') != null && $('#forgotPswdUsrname').val() == '')
+				|| ($('#forgotPswdmobileNumber') != null && $('#forgotPswdmobileNumber').val() == '')) 
+		{
+			$('#forgotPswdErrorMsgSpan').html("Enter value for all fields");
+			$('#forgotPswdErrorMsgDiv').css('display', 'block');
+		}else{
+
+			$.post("Login",
+							{
+								username : $('#forgotPswdUsrname').val(),
+								mobileNumber : $('#forgotPswdmobileNumber').val(),
+								authType : 'forgotPassword'
+							},
+							function(responseText) {
+								//alert("ResponseText=" + responseText);
+								if (responseText != null && responseText != '') {
+									if (responseText == 'mobileNaN') {
+										$('#forgotPswdErrorMsgSpan')
+												.html(
+														'Invalid Mobile Number.');
+										$('#forgotPswdErrorMsgDiv').css('display',
+												'block');
+										$('#forgotPswdmobileNumber').val("");
+									} else if(responseText == 'invalidEmail'){
+										$('#forgotPswdErrorMsgSpan').html("Email address invalid.");
+										$('#forgotPswdErrorMsgDiv').css('display', 'block');
+										$('#forgotPswdUsrname').val("");
+										$('#forgotPswdmobileNumber').val("");
+									}
+									else if(responseText == 'emptyFields'){
+										$('#forgotPswdErrorMsgSpan').html("Enter value for all fields");
+										$('#forgotPswdErrorMsgDiv').css('display', 'block');
+									} else {
+										var responseData = responseText.split("#");
+										sendForgotPwdEmailNotification(responseData[1],$('#forgotPswdUsrname').val());
+										$(location).attr('href',pageContext + responseData[0]);
+									}
+								} else {
+
+									$('#forgotPswdErrorMsgSpan')
+											.html(
+													'Something went terribly wrong with our system. Please try again after sometime.');
+									$('#forgotPswdErrorMsgDiv').css('display',
+											'block');
+									$('#forgotPswdUsrname').val("");
+									$('#forgotPswdmobileNumber').val("");
+								}
+							});
+		}
 	}
 }
 
+function sendForgotPwdEmailNotification(resetPwd,userEmail){
+	$.post(
+			"TriggerEmail",
+			{
+				actionCode : "forgotPassword",
+				tempPwd : resetPwd,
+				userId : userEmail				
+			},
+			function(responseText) {
+				
+			});
+}
 
 function logoutUser(){
 	$('#logoutFormId').submit();
@@ -238,3 +309,4 @@ function verifyLocationSetting(){
 		
 	}
 }
+

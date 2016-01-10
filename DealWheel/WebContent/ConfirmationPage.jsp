@@ -90,7 +90,7 @@ var pageContext = '<%=request.getContextPath()%>';
     	 	 <span style="color:#687074;font-size:14px;">Booking Successful </span>
     	 	 <span style="float:right">
     	 	 <span style="color:rgba(217, 83, 79, 1);">Booking Id:</span> 
-    		 <span style="color:#687074;font-size:18px;font-weight: bold;"><%=bh.getBkngNumber() %></span>
+    		 <span style="color:#687074;font-size:18px;font-weight: bold;" id="bookingId"><%=bh.getBkngNumber() %></span>
     		 </span>
     	 	 </div>
   			</div>
@@ -138,10 +138,10 @@ var pageContext = '<%=request.getContextPath()%>';
 			</div>
 			<div class="row">
 			 <div class="row">
-			    <span style="float:right;padding-right:5%;"><span style="color:#687074;font-size:12px;text-transform:uppercase;">Amount Paid = </span><span id="payableAmount" style="color:#687074;font-size:16px;font-weight:bold;"><%=(noOfDays*v.getVhclPerDayCost())%></span></span><br>
+			    <span style="float:right;padding-right:5%;"><span style="color:#687074;font-size:12px;text-transform:uppercase;">Amount Paid = </span><span id="payableAmount" style="color:#687074;font-size:16px;font-weight:bold;"><span style='font-family:Arial;'>&#8377;</span><%=(noOfDays*v.getVhclPerDayCost())%></span></span><br>
 			 </div>
 			 <div class="row">
-				<span style="float:right;padding-right:5%;"><span style="color:#687074;font-size:12px;text-transform:uppercase;">Refundable Security Deposit <span style="color:rgba(217, 83, 79, 1);font-size:10px;">(to be paid during vehicle pick-up)</span> = </span><span id="securityDepositId" style="color:#687074;font-size:16px;font-weight:bold;"><%=v.getVhclSecurityDeposit() %></span></span><br>
+				<span style="float:right;padding-right:5%;"><span style="color:#687074;font-size:12px;text-transform:uppercase;">Refundable Security Deposit <span style="color:rgba(217, 83, 79, 1);font-size:10px;">(to be paid during vehicle pick-up)</span> = </span><span id="securityDepositId" style="color:#687074;font-size:16px;font-weight:bold;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclSecurityDeposit() %></span></span><br>
 			 </div>
 			</div>
   			</div>	
@@ -171,5 +171,22 @@ var pageContext = '<%=request.getContextPath()%>';
 	</script>
 	<script src="js/CommonJS.js" type="text/javascript"></script>
 	
+	<script>
+	$(document).ready(function(){
+		$.post(
+				"TriggerEmail",
+				{
+					actionCode : "confirmationEmail",
+					bookingId : $("#bookingId").text(),
+					vehicleDetails: $("#vehicleMakeId").text()+"#"+$("#vehicleNameId").text()+"#"+$("#startDateDetailsId").text()+"#"+$("#endDateDetailsId").text()+"#"+
+									$("#addressDetailsId").text()+"#"+$("#perDayCostId").text()+"#"+$("#securityDepositId").text()+"#"+$("#noOfDaysId").text()+"#"+
+									$("#payableAmount").text(),
+					userId : '<%=userName%>'				
+				},
+				function(responseText) {
+					
+				});
+	});
+	</script>
 	</body>
 </html>

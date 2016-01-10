@@ -70,20 +70,14 @@ public class Login extends HttpServlet {
 		else{
 		if ("login".equalsIgnoreCase(authType)) {
 			List<User> validUserDetails = s.validateUser(uName, pwd);
-			//System.out.println("user from query="+validUserDetails.get(0).getUserId());
 			if (validUserDetails!=null && validUserDetails.size()==1) {
 				session = generateSession(request, uName);
 				session.setAttribute("LoggedInUserDetailsObject",validUserDetails );
 				msg = CommonUtility.getPageName(comingFromPage);
-				//new CommonUtility().pageNavigation(pagecontext, comingFromPage, request, response);
 			}else{
 				System.out.println("Invalid username or password");
 				request.getSession().removeAttribute("LoggedInUserDetailsObject");
 				msg = "authenticationFailed";
-				//response.setContentType("text/plain");
-		        //response.getWriter().write("authenticationFailed");
-				//request.getSession().setAttribute(GenericConstant.LOGINERROR,MessageBundle.LOGIN_ERROR_MSG);
-				//response.sendRedirect(pagecontext + GenericConstant.NAV_TO_LOGIN_PAGE);
 				}
 		} else if ("signup".equalsIgnoreCase(authType)) {
 			String mobileNumber = "0"+request.getParameter("mobileNumber");
@@ -102,12 +96,26 @@ public class Login extends HttpServlet {
 				System.out.println("Username already exists. Error..!!");
 				request.getSession().removeAttribute("LoggedInUserDetailsObject");
 				msg = "userNameExists";
-				//response.setContentType("text/plain");
-		        //response.getWriter().write("userNameExists");
-				//request.getSession().setAttribute(GenericConstant.LOGINERROR,MessageBundle.NOT_UNIQUE_USERNAME_ERROR_MSG);
-				//response.sendRedirect(pagecontext + GenericConstant.NAV_TO_LOGIN_PAGE);
 			}
 			}else if(mobileNumber!=null && "".equals(mobileNumber)){
+				msg = "emptyFields";
+			}
+			else if(!mobileNumber.matches(regex) || mobileNumber.length()!=11){
+				msg = "mobileNaN";
+			}else{
+				msg = "emptyFields";
+			}
+		}else if ("forgotPassword".equalsIgnoreCase(authType)){
+			String mobileNumber = "0"+request.getParameter("mobileNumber");
+			String regex = "\\d+";
+			if((mobileNumber!=null && !"".equals(mobileNumber) && mobileNumber.matches(regex) && mobileNumber.length()==11)){
+				String resetPwd = s.resetPassword(uName, BigInteger.valueOf(Long.parseLong(mobileNumber)));
+				System.out.println("resetPwd = "+resetPwd);
+				if(resetPwd!=null){
+					msg = "/LandingPage.jsp#"+resetPwd;
+				}
+			}
+			else if(mobileNumber!=null && "".equals(mobileNumber)){
 				msg = "emptyFields";
 			}
 			else if(!mobileNumber.matches(regex) || mobileNumber.length()!=11){
