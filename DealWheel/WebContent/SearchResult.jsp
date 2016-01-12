@@ -133,8 +133,18 @@
 							<div class="row">
 
 								<div class="col-md-4" style="padding:10px;float:left;">
-									<img class="" src="http://www.kcls.org/images/loaders/inspiroo_logo_loader_pop.gif" 
+									<%if(valueSplitHash[0]==null || "null".equalsIgnoreCase(valueSplitHash[0]) ){ %>
+									<img class="" src="https://s3-us-west-2.amazonaws.com/dealwheel/EmptyImage.png" 
 									alt="Logo" style="width:150px;height:150px;border:1px solid #85b213;border-radius:4px;"/>
+									<%}else{
+										System.out.println("value 0 = "+valueSplitHash[0]);
+									 %>
+										<img class="" src="http://www.kcls.org/images/loaders/inspiroo_logo_loader_pop.gif" 
+												alt="Logo" style="width:150px;height:150px;border:1px solid #85b213;border-radius:4px;"/>
+									<%
+										}
+									%>
+									
 								</div> <!-- end of image div -->
 
 								<!-- Start of vehicle detail div -->
