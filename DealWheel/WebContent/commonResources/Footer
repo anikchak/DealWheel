@@ -11,7 +11,7 @@
 							
 							<ul class="nav navbar-nav">
 							<li>
-								<a href="${pageContext.request.contextPath}/VendorLoginSignUp.jsp" style="color: #687074;">
+								<a href="${pageContext.request.contextPath}/Logout?invoke=vendorFlow" style="color: #687074;" onclick="">
 									List With Us
 								</a>
 							</li>

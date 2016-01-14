@@ -310,3 +310,7 @@ function verifyLocationSetting(){
 	}
 }
 
+function invokeVendorFlow(){
+	$("#logoutFormId").submit();
+	$(location).attr('href', pageContext + "/VendorLoginSignUp.jsp");
+}

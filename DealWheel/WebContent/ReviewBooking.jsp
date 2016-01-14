@@ -94,8 +94,16 @@ if(userName == null){
 			</div>
 				</div>
 				<div class="row text-center">
-				<img class="" src="http://www.kcls.org/images/loaders/inspiroo_logo_loader_pop.gif" 
-									alt="Logo" style="width:100px;height:100px;"/>
+				<%if(lv.getLvclImgUrl()!=null){
+					%>
+				<img class="" src="<%=lv.getLvclImgUrl() %>" alt="Logo" style="width:100px;height:100px;"/>	
+					<%
+				}else{
+					%>
+				<img class="" src="https://s3-us-west-2.amazonaws.com/dealwheel/EmptyImage.png" alt="Logo" style="width:100px;height:100px;"/>
+				<%
+				}
+				%>
 				<span style="color: #687074; font-weight:500;text-transform:uppercase;font-size:14px;" id="vehicleMakeId"><%=lv.getLvclMake() %></span>
 				<span style="color: #687074; font-weight:bold;text-transform:uppercase;font-size:16.5px;" id="vehicleNameId"><%=lv.getLvclName() %></span>
 				<br>
@@ -206,6 +214,6 @@ if(userName == null){
 	<script src="js/ReviewBookingJS.js" type="text/javascript"></script>
 	<!-- Including Common JS -->
 	<script src="js/CommonJS.js" type="text/javascript"></script>
-
+	
 </body>
 </html>

@@ -33,17 +33,19 @@ public class Logout extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		doPost(request,response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		System.out.println("POst method hit in Logout");
 		response.setContentType("text/html");
         String pagecontext = request.getContextPath();
-       
+        String initiateVendorFlow = (String)request.getParameter("invoke");
+        System.out.println("initiateFlow = "+initiateVendorFlow);
+        
         String pageId = (String)request.getSession().getAttribute("currentPage");
         System.out.println("Logout.java: tempBookingId="+(String)request.getParameter("fetchSelectedVehicle"));
         //If logout flow is invoked from Review Page then clearing the held vehicle first 
@@ -57,6 +59,11 @@ public class Logout extends HttpServlet {
         if(session != null){
             session.invalidate();
         }
+        if(initiateVendorFlow!=null && "vendorFlow".equalsIgnoreCase(initiateVendorFlow)){
+        	response.sendRedirect(pagecontext+"/VendorLoginSignUp.jsp");
+        }
+        else{
          response.sendRedirect(pagecontext+"/LandingPage.jsp");
+        }
     }
 }
