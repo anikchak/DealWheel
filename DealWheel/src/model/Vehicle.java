@@ -16,9 +16,11 @@ import static services.utility.GenericConstant.*;
 @NamedQueries({
 	@NamedQuery(name=VEHICLE_GET_VEHICLE_DETAILS_FOR_USER, 
 		query="SELECT lv.lvclName, lv.lvclMake, v.vhclRegistrationNo, v.vhclYearOfManufacture, v.vhclPerDayCost, v.vhclSecurityDeposit, "
-				+ "a.addrLine1, a.addrLine2, a.addrLine3, a.addrLocality, a.addrCity, a.addrState, a.addrCountry, a.addrPinCode, v.vhclId "
+				+ "a.addrLine1, a.addrLine2, a.addrLine3, a.addrLocality, a.addrCity, a.addrState, a.addrCountry, a.addrPinCode, v.vhclId, v.isVehicleDisabled "
 				+ "FROM Vehicle v JOIN Address a ON v.vhclAddressId = a.addrId JOIN User u ON a.userId = u.userId JOIN ListedVehicle lv ON v.listedVhclId = lv.lvclId "
-				+ "WHERE u.userId = :vendorId ")
+				+ "WHERE u.userId = :vendorId "),
+	@NamedQuery(name=VEHICLE_SEARCH_WITH_IDS, query="SELECT v from Vehicle v where v.vhclId IN :vehicleIds"),
+	@NamedQuery(name=VEHICLE_SEARCH_WITH_ID, query="SELECT v from Vehicle v where v.vhclId = :vehicleId")
 })
 public class Vehicle implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -50,6 +52,9 @@ public class Vehicle implements Serializable {
 
 	@Column(name="VHCL_SECURITY_DEPOSIT")
 	private int vhclSecurityDeposit;
+	
+	@Column(name="VHCL_IS_DISABLED")
+	private boolean isVehicleDisabled;
 
 	@Column(name="VHCL_YEAR_OF_MANUFACTURE")
 	private String vhclYearOfManufacture;
@@ -116,6 +121,14 @@ public class Vehicle implements Serializable {
 
 	public void setVhclSecurityDeposit(int vhclSecurityDeposit) {
 		this.vhclSecurityDeposit = vhclSecurityDeposit;
+	}
+	
+	public boolean isVehicleDisabled() {
+		return isVehicleDisabled;
+	}
+
+	public void setVehicleDisabled(boolean isVehicleDisabled) {
+		this.isVehicleDisabled = isVehicleDisabled;
 	}
 
 	public String getVhclYearOfManufacture() {

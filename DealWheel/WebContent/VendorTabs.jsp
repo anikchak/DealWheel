@@ -7,6 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<%@ include file="commonResources/CommonJSCSSInclude"%>
 </head>
 <body>
 <% User user = (User)session.getAttribute(GenericConstant.USER_MODEL);

@@ -32,13 +32,12 @@ public class VendorLoginSignUp extends HttpServlet {
 			throws ServletException, IOException {
 		
 		String pagecontext = req.getContextPath();
-		System.out.println("identifier value="+req.getParameter("identifier"));
-		if(req.getParameter("identifier").equals("signup")){
+		if("signup".equals(req.getParameter("identifier"))){
 			if(req.getParameter("password").equals(req.getParameter("confirmPassword")))
 				req.getRequestDispatcher(NAV_TO_VENDORREGISTRATION_PAGE).forward(req, resp);
 			else
 				resp.sendRedirect(pagecontext+NAV_TO_VENDORLOGINSIGNUP_PAGE);
-		}else if(req.getParameter("identifier").equals("login")){ //Aniket: Added if condition
+		}else if("login".equals(req.getParameter("identifier"))){ 
 			VendorLoginController vlc = new VendorLoginController();
 			User user= vlc.validateVendor(req.getParameter("loginEmail"), req.getParameter("loginPassword"));
 			if(user!=null){

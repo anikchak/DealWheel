@@ -2,8 +2,11 @@ package dao;
 
 import static services.utility.GenericConstant.LISTED_VEHICLE_GET_NAMES;
 import static services.utility.GenericConstant.VEHICLE_GET_VEHICLE_DETAILS_FOR_USER;
+import static services.utility.GenericConstant.VEHICLE_SEARCH_WITH_IDS;
+import static services.utility.GenericConstant.VEHICLE_SEARCH_WITH_ID;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -36,5 +39,33 @@ public class VehicleDAOImpl<T>  extends  BaseDAOImpl<Vehicle> implements Vehicle
 		q.setParameter("vendorId", userId);
 		List<Object[]> vehicleDetails = q.getResultList();
 		return vehicleDetails;
+	}
+
+	public void disable(List<BigInteger> listIds) {
+		logger.debug("Disabling all the Vehicles with Ids "+listIds);
+		Query q = em.createNamedQuery(VEHICLE_SEARCH_WITH_IDS);
+		q.setParameter("vehicleIds", listIds);
+		List<Object[]> vehicleDetails = q.getResultList();
+		List<Vehicle> vList = new ArrayList<Vehicle>();
+		for(Object o : vehicleDetails){
+			((Vehicle)o).setVehicleDisabled(true);
+			vList.add(update(((Vehicle)o)));
+		}
+		
+		logger.debug(vList.size()+" rows disabled");
+	}
+
+	public void enable(BigInteger vehicleId) {
+		logger.debug("Enabling the Vehicle with Id "+vehicleId);
+		Query q = em.createNamedQuery(VEHICLE_SEARCH_WITH_ID);
+		q.setParameter("vehicleId", vehicleId);
+		List<Object[]> vehicleDetails = q.getResultList();
+		List<Vehicle> vList = new ArrayList<Vehicle>();
+		for(Object o : vehicleDetails){
+			((Vehicle)o).setVehicleDisabled(false);
+			vList.add(update(((Vehicle)o)));
+		}
+		
+		logger.debug(vList.size()+" vehicle enabled");
 	}
 }
