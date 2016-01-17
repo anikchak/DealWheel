@@ -377,6 +377,7 @@ public class CustomerControllerService {
 					deletedRecStatus = deleteTimedOutRecs.executeUpdate();
 				}
 				et.commit();
+				updateBookingsToComplete();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -385,7 +386,24 @@ public class CustomerControllerService {
 		}
 		logger.info("Clean Status=" + cleanStatus+ "\tdeletedRecStatus="+deletedRecStatus);
 	}
-	 
+	
+	public void updateBookingsToComplete(){
+		logger.info("updateBookingsToComplete() invoked");
+		try{
+			if(em!=null){
+				et.begin();
+				Query q = em.createQuery("UPDATE Bookingshistory bh set bh.bkngStatus = :BOOKINGSTATUS where bh.bkngToDate <= :TODAY and bh.bkngStatus = :UPCOMING");
+				q.setParameter("BOOKINGSTATUS", "COMPLETED");
+				q.setParameter("TODAY", new Date());
+				q.setParameter(UPCOMING, UPCOMING);
+				int completedBookingStatus = q.executeUpdate();
+				logger.info("completedBookingStatus = "+completedBookingStatus);
+				et.commit();
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	public boolean updateBookingWithOrderIdonSuccess(long tempBookingSeq,String generatedOrderId,String uName) {
 		logger.info("Inside method updateBookingWithOrderIdonSuccess");
 		CommonUtility cu = new CommonUtility();
