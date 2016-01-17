@@ -134,6 +134,8 @@ var pageContext = '<%=request.getContextPath()%>';
                 		 DateFormat inputFormatter = new SimpleDateFormat("dd-MMM-yy");
                 		 String dateFrom = inputFormatter.format(bh.getBkngFromDate());
                 		 String dateTo = inputFormatter.format(bh.getBkngToDate());
+                		 long duration = bh.getBkngToDate().getTime() - bh.getBkngFromDate().getTime();
+          				 long noOfDays = TimeUnit.MILLISECONDS.toDays(duration);
         %>
          	<tr>
          		<td><span style="color:#85b213;font-size:11px;text-transform:uppercase;font-weight:bold;"><%=bh.getBkngNumber() %></span></td>
@@ -146,7 +148,7 @@ var pageContext = '<%=request.getContextPath()%>';
     					<%=a.getAddrLocality() %>, <%=a.getAddrCity() %>, <%=a.getAddrPinCode() %>, <%=a.getAddrState() %>, <%=a.getAddrCountry() %>
     				</span>
          		</td>
-         		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclPerDayCost() %></span></td>
+         		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclPerDayCost()*noOfDays %></span></td>
          		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclSecurityDeposit() %></span></td>
          		<td><span class="label label-success">UPCOMING</span></td>
          		<td><button type="button" class="btn btn-info btn-xs" data-dismiss="modal" style="background-color: rgba(217, 83, 79, 1);" onclick="confirmCancellation('<%=bh.getBkngSeq()%>')">CANCEL</button></td>
@@ -198,6 +200,8 @@ var pageContext = '<%=request.getContextPath()%>';
                 		 DateFormat inputFormatter = new SimpleDateFormat("dd-MMM-yy");
                 		 String dateFrom = inputFormatter.format(bh.getBkngFromDate());
                 		 String dateTo = inputFormatter.format(bh.getBkngToDate());
+                		 long duration = bh.getBkngToDate().getTime() - bh.getBkngFromDate().getTime();
+          				 long noOfDays = TimeUnit.MILLISECONDS.toDays(duration);
         %>
          	<tr>
          		<td><span style="color:#85b213;font-size:11px;text-transform:uppercase;font-weight:bold;"><%=bh.getBkngNumber() %></span></td>
@@ -210,7 +214,7 @@ var pageContext = '<%=request.getContextPath()%>';
     					<%=a.getAddrLocality() %>, <%=a.getAddrCity() %>, <%=a.getAddrPinCode() %>, <%=a.getAddrState() %>, <%=a.getAddrCountry() %>
     				</span>
          		</td>
-         		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclPerDayCost() %></span></td>
+         		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclPerDayCost()*noOfDays %></span></td>
          		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclSecurityDeposit() %></span></td>
          		<td><span class="label label-success">COMPLETED</span></td>
          	</tr>
@@ -258,6 +262,8 @@ var pageContext = '<%=request.getContextPath()%>';
                 		 DateFormat inputFormatter = new SimpleDateFormat("dd-MMM-yy");
                 		 String dateFrom = inputFormatter.format(bh.getBkngFromDate());
                 		 String dateTo = inputFormatter.format(bh.getBkngToDate());
+                		 long duration = bh.getBkngToDate().getTime() - bh.getBkngFromDate().getTime();
+          				 long noOfDays = TimeUnit.MILLISECONDS.toDays(duration);
         %>
          	<tr>
          		<td><span style="color:#85b213;font-size:11px;text-transform:uppercase;font-weight:bold;"><%=bh.getBkngNumber() %></span></td>
@@ -270,7 +276,7 @@ var pageContext = '<%=request.getContextPath()%>';
     					<%=a.getAddrLocality() %>, <%=a.getAddrCity() %>, <%=a.getAddrPinCode() %>, <%=a.getAddrState() %>, <%=a.getAddrCountry() %>
     				</span>
          		</td>
-         		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclPerDayCost() %></span></td>
+         		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclPerDayCost()*noOfDays %></span></td>
          		<td><span class="label label-danger">CANCELLED</span></td>
          	</tr>
          <%
