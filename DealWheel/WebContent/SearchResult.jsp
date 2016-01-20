@@ -104,7 +104,7 @@
     				<button type="button" class="btn btn-info btn-md" onclick="modifySearchCriteria('modify')">+ Modify Search</button>
     			</div>
     		</div><!-- End of panel body div - Readonly data-->
-    		<div class="panel-body text-center" id="modifySearchDataDivId" style="display:none;padding:10px">
+    		<div class="panel-body text-center" id="modifySearchDataDivId" style="display:none;padding:10px;" >
     		  <%@ include file="commonResources/SearchCriteriaLayout"%>
     		</div><!-- End of panel body div - Modify search-->
   			</div>

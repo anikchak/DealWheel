@@ -60,7 +60,7 @@ public class Logout extends HttpServlet {
             session.invalidate();
         }
         if(initiateVendorFlow!=null && "vendorFlow".equalsIgnoreCase(initiateVendorFlow)){
-        	response.sendRedirect(pagecontext+"/VendorLoginSignUp.jsp");
+        	response.sendRedirect(pagecontext+"/VendorLoginSignUp.jsp?invoke=vendorFlow");
         }
         else{
          response.sendRedirect(pagecontext+"/LandingPage.jsp");

@@ -48,6 +48,7 @@
 								List<User> validUserDetails = (List<User>)session.getAttribute("LoggedInUserDetailsObject");
 								if(validUserDetails!=null & validUserDetails.size()>0){
 									for(User u : validUserDetails){
+									
 		%>
 		<!-- User section post signin -->	
 						<input type ="text" value="userAvailable" id = "userPresent" style="display:none;"/>		
@@ -81,13 +82,18 @@
 								}
 							}
 							else{
+							String vendorFlow = (String)request.getParameter("invoke");
+							System.out.println("From Nav = "+vendorFlow);
+							if(vendorFlow ==null || !"vendorFlow".equalsIgnoreCase(vendorFlow)){
 						%>
 						<!-- When user is not logged in -->
         <li style="padding-left:10px;"><button type="button" class="btn btn-info btn-default navbar-btn" onclick="openLoginPopUp()"><span class="glyphicon glyphicon-log-in"></span> Login</button></li>
 		<li style="padding-left:10px;"><button type="button" class="btn btn-info btn-default navbar-btn" onclick="openSignUpPopUp()"><span class="glyphicon glyphicon-user"></span> Sign Up</button></li>
 		<input type ="text" value="noUser" id = "userPresent" style="display:none;"/>				
 						<!-- When user is not logged in ends-->
-						<%} %>
+						<%}
+						}
+						 %>
 						<!-- Verify if the user is logged in or not ends-->
       </ul>
 	</div>

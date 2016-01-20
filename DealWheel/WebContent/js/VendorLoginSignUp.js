@@ -51,7 +51,7 @@ $(document).ready(function(){
 		
 		if(loginEmail == "" || loginPassword == ""){
 			$("#login_Error_Login").hide();
-			$("#vendorLoginErrorMsgSpan").text("Email or Password cannot be blank");
+			$("#vendorLoginErrorMsgSpan").text("Username or Password cannot be blank");
 			$("#login_Error_Login").show();
 			preventFormSubmit = "Y";
 			return false;
@@ -76,7 +76,7 @@ $(document).ready(function(){
 		
 		if(signupEmail == "" || signupPassword == ""  || signupConfirmPassword == "" ){
 			$("#signup_error").hide();
-			$("#vendorSignupErrorMsgSpan").text("Email or Password cannot be blank");
+			$("#vendorSignupErrorMsgSpan").text("Username or Password cannot be blank");
 			$("#signup_error").show();
 			preventFormSubmit = "Y";
 			return false;
@@ -109,7 +109,36 @@ $(document).ready(function(){
 	
 	function submitForm(){
 		if(preventFormSubmit == "N"){
-			$("#loginFormId").submit();
+			$.post("VendorLoginSignUp",
+					{
+						identifier : $('#identifier').val(),
+						password : $('#password').val(),
+						confirmPassword : $('#confirmPassword').val(),
+						loginEmail : $('#loginEmail').val(),
+						loginPassword : $('#loginPassword').val()
+						
+					},
+					function(responseText) {
+						//alert("ResponseText=" + responseText);
+						if (responseText != null && responseText != '') {
+							if(responseText == "SIGNUPPWDMISMATCH"){
+								$("#signup_error").hide();
+								$("#vendorSignupErrorMsgSpan").text("Passwords do not match.");
+								$("#signup_error").show();
+							}else if(responseText == "LOGINERROR"){
+								$("#login_Error_Login").hide();
+								$("#vendorLoginErrorMsgSpan").text("Username or Password is incorrect.");
+								$("#login_Error_Login").show();
+							}else{
+								$(location).attr('href',pageContext + responseText);
+							}
+						} else {
+							$("#vendorLoginErrorMsgSpan").text("Something went terribly wrong in our system.");
+							$("#login_Error_Login").show();
+							$("#vendorSignupErrorMsgSpan").text("Something went terribly wrong in our system.");
+							$("#signup_error").show();
+						}
+					});
 		}
 	}
 }); 

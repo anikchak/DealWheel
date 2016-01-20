@@ -37,16 +37,18 @@ var pageContext = '<%=request.getContextPath()%>';
 	new CustomerControllerService().cleanBookings();
 	%>
 	<!-- Wrap all page content here -->
-	<div id="wrap" style="min-height:85%;">
+	<div id="wrap" style="min-height:85%;" >
 		<!-- Nav bar inclusion starts -->
 		<%@ include file="commonResources/NavigationBar"%>
 		<!-- Nav bar inclusion ends -->
 		<!-- Begin page content -->
 
 		<div class="container">
-			<h3 class="text-center">Some content/image goes here</h3>
+			<h3 class="text-center">Some text/Content goes here</h3>
   				<br>
+  				<div style="position:relative; z-index:100;">
   				<%@ include file="commonResources/SearchCriteriaLayout"%>
+  				</div>
   		</div>
 	</div>
 	<!--/wrap-->
