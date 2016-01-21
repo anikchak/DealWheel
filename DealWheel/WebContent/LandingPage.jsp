@@ -5,6 +5,9 @@
 <html>
 
 <head>
+<META Http-Equiv="Cache-Control" Content="no-cache"/>
+<META Http-Equiv="Pragma" Content="no-cache"/>
+<META Http-Equiv="Expires" Content="0"/>
 <link href="css/LandingPageCSS.css" rel="stylesheet" type="text/css" />
 <title>DealWheel: Your Deal to self-drive your Wheels</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">

@@ -1,3 +1,7 @@
+<META Http-Equiv="Cache-Control" Content="no-cache"/>
+<META Http-Equiv="Pragma" Content="no-cache"/>
+<META Http-Equiv="Expires" Content="0"/>
+
 <script src="js/jquery-1.11.3.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/bootstrap-datepicker.min.js"></script>

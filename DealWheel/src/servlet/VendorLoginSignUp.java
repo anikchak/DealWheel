@@ -34,8 +34,12 @@ public class VendorLoginSignUp extends HttpServlet {
 		String pagecontext = req.getContextPath();
 		String output = null;
 		if(req.getParameter("identifier")!=null && "signup".equals(req.getParameter("identifier"))){
+			if(req.getParameter("email") ==null){
+				output = "USRNMISSUE";
+			}
 			if(req.getParameter("password").equals(req.getParameter("confirmPassword"))){
 				System.out.println("Forwarding to registration");
+				System.out.println("Username="+req.getParameter("email") +" Password="+req.getParameter("password"));
 				//req.getRequestDispatcher(NAV_TO_VENDORREGISTRATION_PAGE).forward(req, resp);
 				req.getSession().setAttribute("password", req.getParameter("password"));
 				req.getSession().setAttribute("email", req.getParameter("email"));

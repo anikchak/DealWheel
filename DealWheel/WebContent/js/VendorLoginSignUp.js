@@ -112,6 +112,7 @@ $(document).ready(function(){
 			$.post("VendorLoginSignUp",
 					{
 						identifier : $('#identifier').val(),
+						email : $('#email').val(),
 						password : $('#password').val(),
 						confirmPassword : $('#confirmPassword').val(),
 						loginEmail : $('#loginEmail').val(),
@@ -129,6 +130,10 @@ $(document).ready(function(){
 								$("#login_Error_Login").hide();
 								$("#vendorLoginErrorMsgSpan").text("Username or Password is incorrect.");
 								$("#login_Error_Login").show();
+							}else if(responseText == "USRNMISSUE"){
+								$("#signup_error").hide();
+								$("#vendorSignupErrorMsgSpan").text("Username parsing error. Try again.");
+								$("#signup_error").show();
 							}else{
 								$(location).attr('href',pageContext + responseText);
 							}
