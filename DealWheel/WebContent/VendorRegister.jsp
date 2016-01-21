@@ -251,7 +251,7 @@ var pageContext = '<%=request.getContextPath()%>';
 		</div>
 		<!-- End of Address Block -->
 		<div class="row text-center" >
-    	 <button type="button" class="btn btn-info btn-md" id="" onclick="checkRequiredFiledsCondition()"><span class="glyphicon glyphicon-ok"></span> Register</button>
+    	 <button type="button" class="btn btn-info btn-md" id="" onclick="checkRequiredFieldsCondition()"><span class="glyphicon glyphicon-ok"></span> Register</button>
     	 <button type="button" class="btn btn-info btn-md" id="" style="background-color: rgba(217, 83, 79, 1);" onclick="resetFields()"><span class="glyphicon glyphicon-remove"></span> Reset</button>
     	</div>
 		</form> <!-- end of Form -->

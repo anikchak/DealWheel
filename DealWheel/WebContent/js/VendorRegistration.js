@@ -14,7 +14,7 @@ $(document).ready(function() {
 
 });
 
-function checkRequiredFiledsCondition() {
+function checkRequiredFieldsCondition() {
 	var emptyField = 'N';
 	$('#fullnameMandate').hide();
 	$("#fullName").css("border-color", "");
