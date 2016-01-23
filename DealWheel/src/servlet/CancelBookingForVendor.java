@@ -17,10 +17,10 @@ import org.apache.log4j.Logger;
 import model.Bookingshistory;
 import dao.BookingHistoryDAOImpl;
 
-@WebServlet("/DeleteBookingForVendor")
-public class DeleteBookingForVendor extends HttpServlet {
+@WebServlet("/CancelBookingForVendor")
+public class CancelBookingForVendor extends HttpServlet {
 
-	private static Logger logger = Logger.getLogger(DeleteBookingForVendor.class);
+	private static Logger logger = Logger.getLogger(CancelBookingForVendor.class);
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -31,7 +31,7 @@ public class DeleteBookingForVendor extends HttpServlet {
 			Object[] list = req.getParameterValues("arrayList");
 			for (int i = 0; i < list.length; i++) {
 			if("Yes".equals(req.getParameter("check" + i)))
-				bkngDAO.delete(list[i].toString());
+				bkngDAO.cancelBooking(list[i].toString());
 			}
 			resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_BOOKINGS_PAGE);
 		}catch(Exception e){

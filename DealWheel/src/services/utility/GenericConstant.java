@@ -82,6 +82,7 @@ public class GenericConstant {
 	public static final String VEHICLE_SEARCH_WITH_ID = "Vehicle.searchWithId";
 	
 	public static final String BOOKING_HISTORY_FIND_ALL = "Bookingshistory.findAll";
+	public static final String BOOKING_HISTORY_BY_ID = "Bookingshistory.findBookingHistoryById";
 	public static final String BOOKING_HISTORY_FOR_VENDOR = "Bookingshistory.findAllForVendor";
 	public static final String BOOKING_HISTORY_FIND_BOOKING_BY_SEQ = "Bookingshistory.findBookingSeq";
 	public static final String BOOKING_HISTORY_UPDATE = "Bookingshistory.UpdateBooking";

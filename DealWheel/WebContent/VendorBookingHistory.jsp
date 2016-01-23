@@ -17,9 +17,9 @@
 <body>
 <%@ include file="VendorTabs.jsp" %>
 <% List<Object[]> bookingDetailList = new BookingHistoryDAOImpl<Bookingshistory>().getBookingDetailsForVendorId(user.getUserId()); %>
-<form action="${pageContext.request.contextPath}/DeleteBookingForVendor" method="post">
+<form action="${pageContext.request.contextPath}/CancelBookingForVendor" method="post">
 <table border="1">
-<th>Delete</th><th>Vehicle Name</th><th>Registration No</th><th>Booking Period</th><th>Total Duration</th><th>Booked On</th><th>Total Cost</th><th>Booking Status</th>
+<th>Cancel</th><th>Vehicle Name</th><th>Registration No</th><th>Booking Period</th><th>Total Duration</th><th>Booked On</th><th>Total Cost</th><th>Booking Status</th>
 <% int itr = 0; long duration = 0, cost=0; String vehicle = "", period = "";
 for(Object[] bookingDetail : bookingDetailList ){ 
 vehicle = (((String)bookingDetail[0]) +" " +((String)bookingDetail[1]));
@@ -41,6 +41,6 @@ cost = duration * ((Integer)bookingDetail[6]).longValue();
 <% itr ++;
 } %>
 </table>
-<center><input type="submit" name="Delete" value="Delete"></center>
+<center><input type="submit" name="Cancel" value="Cancel"></center>
 </form>
 </html>
