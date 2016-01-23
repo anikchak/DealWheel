@@ -64,7 +64,7 @@ var pageContext = '<%=request.getContextPath()%>';
 		<div class="tab-content">
     	<div id="myProfile" class="tab-pane fade ">
     	<br><br>
-    	<form action="${pageContext.request.contextPath}/VendorRegistration" method="post" role="form" id="registrationFormId">
+    	<form action="${pageContext.request.contextPath}/VendorRegistration" method="post" role="form" id="updateDetailsFormId">
 		<!-- Start of Personal Details block -->
 		<div class="panel-group vehicleDisplay" style="width:70%;" id="personalDetailsId">
     	<div class="panel panel-default ">
@@ -111,7 +111,7 @@ var pageContext = '<%=request.getContextPath()%>';
     			<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></span>
 					<span class="form-control" id="secondaryContactSpan" style= "font-size: 15px; color: #687074;text-transform: uppercase;"><%=user.getUserSecondaryContact()%></span>
-					<input type="text" class="form-control" id="secondaryContact" name="secondaryContact" value="<%=user.getUserSecondaryContact()%>" placeholder="Enter your secondary contact" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;">
+					<input type="text" class="form-control" id="secondaryContact" name="secondaryContact" value="<%=user.getUserSecondaryContact()%>" placeholder="Enter your secondary contact (optional)" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;">
 				</div>
 				</div>
   				</div>
@@ -164,7 +164,7 @@ var pageContext = '<%=request.getContextPath()%>';
     			<div class="col-sm-10 " >
     			<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span></span>
-					<span class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" id="locality" ><%=address.getAddrLocality()%></span>
+					<span class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" id="localitySpan" ><%=address.getAddrLocality()%></span>
 					<input class="form-control" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;" type="text" id="locality" name="locality" value="<%=address.getAddrLocality()%>" placeholder="Locality">
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="localityMandate">Field cannot be empty</span>
@@ -206,7 +206,7 @@ var pageContext = '<%=request.getContextPath()%>';
     			<div class="col-sm-10 " >
     			<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-screenshot"></span></span>
-					<span class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" id="pinCode" ><%=address.getAddrPinCode()%></span>
+					<span class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" id="pinCodeSpan" ><%=address.getAddrPinCode()%></span>
 					<input class="form-control" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;" type="text" id="pinCode" name="pinCode" value="<%=address.getAddrPinCode()%>" placeholder="Pincode">
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px; display:none;" id="pinCodeMandate">Field cannot be empty</span>
@@ -214,9 +214,29 @@ var pageContext = '<%=request.getContextPath()%>';
   				</div>
   				
       		</div>
+      		<div class="row text-center" >
+    	 	<button type="button" class="btn btn-info btn-md" id="saveBtn" onclick="saveChanges()" disabled><span class="glyphicon glyphicon-ok"></span> Save</button>
+    	 	<button type="button" class="btn btn-info btn-md" id="cancelBtn" onclick="cancelOperation('alert')" style="background-color: rgba(217, 83, 79, 1);display:none;"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+    	 	<button type="button" class="btn btn-info btn-md" id="editBtn" style="background-color: rgba(217, 83, 79, 1);" onclick="editFields()"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
+    		</div>
+    		<br>
     	</div>
-		</div>
+    	</div>
 		</form>
+		<!-- Empty Error message pop-up starts-->
+		<div class="modal fade text-center" id="cancelAlertModalId" role="dialog">
+   		 <div class="modal-dialog">
+    		 <!-- Modal content-->
+     		 <div class="modal-content">
+        		<div class="modal-body">
+          		<p style="color:#687074;font-weight:bold;font-size:14px;text-transform:uppercase;">All your changes will be lost.</p>
+          		<button type="button" class="btn btn-info btn-sm" data-dismiss="modal" onclick="cancelOperation('ok')" style="">Ok</button>
+          		<button type="button" class="btn btn-info btn-sm" data-dismiss="modal" style="background-color: rgba(217, 83, 79, 1);">Cancel</button>
+        		</div>
+      		</div>
+    	 </div>
+  		</div>
+	<!-- Empty Error message pop-up ends -->
     	</div>
     	<!-- My Profile ends -->
     	<!-- My Vehicle Details start -->
@@ -255,6 +275,7 @@ var pageContext = '<%=request.getContextPath()%>';
 	var propCities = '<%= CommonUtility.getValuesFromProperties("activeCities")%>';
 	</script>
 	<script src="js/CommonJS.js" type="text/javascript"></script>
+	<script src="js/VendorHomeJS.js" type="text/javascript"></script>
 	<style>
 	  	.nav-tabs{border-bottom:1px solid #85b213}
 		.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
@@ -266,7 +287,7 @@ var pageContext = '<%=request.getContextPath()%>';
 		.panel-default>.panel-heading{border-bottom:1px solid #85b213}
 		.vehicleDisplay{padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto}@media (min-width:768px){.vehicleDisplay{width:750px}}@media (min-width:992px){.vehicleDisplay{width:750px}}@media (min-width:1200px){.vehicleDisplay{width:750px}}
 	 </style>
-	</style>
+	
 	
  </body>
 </html>
