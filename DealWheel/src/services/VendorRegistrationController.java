@@ -30,7 +30,7 @@ public class VendorRegistrationController {
 	public List registerVendor(Map<String,String> params){
 		List committedEntities = new ArrayList();
 		BigInteger pNum = new BigInteger(params.get("primaryContact"));
-		BigInteger sNum = params.get("secondaryContact").equals("") ? BigInteger.ZERO : new BigInteger(params.get("secondaryContact"));
+		BigInteger sNum = ("".equals(params.get("secondaryContact")) || params.get("secondaryContact")==null) ? BigInteger.ZERO : new BigInteger(params.get("secondaryContact"));
 		User user = new User();
 		user.setUserName(params.get("fullName"));
 		user.setUserEmail(params.get("email"));
@@ -81,7 +81,7 @@ public class VendorRegistrationController {
 	public List updateVendor(Map<String, String> params) {
 		List committedEntities = new ArrayList();
 		BigInteger pNum = new BigInteger(params.get("primaryContact"));
-		BigInteger sNum = params.get("secondaryContact").equals("") ? BigInteger.ZERO : new BigInteger(params.get("secondaryContact"));
+		BigInteger sNum = ("".equals(params.get("secondaryContact")) || params.get("secondaryContact")==null) ? BigInteger.ZERO : new BigInteger(params.get("secondaryContact"));
 		
 		User user = new UserDAOImpl<User>().findUserByEmailAddress(params.get("email"));
 		user.setUserName(params.get("fullName"));
@@ -101,7 +101,7 @@ public class VendorRegistrationController {
 		addr.setAddrCity(params.get("city"));
 		addr.setAddrState(params.get("state"));
 		addr.setAddrPinCode(Integer.parseInt(params.get("pinCode")));
-		addr.setAddrType(USER_TYPE_VENDOR);
+		addr.setAddrType(ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);
 		addr.setLastUpdated(new Date());
 		addr.setLastUpdatedBy(params.get("fullName"));
 		Address addrUpdated = new AddressDAOImpl<Address>().update(addr);

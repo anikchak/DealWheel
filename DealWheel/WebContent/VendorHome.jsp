@@ -102,20 +102,7 @@ var pageContext = '<%=request.getContextPath()%>';
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="primaryContactMandate">Field cannot be empty</span>
 				</div>
   				</div>
-  				
-  				<div class="form-group row">
-      			<div class="col-sm-2 " style="padding-top:0px;">
-    			<label for="secondaryContact" style="color: rgba(217, 83, 79, 1);font-size:14px;">Secondary Contact</label>
-    			</div>
-    			<div class="col-sm-10" style="">
-    			<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></span>
-					<span class="form-control" id="secondaryContactSpan" style= "font-size: 15px; color: #687074;text-transform: uppercase;"><%=user.getUserSecondaryContact()%></span>
-					<input type="text" class="form-control" id="secondaryContact" name="secondaryContact" value="<%=user.getUserSecondaryContact()%>" placeholder="Enter your secondary contact (optional)" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;">
-				</div>
-				</div>
-  				</div>
-  				  				
+  				  				  				
   				<div class="form-group row">
       			<div class="col-sm-2 " style="">
     			<label for="addr1" style="color: rgba(217, 83, 79, 1);font-size:12.5px;">Address Line 1 <span style="font-size:10px;">(or company name)</span></label>

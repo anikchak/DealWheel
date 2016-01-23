@@ -8,8 +8,6 @@ function editFields() {
 	$("#fullNameSpan").hide();
 	$("#primaryContact").show();
 	$("#primaryContactSpan").hide();
-	$("#secondaryContact").show();
-	$("#secondaryContactSpan").hide();
 	$("#addr1").show();
 	$("#addr1Span").hide();
 	$("#addr2").show();
@@ -46,9 +44,6 @@ function cancelOperation(opCode) {
 		$("#primaryContact").val($("#primaryContactSpan").text());
 		$("#primaryContact").hide();
 		$("#primaryContactSpan").show();
-		$("#secondaryContact").val($("#secondaryContactSpan").text());
-		$("#secondaryContact").hide();
-		$("#secondaryContactSpan").show();
 		$("#addr1").val($("#addr1Span").text());
 		$("#addr1").hide();
 		$("#addr1Span").show();
@@ -146,4 +141,4 @@ function checkForEmptyFields(){
 	}
 	return emptyField;
 }
-//CHanges for My Profile tab ends
+//Changes for My Profile tab ends

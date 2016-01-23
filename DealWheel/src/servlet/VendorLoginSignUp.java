@@ -43,6 +43,7 @@ public class VendorLoginSignUp extends HttpServlet {
 				//req.getRequestDispatcher(NAV_TO_VENDORREGISTRATION_PAGE).forward(req, resp);
 				req.getSession().setAttribute("password", req.getParameter("password"));
 				req.getSession().setAttribute("email", req.getParameter("email"));
+				req.getSession().setAttribute("vendorFlow", "vendorFlow");
 				output = NAV_TO_VENDORREGISTRATION_PAGE+"?invoke=vendorFlow";
 			}
 			else{
