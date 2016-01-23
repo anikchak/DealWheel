@@ -57,6 +57,7 @@ public class Logout extends HttpServlet {
         //invalidate the session if exists
         HttpSession session = request.getSession(false);
         if(session != null){
+        	session.removeAttribute("vendorFlow");
             session.invalidate();
         }
         if(initiateVendorFlow!=null && "vendorFlow".equalsIgnoreCase(initiateVendorFlow)){

@@ -82,8 +82,17 @@
 								}
 							}
 							else{
-							String vendorFlow = (String)request.getParameter("invoke");
-							System.out.println("From Nav = "+vendorFlow);
+							String vendorFlowRequest = (String)request.getParameter("invoke");
+							String vendorFlowSession = (String)session.getAttribute("vendorFlow");
+							String vendorFlow = null;
+							
+							if(vendorFlowRequest !=null && "vendorFlow".equalsIgnoreCase(vendorFlowRequest)){
+								vendorFlow = "vendorFlow";
+							}else if(vendorFlowSession !=null && "vendorFlow".equalsIgnoreCase(vendorFlowSession)){
+								vendorFlow = "vendorFlow";
+							}
+							
+							System.out.println("vendorFlowRequest="+vendorFlowRequest+" vendorFlowSession="+vendorFlowSession+" vendorFlow="+vendorFlow);
 							if(vendorFlow ==null || !"vendorFlow".equalsIgnoreCase(vendorFlow)){
 						%>
 						<!-- When user is not logged in -->
@@ -92,6 +101,29 @@
 		<input type ="text" value="noUser" id = "userPresent" style="display:none;"/>				
 						<!-- When user is not logged in ends-->
 						<%}
+						else if(vendorFlow !=null && "vendorFlow".equalsIgnoreCase(vendorFlow)){
+							if(session.getAttribute("UserModel")!=null){
+								User u = (User)session.getAttribute("UserModel");
+								if(u != null){
+						%>
+								
+							<li class="dropdown">
+							<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:#fff;font-size:13px;text-transform:uppercase;">
+								<span class="glyphicon glyphicon-user"></span> 
+								<%=u.getUserEmail() %><span class="caret"></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="#" style="color: #687074; font-weight:400;" onclick="logoutUser()">
+										<span class="glyphicon glyphicon-log-out"></span> Logout
+									</a>
+								</li>
+							</ul>
+						</li>
+						<%
+								}//end of validVendorDetails if condition
+							}//end of session attribute if condition
+						}//end of else-if
 						}
 						 %>
 						<!-- Verify if the user is logged in or not ends-->

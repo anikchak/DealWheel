@@ -58,6 +58,8 @@ public class VendorLoginSignUp extends HttpServlet {
 				if(session !=null){
 					req.getSession().setAttribute(USER_MODEL, user);
 					req.getSession().setAttribute(ADDRESS_MODEL, address);
+					req.getSession().setAttribute("vendorFlow", "vendorFlow");
+					System.out.println("vendor flow = "+req.getSession().getAttribute("vendorFlow"));
 					//resp.sendRedirect(pagecontext+NAV_TO_VENDOR_HOME_PAGE);
 					output = NAV_TO_VENDOR_HOME_PAGE;
 				}

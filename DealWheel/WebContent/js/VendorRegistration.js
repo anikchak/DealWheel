@@ -76,6 +76,7 @@ function checkRequiredFieldsCondition() {
 
 	if (emptyField == 'N') {
 		//Submit form
+		$("#registrationFormId").submit();
 	}
 }
 
