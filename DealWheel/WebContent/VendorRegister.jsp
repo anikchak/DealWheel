@@ -50,7 +50,7 @@ var pageContext = '<%=request.getContextPath()%>';
 		<div class="container">
 		<br>
 		<br>
-		<form action="${pageContext.request.contextPath}/VendorRegistration" method="post" role="form">
+		<form action="${pageContext.request.contextPath}/VendorRegistration" method="post" role="form" id="registrationFormId">
 		<!-- Start of Personal Details block -->
 		<div class="panel-group vehicleDisplay" style="width:70%;" id="personalDetailsId">
     	<div class="panel panel-default ">
@@ -67,7 +67,7 @@ var pageContext = '<%=request.getContextPath()%>';
     			<label for="email" style="color: rgba(217, 83, 79, 1);font-size:14px;">Username/Email</label>
     			</div>
     			<div class="col-sm-8 " >
-    			<span class="" style= "font-size: 15px; color: #687074;text-transform:uppercase;" id="email" name="email"> <%= session.getAttribute("email") %> </span>
+    			<span class="" style= "font-size: 15px; color: #687074;text-transform:uppercase;" id="email" > <%= session.getAttribute("email") %> </span>
     			</div>
   				</div>
   				
@@ -78,7 +78,7 @@ var pageContext = '<%=request.getContextPath()%>';
     			<div class="col-sm-10" style="">
     			<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-					<input class="form-control" style= "font-size: 15px; color: #687074;" type="text" id="fullName" name="fullName" placeholder="Enter your name">
+					<input class="form-control" style= "font-size: 15px; color: #687074;text-transform:uppercase;" type="text" id="fullName" name="fullName" placeholder="Enter your name">
 				</div>
     			<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="fullnameMandate">Field cannot be empty</span>
 				
@@ -102,7 +102,7 @@ var pageContext = '<%=request.getContextPath()%>';
     			<div class="col-sm-10" style="">
     			<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-					<input type="text" class="form-control" id="dob" name="dob" placeholder="Enter your date of birth (dd/mm/yyyy)">
+					<input type="text" class="form-control" id="dob" name="dob" placeholder="Enter your date of birth (dd/mm/yyyy)" style= "font-size: 15px; color: #687074;text-transform:uppercase;">
 				</div>
 				</div>
   				</div>
@@ -114,7 +114,7 @@ var pageContext = '<%=request.getContextPath()%>';
     			<div class="col-sm-10" style="">
     			<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
-					<input type="text" class="form-control" id="primaryContact" name="primaryContact" placeholder="Enter your primary contact">
+					<input type="text" class="form-control" id="primaryContact" name="primaryContact" placeholder="Enter your primary contact" style= "font-size: 15px; color: #687074;text-transform:uppercase;">
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="primaryContactMandate">Field cannot be empty</span>
 				</div>
@@ -127,7 +127,7 @@ var pageContext = '<%=request.getContextPath()%>';
     			<div class="col-sm-10" style="">
     			<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></span>
-					<input type="text" class="form-control" id="secondaryContact" name="secondaryContact" placeholder="Enter your secondary contact">
+					<input type="text" class="form-control" id="secondaryContact" name="secondaryContact" placeholder="Enter your secondary contact" style= "font-size: 15px; color: #687074;text-transform:uppercase;">
 				</div>
 				</div>
   				</div>
@@ -154,7 +154,7 @@ var pageContext = '<%=request.getContextPath()%>';
     			<div class="col-sm-10 " >
     			<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-list"></span></span>
-					<input class="form-control" style= "font-size: 15px; color: #687074;" type="text" id="addr1" name="addr1" placeholder="Flat/House No, Floor, Building, Company Name">
+					<input class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" type="text" id="addr1" name="addr1" placeholder="Flat/House No, Floor, Building, Company Name">
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="addr1Mandate">Field cannot be empty</span>
 				</div>
@@ -167,7 +167,7 @@ var pageContext = '<%=request.getContextPath()%>';
     			<div class="col-sm-10 " >
     			<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-list"></span></span>
-					<input class="form-control" style= "font-size: 15px; color: #687074;" type="text" id="addr2" name="addr2" placeholder="Colony/Society, Street">
+					<input class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" type="text" id="addr2" name="addr2" placeholder="Colony/Society, Street">
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="addr2Mandate">Field cannot be empty</span>
 				</div>
@@ -180,7 +180,7 @@ var pageContext = '<%=request.getContextPath()%>';
     			<div class="col-sm-10 " >
     			<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-list"></span></span>
-					<input class="form-control" style= "font-size: 15px; color: #687074;" type="text" id="addr3" name="addr3" placeholder="Address line 3 (optional)">
+					<input class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" type="text" id="addr3" name="addr3" placeholder="Address line 3 (optional)">
 				</div>
 				</div>
   				</div>
@@ -192,7 +192,7 @@ var pageContext = '<%=request.getContextPath()%>';
     			<div class="col-sm-10 " >
     			<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span></span>
-					<input class="form-control" style= "font-size: 15px; color: #687074;" type="text" id="locality" name="locality" placeholder="Locality">
+					<input class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" type="text" id="locality" name="locality" placeholder="Locality">
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="localityMandate">Field cannot be empty</span>
 				</div>
@@ -205,7 +205,7 @@ var pageContext = '<%=request.getContextPath()%>';
     			<div class="col-sm-10 " >
     			<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span></span>
-					<input class="form-control" style= "font-size: 15px; color: #687074;" type="text" name="city"  id="city" placeholder="Town/City">
+					<input class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" type="text" name="city"  id="city" placeholder="Town/City">
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="cityMandate">Field cannot be empty</span>
 				</div>
@@ -218,7 +218,7 @@ var pageContext = '<%=request.getContextPath()%>';
     			<div class="col-sm-10 " >
     			<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span></span>
-					<input class="form-control" style= "font-size: 15px; color: #687074;" type="text" name="state" id="state" placeholder="State">
+					<input class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" type="text" name="state" id="state" placeholder="State">
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="stateMandate">Field cannot be empty</span>
 				</div>
@@ -240,7 +240,7 @@ var pageContext = '<%=request.getContextPath()%>';
     			<div class="col-sm-10 " >
     			<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-screenshot"></span></span>
-					<input class="form-control" style= "font-size: 15px; color: #687074;" type="text" id="pinCode" name="pinCode" placeholder="Pincode">
+					<input class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" type="text" id="pinCode" name="pinCode" placeholder="Pincode">
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px; display:none;" id="pinCodeMandate">Field cannot be empty</span>
 				</div>

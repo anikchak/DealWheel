@@ -29,7 +29,7 @@ public class VendorRegistration extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String password =  req.getParameter("password");
+		String password =  (String)req.getSession().getAttribute("password");
 		List entities = null;
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("addrLine1", req.getParameter("addr1"));
@@ -38,13 +38,16 @@ public class VendorRegistration extends HttpServlet {
 		params.put("locality", req.getParameter("locality"));
 		params.put("city", req.getParameter("city"));
 		params.put("state", req.getParameter("state"));
-		params.put("country", req.getParameter("country")!=null?req.getParameter("country"):"");
+		params.put("country", "India");
 		params.put("pinCode", req.getParameter("pinCode"));
 		
-		if( req.getParameter("email")!=null)
-			params.put("email", req.getParameter("email"));
+		System.out.println("Email id = "+req.getSession().getAttribute("email"));
+		String emailUserName = (String)req.getSession().getAttribute("email");
+		if( emailUserName!=null)
+			params.put("email", emailUserName);
 		else
 			params.put("email", ((User)req.getSession().getAttribute(USER_MODEL)).getUserEmail());
+		
 		params.put("password", password!=null?password:"");
 		
 		params.put("fullName", req.getParameter("fullName")!=null?req.getParameter("fullName"):"");
@@ -55,6 +58,7 @@ public class VendorRegistration extends HttpServlet {
 		params.put("secondaryContact", req.getParameter("secondaryContact"));
 		
 		VendorRegistrationController controller = new VendorRegistrationController();
+		System.out.println("Map params = "+params);
 		if(password!=null)
 			entities = controller.registerVendor(params);
 		else

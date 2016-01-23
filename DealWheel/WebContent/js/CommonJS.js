@@ -3,7 +3,7 @@
  * application
  */
 // Global variables
-var city,ip,region;
+var city, ip, region;
 
 /* affix the navbar after scroll below header */
 $('#nav').affix({
@@ -47,14 +47,14 @@ $(document).ready(function() {
 		clearBtn : "true",
 		title : "pickup",
 	});
-	 $('[data-toggle="tooltip"]').tooltip();   
-	 
+	$('[data-toggle="tooltip"]').tooltip();
+
 });
 
-//This function is used to default the drop-off date to (start-date + 1)
-function defaultDropDate(){
-	var startDate = $('#pickupDate').datepicker('getDate', '+1d'); 
-	startDate.setDate(startDate.getDate()+1);
+// This function is used to default the drop-off date to (start-date + 1)
+function defaultDropDate() {
+	var startDate = $('#pickupDate').datepicker('getDate', '+1d');
+	startDate.setDate(startDate.getDate() + 1);
 	$('#dropoffDate').datepicker('setStartDate', startDate);
 }
 
@@ -76,7 +76,7 @@ function openSignUpPopUp() {
 	$("#signupModal").modal();
 }
 
-function openForgotPswd(){
+function openForgotPswd() {
 	$('#forgotPswdErrorMsgDiv').css('display', 'none');
 	$('#forgotPswdUsrname').val("");
 	$('#forgotPswdmobileNumber').val("");
@@ -96,24 +96,23 @@ function submitForAuthentication(authType, pageContext) {
 				password : $('#loginPassword').val(),
 				authType : 'login'
 			}, function(responseText) {
-				//alert("ResponseText=" + responseText);
+				// alert("ResponseText=" + responseText);
 				if (responseText != null && responseText != ''
 						&& responseText == 'authenticationFailed') {
 					$('#loginErrorMsgSpan').html(
 							"Invalid username or password entered.");
 					$('#loginErrorMsgDiv').css('display', 'block');
 					$('#loginPassword').val("");
-				} else if(responseText == 'emptyFields'){
+				} else if (responseText == 'emptyFields') {
 					$('#loginErrorMsgSpan').html("Enter value for all fields");
 					$('#loginErrorMsgDiv').css('display', 'block');
-				} else if (responseText == 'invalidEmail'){
+				} else if (responseText == 'invalidEmail') {
 					$('#loginErrorMsgSpan').html("Email address invalid.");
 					$('#loginErrorMsgDiv').css('display', 'block');
 					$('#loginUsrname').val("");
 					$('#loginPassword').val("");
-				}
-				else {
-					//alert("Response=" + responseText);
+				} else {
+					// alert("Response=" + responseText);
 					$(location).attr('href', pageContext + responseText);
 				}
 			});
@@ -121,52 +120,53 @@ function submitForAuthentication(authType, pageContext) {
 	} else if (authType == 'signup') {
 		if (($('#signupUsername') != null && $('#signupUsername').val() == '')
 				|| ($('#signupPassword') != null && $('#signupPassword').val() == '')
-				|| ($('#signupmobileNumber') != null && $(
-						'#signupmobileNumber').val() == '')) {
+				|| ($('#signupmobileNumber') != null && $('#signupmobileNumber')
+						.val() == '')) {
 			$('#signupErrorMsgSpan').html("Enter value for all fields");
 			$('#signupErrorMsgDiv').css('display', 'block');
 		} else {
-			$.post(
+			$
+					.post(
 							"Login",
 							{
 								username : $('#signupUsername').val(),
 								password : $('#signupPassword').val(),
-								mobileNumber : $('#signupmobileNumber')
-										.val(),
+								mobileNumber : $('#signupmobileNumber').val(),
 								authType : 'signup'
 							},
 							function(responseText) {
-								//alert("ResponseText=" + responseText);
+								// alert("ResponseText=" + responseText);
 								if (responseText != null && responseText != '') {
 									if (responseText == 'userNameExists') {
-										$('#signupErrorMsgSpan')
-												.html(
-														'Username already exists.');
+										$('#signupErrorMsgSpan').html(
+												'Username already exists.');
 										$('#signupErrorMsgDiv').css('display',
 												'block');
 										$('#signupUsername').val("");
 										$('#signupPassword').val("");
 										$('#signupmobileNumber').val("");
 									} else if (responseText == 'mobileNaN') {
-										$('#signupErrorMsgSpan')
-												.html(
-														'Invalid Mobile Number.');
+										$('#signupErrorMsgSpan').html(
+												'Invalid Mobile Number.');
 										$('#signupErrorMsgDiv').css('display',
 												'block');
 										$('#signupPassword').val("");
 										$('#signupmobileNumber').val("");
-									} else if(responseText == 'invalidEmail'){
-										$('#signupErrorMsgSpan').html("Email address invalid.");
-										$('#signupErrorMsgDiv').css('display', 'block');
+									} else if (responseText == 'invalidEmail') {
+										$('#signupErrorMsgSpan').html(
+												"Email address invalid.");
+										$('#signupErrorMsgDiv').css('display',
+												'block');
 										$('#signupUsername').val("");
 										$('#signupPassword').val("");
 										$('#signupmobileNumber').val("");
-									}
-									else if(responseText == 'emptyFields'){
-										$('#signupErrorMsgSpan').html("Enter value for all fields");
-										$('#signupErrorMsgDiv').css('display', 'block');
+									} else if (responseText == 'emptyFields') {
+										$('#signupErrorMsgSpan').html(
+												"Enter value for all fields");
+										$('#signupErrorMsgDiv').css('display',
+												'block');
 									} else {
-										//alert("Response=" + responseText);
+										// alert("Response=" + responseText);
 										$(location).attr('href',
 												pageContext + responseText);
 									}
@@ -184,43 +184,53 @@ function submitForAuthentication(authType, pageContext) {
 							});
 
 		}
-	}else if(authType == 'forgotPassword'){
+	} else if (authType == 'forgotPassword') {
 		if (($('#forgotPswdUsrname') != null && $('#forgotPswdUsrname').val() == '')
-				|| ($('#forgotPswdmobileNumber') != null && $('#forgotPswdmobileNumber').val() == '')) 
-		{
+				|| ($('#forgotPswdmobileNumber') != null && $(
+						'#forgotPswdmobileNumber').val() == '')) {
 			$('#forgotPswdErrorMsgSpan').html("Enter value for all fields");
 			$('#forgotPswdErrorMsgDiv').css('display', 'block');
-		}else{
+		} else {
 
-			$.post("Login",
+			$
+					.post(
+							"Login",
 							{
 								username : $('#forgotPswdUsrname').val(),
-								mobileNumber : $('#forgotPswdmobileNumber').val(),
+								mobileNumber : $('#forgotPswdmobileNumber')
+										.val(),
 								authType : 'forgotPassword'
 							},
 							function(responseText) {
-								//alert("ResponseText=" + responseText);
+								// alert("ResponseText=" + responseText);
 								if (responseText != null && responseText != '') {
 									if (responseText == 'mobileNaN') {
-										$('#forgotPswdErrorMsgSpan')
-												.html(
-														'Invalid Mobile Number.');
-										$('#forgotPswdErrorMsgDiv').css('display',
-												'block');
+										$('#forgotPswdErrorMsgSpan').html(
+												'Invalid Mobile Number.');
+										$('#forgotPswdErrorMsgDiv').css(
+												'display', 'block');
 										$('#forgotPswdmobileNumber').val("");
-									} else if(responseText == 'invalidEmail'){
-										$('#forgotPswdErrorMsgSpan').html("Email address invalid.");
-										$('#forgotPswdErrorMsgDiv').css('display', 'block');
+									} else if (responseText == 'invalidEmail') {
+										$('#forgotPswdErrorMsgSpan').html(
+												"Email address invalid.");
+										$('#forgotPswdErrorMsgDiv').css(
+												'display', 'block');
 										$('#forgotPswdUsrname').val("");
 										$('#forgotPswdmobileNumber').val("");
-									}
-									else if(responseText == 'emptyFields'){
-										$('#forgotPswdErrorMsgSpan').html("Enter value for all fields");
-										$('#forgotPswdErrorMsgDiv').css('display', 'block');
+									} else if (responseText == 'emptyFields') {
+										$('#forgotPswdErrorMsgSpan').html(
+												"Enter value for all fields");
+										$('#forgotPswdErrorMsgDiv').css(
+												'display', 'block');
 									} else {
-										var responseData = responseText.split("#");
-										sendForgotPwdEmailNotification(responseData[1],$('#forgotPswdUsrname').val());
-										$(location).attr('href',pageContext + responseData[0]);
+										var responseData = responseText
+												.split("#");
+										sendForgotPwdEmailNotification(
+												responseData[1], $(
+														'#forgotPswdUsrname')
+														.val());
+										$(location).attr('href',
+												pageContext + responseData[0]);
 									}
 								} else {
 
@@ -237,48 +247,42 @@ function submitForAuthentication(authType, pageContext) {
 	}
 }
 
-function sendForgotPwdEmailNotification(resetPwd,userEmail){
-	$.post(
-			"TriggerEmail",
-			{
-				actionCode : "forgotPassword",
-				tempPwd : resetPwd,
-				userId : userEmail				
-			},
-			function(responseText) {
-				
-			});
+function sendForgotPwdEmailNotification(resetPwd, userEmail) {
+	$.post("TriggerEmail", {
+		actionCode : "forgotPassword",
+		tempPwd : resetPwd,
+		userId : userEmail
+	}, function(responseText) {
+
+	});
 }
 
-function logoutUser(){
+function logoutUser() {
 	$('#logoutFormId').submit();
 }
 
-function selectedLocation(selectedLoc){
-	$('#locationId').text(" "+selectedLoc+ " ");
+function selectedLocation(selectedLoc) {
+	$('#locationId').text(" " + selectedLoc + " ");
 	setLocationToSession(selectedLoc);
 	$('#selectedLocationId').val(selectedLoc);
 	$("#selectedLocationCancelBtn").click();
 	$("#landingPageNavId").click();
 }
 
-function setLocationToSession(selectedLoc){
-	$.post(
-			"LocationSetting",
-			{
-				locationSelected : selectedLoc
-			},
-			function(responseText) {
-				
-			});
-	
+function setLocationToSession(selectedLoc) {
+	$.post("LocationSetting", {
+		locationSelected : selectedLoc
+	}, function(responseText) {
+
+	});
+
 }
 
-function modifySearchCriteria(operation){
-	if(operation=='modify'){
+function modifySearchCriteria(operation) {
+	if (operation == 'modify') {
 		$('#readOnlySearchDataDivId').hide();
 		$('#modifySearchDataDivId').show();
-	}else if (operation=='cancel'){
+	} else if (operation == 'cancel') {
 		$('#readOnlySearchDataDivId').show();
 		$('#modifySearchDataDivId').hide();
 		$("#modifySearchDivId").hide();
@@ -291,26 +295,27 @@ function modifySearchCriteria(operation){
 	}
 }
 
-
-function verifyLocationSetting(){
+function verifyLocationSetting() {
 	var locationIdText = $('#locationId').text();
-	if(' Location ' == locationIdText){
+	if (' Location ' == locationIdText) {
 		$("#chooseLocationDivId").modal();
-	}else{
+	} else {
 		var pickup = $("#pickupDate").val();
 		var dropoff = $("#dropoffDate").val();
-		if(pickup=="" || pickup == null){
-			$("#searchCriteriaErrorSpan").text("** Pickup date cannot be empty");
-		}else if(dropoff=="" || dropoff == null){
-			$("#searchCriteriaErrorSpan").text("** Dropoff date cannot be empty");
-		}else{
+		if (pickup == "" || pickup == null) {
+			$("#searchCriteriaErrorSpan")
+					.text("** Pickup date cannot be empty");
+		} else if (dropoff == "" || dropoff == null) {
+			$("#searchCriteriaErrorSpan").text(
+					"** Dropoff date cannot be empty");
+		} else {
 			$("#searchCriteriaDivId").submit();
 		}
-		
+
 	}
 }
 
-function invokeVendorFlow(){
+function invokeVendorFlow() {
 	$("#logoutFormId").submit();
 	$(location).attr('href', pageContext + "/VendorLoginSignUp.jsp");
 }

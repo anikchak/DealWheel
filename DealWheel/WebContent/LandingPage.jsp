@@ -31,10 +31,17 @@ var pageContext = '<%=request.getContextPath()%>';
 <body>
 	<% 
 	String comingFromPage = (String)session.getAttribute("currentPage");
+	System.out.println("comingFromPage - Landing Page="+comingFromPage);
 	if("ReviewBooking".equalsIgnoreCase(comingFromPage)){
 		String lockedBookingId = (String)session.getAttribute("tempLockedVehicle");
 		System.out.println("Landing Page-lockedBookingId: "+lockedBookingId);
 		new CustomerControllerService().cleanBookingUsingTempBookingId(lockedBookingId);
+	}
+	
+	if("VendorLogin".equalsIgnoreCase(comingFromPage) ||
+			"VendorRegistration".equalsIgnoreCase(comingFromPage) ||
+			"VendorHome".equalsIgnoreCase(comingFromPage)){
+		session.removeAttribute("vendorFlow");
 	}
 	session.setAttribute("currentPage","LandingPage");
 	new CustomerControllerService().cleanBookings();
