@@ -23,7 +23,7 @@ public class AddressDAOImpl<T>  extends  BaseDAOImpl<Address> implements Address
 
 	@Override
 	public Address findAddressByUserIdAndType(BigInteger userId, String userType) {
-		logger.debug("Getting Address for "+userType+"  with ID:"+userId);
+		logger.debug("Getting Address for "+userType+"  with ID:"+userId+" and userType value="+userType);
 		Query q = em.createNamedQuery(ADDRESS_FIND_FOR_USER_ID_AND_TYPE);
 		q.setParameter("userId", userId);
 		q.setParameter("userType", userType);
