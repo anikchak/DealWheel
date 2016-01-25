@@ -2,6 +2,29 @@
  * This file contain changes related to Vendor Home tabs 
  */
 
+$(document).ready(function() {
+	 $("#primaryContact").keypress(function (e) {
+	     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+	        $("#errmsgContact1").show().fadeOut(2000);
+	               return false;
+	    }
+	   });
+	 
+	 $("#secondaryContact").keypress(function (e) {
+	     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+	        $("#errmsgContact2").show().fadeOut(2000);
+	               return false;
+	    }
+	   });
+	 
+	 $("#pinCode").keypress(function (e) {
+	     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+	        $("#errmsgPin").show().fadeOut(2000);
+	               return false;
+	    }
+	   });
+});
+
 //Changes for My Profile tab starts
 function editFields() {
 	$("#fullName").show();
@@ -114,6 +137,11 @@ function checkForEmptyFields(){
 		$('#primaryContactMandate').show();
 		emptyField = 'Y';
 	}
+	if ( $("#primaryContact").val().length > 0  &&  $("#primaryContact").val().length < 10){
+		$("#primaryContact").css("border-color", "red");
+		$('#incompleteContactNo').show();
+		emptyField = 'Y';
+	}
 	if ($("#addr1").val() == '' || $("#addr1").val() == null) {
 		$("#addr1").css("border-color", "red");
 		$('#addr1Mandate').show();
@@ -144,6 +172,11 @@ function checkForEmptyFields(){
 		$('#pinCodeMandate').show();
 		emptyField = 'Y';
 	}
+	if ($("#pinCode").val().length > 0 && $("#pinCode").val().length < 6) {
+		$("#pinCode").css("border-color", "red");
+		$('#incompletePinCode').show();
+		emptyField = 'Y';
+	}
 	return emptyField;
 }
-//CHanges for My Profile tab ends
+//Changes for My Profile tab ends
