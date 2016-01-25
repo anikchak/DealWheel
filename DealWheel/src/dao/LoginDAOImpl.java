@@ -18,13 +18,18 @@ public class LoginDAOImpl<T> extends BaseDAOImpl<LoginDetail> implements LoginDA
 		return l;
 	}
 
-	public LoginDetail validateUserCredentials(String userName, String password, String userType) {
-		logger.debug("Validating User Credentials for "+userName);
+	public LoginDetail validateUserName(String userName, String userType) {
+		logger.debug("Validating User Name for "+userName);
 		Query q = em.createNamedQuery(LOGIN_DETAIL_FIND_USING_USER_NAME_AND_TYPE);
 		q.setParameter("loginUserName", userName);
 		q.setParameter("loginUserType", userType);
-		LoginDetail user = (LoginDetail) q.getSingleResult();
+		LoginDetail user = null;
+		try{
+			user = (LoginDetail) q.getSingleResult();
+		}catch(Exception e){
+			logger.error("No user found for "+userName);
+			return null;
+		}
 		return user;
 	}
-
 }

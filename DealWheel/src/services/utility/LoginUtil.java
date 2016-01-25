@@ -34,7 +34,7 @@ public class LoginUtil {
 		try{
 			SecurePassword securePwd = new SecurePassword();
 			LoginDAOImpl<LoginDetail> loginDAOImpl = new LoginDAOImpl<LoginDetail>();
-			LoginDetail detail = loginDAOImpl.validateUserCredentials(userName,password, userType);
+			LoginDetail detail = loginDAOImpl.validateUserName(userName, userType);
 			isUserValid = securePwd.validatePassword(password, detail.getLognPassword());
 		}catch(Exception e){
 			
@@ -48,7 +48,7 @@ public class LoginUtil {
 		try{
 			SecurePassword securePwd = new SecurePassword();
 			LoginDAOImpl<LoginDetail> loginDAOImpl = new LoginDAOImpl<LoginDetail>();
-			LoginDetail detail = loginDAOImpl.validateUserCredentials(userName,password, userType);
+			LoginDetail detail = loginDAOImpl.validateUserName(userName, userType);
 			isUserValid = securePwd.validatePassword(password, detail.getLognPassword());
 			if(isUserValid){
 				user = new UserDAOImpl<User>().findById(detail.getLognUserId());
@@ -58,6 +58,15 @@ public class LoginUtil {
 			return null;
 		}
 		return user;
+	}
+
+	public static boolean checkUserNameExists(String userName, String userTypeVendor) {
+		LoginDAOImpl<LoginDetail> loginDAOImpl = new LoginDAOImpl<LoginDetail>();
+		LoginDetail detail = loginDAOImpl.validateUserName(userName, userTypeVendor);
+		if(detail == null || detail.getLognId()==null || detail.getLognId().isEmpty())
+			return false;
+		else
+			return true;
 	}
 	
 }

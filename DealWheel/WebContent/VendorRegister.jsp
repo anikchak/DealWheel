@@ -116,7 +116,9 @@ var pageContext = '<%=request.getContextPath()%>';
 					<span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
 					<input type="text" class="form-control" id="primaryContact" name="primaryContact" placeholder="Enter your primary contact" style= "font-size: 15px; color: #687074;text-transform:uppercase;">
 				</div>
+				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="errmsgContact1">Digits Only</span>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="primaryContactMandate">Field cannot be empty</span>
+				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="incompleteContactNo">Contact number is less than 10 digits</span>
 				</div>
   				</div>
   				
@@ -129,6 +131,7 @@ var pageContext = '<%=request.getContextPath()%>';
 					<span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></span>
 					<input type="text" class="form-control" id="secondaryContact" name="secondaryContact" placeholder="Enter your secondary contact" style= "font-size: 15px; color: #687074;text-transform:uppercase;">
 				</div>
+				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="errmsgContact2">Digits Only</span>
 				</div>
   				</div>
       		</div>
@@ -242,7 +245,9 @@ var pageContext = '<%=request.getContextPath()%>';
 					<span class="input-group-addon"><span class="glyphicon glyphicon-screenshot"></span></span>
 					<input class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" type="text" id="pinCode" name="pinCode" placeholder="Pincode">
 				</div>
+				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="errmsgPin">Digits Only</span>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px; display:none;" id="pinCodeMandate">Field cannot be empty</span>
+				<span style="color: rgba(217, 83, 79, 1);font-size:12px; display:none;" id="incompletePinCode">Pin Code is less than 6 digits</span>
 				</div>
   				</div>
   				

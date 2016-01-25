@@ -14,10 +14,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Bookingshistory;
 import model.Vehicle;
 
 import org.apache.log4j.Logger;
 
+import dao.BookingHistoryDAOImpl;
 import dao.VehicleDAOImpl;
 
 @WebServlet("/DeleteVehicle")
@@ -31,18 +33,25 @@ public class DeleteVehicle extends HttpServlet {
 			throws ServletException, IOException {
 		try{
 			VehicleDAOImpl<Vehicle> vDAO = new VehicleDAOImpl<Vehicle>();
+			BookingHistoryDAOImpl<Bookingshistory> bhDAO = new BookingHistoryDAOImpl<Bookingshistory>();
 			Object[] list=  req.getParameterValues("arrayList");
 			if("Delete".equals(req.getParameter("identifier"))){
 				for (int i = 0; i < list.length; i++) {
+					BigInteger id = new BigInteger(list[i].toString());
 					if("Yes".equals(req.getParameter("check" + i)))
-						vDAO.delete(new BigInteger(list[i].toString()));
+						if(!bhDAO.checkFutureBookingAvailable(id))
+						vDAO.delete(id);
+					//TODO - else error msg
 					}
 			}
 			else if("Disable".equals(req.getParameter("identifier"))){
-				List<BigInteger> listIds = new ArrayList<BigInteger>();;
+				List<BigInteger> listIds = new ArrayList<BigInteger>();
 				for (int i = 0; i < list.length; i++) {
+					BigInteger id = new BigInteger(list[i].toString());
 					if("Yes".equals(req.getParameter("check" + i)))
-						listIds.add(new BigInteger(list[i].toString()));
+						if(!bhDAO.checkFutureBookingAvailable(id))
+							listIds.add(id);
+					//TODO - else error msg
 					}
 				vDAO.disable(listIds);
 			}

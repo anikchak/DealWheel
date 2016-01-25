@@ -3,8 +3,10 @@ package dao;
 import static services.utility.GenericConstant.BOOKING_HISTORY_FOR_VENDOR;
 import static services.utility.GenericConstant.BOOKING_HISTORY_BY_ID;
 import static services.utility.GenericConstant.CANCELLED;
+import static services.utility.GenericConstant.BOOKING_HISTORY_FOR_ID_BY_DATE;
 
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -39,5 +41,17 @@ public class BookingHistoryDAOImpl<T>  extends  BaseDAOImpl<Bookingshistory> imp
 		Bookingshistory bkngHistory = findBookingHistoryById(bookingId);
 		bkngHistory.setBkngStatus(CANCELLED);
 		update(bkngHistory);
+	}
+
+	public boolean checkFutureBookingAvailable(BigInteger vehicleId) {
+		boolean isAvailable = false;
+		logger.debug("Checking if booking for Vehicle Id "+vehicleId+" is available after "+new Date());
+		Query q = em.createNamedQuery(BOOKING_HISTORY_FOR_ID_BY_DATE);
+		q.setParameter("vehicleId", vehicleId);
+		q.setParameter("today", new Date());
+		Bookingshistory bookingDetail = (Bookingshistory) q.getResultList();
+		if(bookingDetail == null || bookingDetail.getBkngSeq().isEmpty())
+			isAvailable = true;
+		return isAvailable;
 	}
 }
