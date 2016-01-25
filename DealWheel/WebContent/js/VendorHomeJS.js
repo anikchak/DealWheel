@@ -2,37 +2,12 @@
  * This file contain changes related to Vendor Home tabs 
  */
 
-$(document).ready(function() {
-	 $("#primaryContact").keypress(function (e) {
-	     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-	        $("#errmsgContact1").show().fadeOut(2000);
-	               return false;
-	    }
-	   });
-	 
-	 $("#secondaryContact").keypress(function (e) {
-	     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-	        $("#errmsgContact2").show().fadeOut(2000);
-	               return false;
-	    }
-	   });
-	 
-	 $("#pinCode").keypress(function (e) {
-	     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
-	        $("#errmsgPin").show().fadeOut(2000);
-	               return false;
-	    }
-	   });
-});
-
 //Changes for My Profile tab starts
 function editFields() {
 	$("#fullName").show();
 	$("#fullNameSpan").hide();
 	$("#primaryContact").show();
 	$("#primaryContactSpan").hide();
-	$("#secondaryContact").show();
-	$("#secondaryContactSpan").hide();
 	$("#addr1").show();
 	$("#addr1Span").hide();
 	$("#addr2").show();
@@ -69,9 +44,6 @@ function cancelOperation(opCode) {
 		$("#primaryContact").val($("#primaryContactSpan").text());
 		$("#primaryContact").hide();
 		$("#primaryContactSpan").show();
-		$("#secondaryContact").val($("#secondaryContactSpan").text());
-		$("#secondaryContact").hide();
-		$("#secondaryContactSpan").show();
 		$("#addr1").val($("#addr1Span").text());
 		$("#addr1").hide();
 		$("#addr1Span").show();
@@ -137,11 +109,6 @@ function checkForEmptyFields(){
 		$('#primaryContactMandate').show();
 		emptyField = 'Y';
 	}
-	if ( $("#primaryContact").val().length > 0  &&  $("#primaryContact").val().length < 10){
-		$("#primaryContact").css("border-color", "red");
-		$('#incompleteContactNo').show();
-		emptyField = 'Y';
-	}
 	if ($("#addr1").val() == '' || $("#addr1").val() == null) {
 		$("#addr1").css("border-color", "red");
 		$('#addr1Mandate').show();
@@ -170,11 +137,6 @@ function checkForEmptyFields(){
 	if ($("#pinCode").val() == '' || $("#pinCode").val() == null) {
 		$("#pinCode").css("border-color", "red");
 		$('#pinCodeMandate').show();
-		emptyField = 'Y';
-	}
-	if ($("#pinCode").val().length > 0 && $("#pinCode").val().length < 6) {
-		$("#pinCode").css("border-color", "red");
-		$('#incompletePinCode').show();
 		emptyField = 'Y';
 	}
 	return emptyField;
