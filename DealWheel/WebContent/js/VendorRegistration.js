@@ -40,7 +40,8 @@ function checkRequiredFieldsCondition() {
 	$('#fullnameMandate').hide();
 	$("#fullName").css("border-color", "");
 	$('#primaryContactMandate').hide();
-	$('#incompleteContactNo').hide();
+	$('#incompleteContactNo1').hide();
+	$('#incompleteContactNo2').hide();
 	$("#primaryContact").css("border-color", "");
 	$('#addr1Mandate').hide();
 	$("#addr1").css("border-color", "");
@@ -53,7 +54,7 @@ function checkRequiredFieldsCondition() {
 	$('#stateMandate').hide();
 	$("#state").css("border-color", "");
 	$('#pinCodeMandate').hide();
-	$('incompletePinCode').hide();
+	$('#incompletePinCode').hide();
 	$("#pinCode").css("border-color", "");
 
 	if ($("#fullName").val() == '' || $("#fullName").val() == null) {
@@ -68,7 +69,12 @@ function checkRequiredFieldsCondition() {
 	}
 	if ( $("#primaryContact").val().length > 0  &&  $("#primaryContact").val().length < 10){
 		$("#primaryContact").css("border-color", "red");
-		$('#incompleteContactNo').show();
+		$('#incompleteContactNo1').show();
+		emptyField = 'Y';
+	}
+	if ( $("#secondaryContact").val().length > 0  &&  $("#secondaryContact").val().length < 10){
+		$("#secondaryContact").css("border-color", "red");
+		$('#incompleteContactNo2').show();
 		emptyField = 'Y';
 	}
 	

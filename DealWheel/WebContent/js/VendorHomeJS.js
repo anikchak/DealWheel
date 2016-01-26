@@ -53,10 +53,7 @@ function editFields() {
 }
 
 function cancelOperation(opCode) {
-	
-	var emptyField = checkForEmptyFields();
-
-	if (emptyField == "N") {
+	resetErrorMessages();
 		if(opCode == 'alert'){
 			$("#cancelAlertModalId").modal({
 				backdrop : 'static',
@@ -97,7 +94,6 @@ function cancelOperation(opCode) {
 		$("#saveBtn").attr('disabled', 'true');
 		$("#cancelBtn").hide();
 		}
-	}
 }
 
 function saveChanges(){
@@ -109,23 +105,7 @@ function saveChanges(){
 }
 
 function checkForEmptyFields(){
-	$('#fullnameMandate').hide();
-	$("#fullName").css("border-color", "");
-	$('#primaryContactMandate').hide();
-	$("#primaryContact").css("border-color", "");
-	$('#addr1Mandate').hide();
-	$("#addr1").css("border-color", "");
-	$('#addr2Mandate').hide();
-	$("#addr2").css("border-color", "");
-	$('#localityMandate').hide();
-	$("#locality").css("border-color", "");
-	$('#cityMandate').hide();
-	$("#city").css("border-color", "");
-	$('#stateMandate').hide();
-	$("#state").css("border-color", "");
-	$('#pinCodeMandate').hide();
-	$("#pinCode").css("border-color", "");
-	
+	resetErrorMessages();
 	var emptyField = "N";
 	if ($("#fullName").val() == '' || $("#fullName").val() == null) {
 		$("#fullName").css("border-color", "red");
@@ -139,7 +119,12 @@ function checkForEmptyFields(){
 	}
 	if ( $("#primaryContact").val().length > 0  &&  $("#primaryContact").val().length < 10){
 		$("#primaryContact").css("border-color", "red");
-		$('#incompleteContactNo').show();
+		$('#incompleteContactNo1').show();
+		emptyField = 'Y';
+	}
+	if ( $("#secondaryContact").val().length > 0  &&  $("#secondaryContact").val().length < 10){
+		$("#secondaryContact").css("border-color", "red");
+		$('#incompleteContactNo2').show();
 		emptyField = 'Y';
 	}
 	if ($("#addr1").val() == '' || $("#addr1").val() == null) {
@@ -178,5 +163,26 @@ function checkForEmptyFields(){
 		emptyField = 'Y';
 	}
 	return emptyField;
+}
+
+function resetErrorMessages(){
+	$('#fullnameMandate').hide();
+	$("#fullName").css("border-color", "");
+	$('#primaryContactMandate').hide();
+	$("#primaryContact").css("border-color", "");
+	$("#incompleteContactNo1").hide();
+	$("#incompleteContactNo2").hide();
+	$('#addr1Mandate').hide();
+	$("#addr1").css("border-color", "");
+	$('#addr2Mandate').hide();
+	$("#addr2").css("border-color", "");
+	$('#localityMandate').hide();
+	$("#locality").css("border-color", "");
+	$('#cityMandate').hide();
+	$("#city").css("border-color", "");
+	$('#stateMandate').hide();
+	$("#state").css("border-color", "");
+	$('#pinCodeMandate').hide();
+	$("#pinCode").css("border-color", "");
 }
 //Changes for My Profile tab ends

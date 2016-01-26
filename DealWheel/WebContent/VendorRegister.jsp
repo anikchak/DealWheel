@@ -118,7 +118,7 @@ var pageContext = '<%=request.getContextPath()%>';
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="errmsgContact1">Digits Only</span>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="primaryContactMandate">Field cannot be empty</span>
-				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="incompleteContactNo">Contact number is less than 10 digits</span>
+				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="incompleteContactNo1">Contact number is less than 10 digits</span>
 				</div>
   				</div>
   				
@@ -132,6 +132,7 @@ var pageContext = '<%=request.getContextPath()%>';
 					<input type="text" class="form-control" id="secondaryContact" name="secondaryContact" placeholder="Enter your secondary contact" style= "font-size: 15px; color: #687074;text-transform:uppercase;">
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="errmsgContact2">Digits Only</span>
+				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="incompleteContactNo2">Contact number is less than 10 digits</span>
 				</div>
   				</div>
       		</div>

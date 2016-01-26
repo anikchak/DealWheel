@@ -52,7 +52,7 @@ var pageContext = '<%=request.getContextPath()%>';
 		<div class="container">
 		<br>
 		<br>
-		<h3 class="text-center" style="color:#687074;">My Profile Summary</h3>
+		<h3 class="text-center" style="color:#687074;">Welcome <%=user.getUserName() %></h3>
   				<br>
   			<ul class="nav nav-tabs">
   				<li><a data-toggle="tab" href="#myProfile" style="color:#687074;">My Profile</a></li>
@@ -101,7 +101,7 @@ var pageContext = '<%=request.getContextPath()%>';
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="errmsgContact1">Digits Only</span>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="primaryContactMandate">Field cannot be empty</span>
-				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="incompleteContactNo">Contact number is less than 10 digits</span>
+				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="incompleteContactNo1">Contact number is less than 10 digits</span>
 				</div>
   				</div>
   				
@@ -116,6 +116,7 @@ var pageContext = '<%=request.getContextPath()%>';
 					<input type="text" class="form-control" id="secondaryContact" name="secondaryContact" value="<%=user.getUserSecondaryContact()%>" placeholder="Enter your secondary contact (optional)" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;">
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="errmsgContact2">Digits Only</span>
+				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="incompleteContactNo2">Contact number is less than 10 digits</span>
 				</div>
   				</div>
   				  				
