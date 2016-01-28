@@ -1,7 +1,7 @@
 package servlet;
 
 import static services.utility.GenericConstant.ADDRESS_MODEL;
-import static services.utility.GenericConstant.NAV_TO_DISPLAY_VEHICLE_PAGE;
+import static services.utility.GenericConstant.NAV_TO_VENDOR_HOME_PAGE;
 import static services.utility.GenericConstant.USER_MODEL;
 
 import java.io.IOException;
@@ -47,14 +47,14 @@ public class AddVehicle extends HttpServlet {
 			
 			if("Yes".equals(req.getParameter("useDifferentAddress"))){
 				params.put("useDifferentAddress", "Yes");
-				params.put("addrLine1", req.getParameter("addr1"));
-				params.put("addrLine2", req.getParameter("addr2")!=null?req.getParameter("addr2"):"");
-				params.put("addrLine3", req.getParameter("addr3")!=null?req.getParameter("addr3"):"");
-				params.put("locality", req.getParameter("locality"));
-				params.put("city", req.getParameter("city"));
-				params.put("state", req.getParameter("state"));
-				params.put("country", req.getParameter("country")!=null?req.getParameter("country"):"");
-				params.put("pinCode", req.getParameter("pinCode"));
+				params.put("addrLine1", req.getParameter("addr1Add"));
+				params.put("addrLine2", req.getParameter("addr2Add")!=null?req.getParameter("addr2Add"):"");
+				params.put("addrLine3", req.getParameter("addr3Add")!=null?req.getParameter("addr3Add"):"");
+				params.put("locality", req.getParameter("localityAdd"));
+				params.put("city", req.getParameter("cityAdd"));
+				params.put("state", req.getParameter("stateAdd"));
+				params.put("country", "India");
+				params.put("pinCode", req.getParameter("pinCodeAdd"));
 			}else{
 				params.put("useDifferentAddress", "No");
 				params.put("addrressId", add!=null?add.getAddrId():"");
@@ -62,11 +62,13 @@ public class AddVehicle extends HttpServlet {
 
 			params.put("userId", u.getUserId().toString());
 			
+			System.out.println("Add Vehicle Params="+params);
+			
 			AddVehicleController controller = new AddVehicleController();
 			Vehicle addedVehicle = controller.addNewVehicle(params);
 			
 			if(addedVehicle != null){
-					resp.sendRedirect(req.getContextPath()+NAV_TO_DISPLAY_VEHICLE_PAGE);
+					resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_HOME_PAGE);
 				}
 		}catch(Exception e){
 			System.out.println("ERROR"+e);

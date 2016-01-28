@@ -31,25 +31,34 @@ public class DeleteVehicle extends HttpServlet {
 			throws ServletException, IOException {
 		try{
 			VehicleDAOImpl<Vehicle> vDAO = new VehicleDAOImpl<Vehicle>();
-			Object[] list=  req.getParameterValues("arrayList");
-			if("Delete".equals(req.getParameter("identifier"))){
+			//Object[] list=  req.getParameterValues("arrayList");
+			System.out.println("VehicleId="+req.getParameter("selectedVehicleRecordId")+" opCode="+req.getParameter("opCode"));
+			String vehicleRecord = (String)req.getParameter("selectedVehicleRecordId");
+			if("Delete".equals(req.getParameter("opCode"))){
+				/*
 				for (int i = 0; i < list.length; i++) {
 					if("Yes".equals(req.getParameter("check" + i)))
 						vDAO.delete(new BigInteger(list[i].toString()));
 					}
+				*/
+				vDAO.delete(new BigInteger(vehicleRecord));
 			}
-			else if("Disable".equals(req.getParameter("identifier"))){
+			else if("Disable".equals(req.getParameter("opCode"))){
+				/*
 				List<BigInteger> listIds = new ArrayList<BigInteger>();;
 				for (int i = 0; i < list.length; i++) {
 					if("Yes".equals(req.getParameter("check" + i)))
 						listIds.add(new BigInteger(list[i].toString()));
 					}
 				vDAO.disable(listIds);
+				*/
+				vDAO.disable(new BigInteger(vehicleRecord));
+				
 			}
-			else {
-				vDAO.enable(new BigInteger(req.getParameter("identifier")));
+			else if("Enable".equals(req.getParameter("opCode"))){
+				vDAO.enable(new BigInteger(vehicleRecord));
 			}
-			resp.sendRedirect(req.getContextPath()+NAV_TO_DISPLAY_VEHICLE_PAGE);
+			resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_HOME_PAGE);
 		}catch(Exception e){
 			logger.error("ERROR"+e);
 			resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_HOME_PAGE);

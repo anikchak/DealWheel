@@ -19,7 +19,7 @@ import static services.utility.GenericConstant.*;
 				+ "a.addrLine1, a.addrLine2, a.addrLine3, a.addrLocality, a.addrCity, a.addrState, a.addrCountry, a.addrPinCode, v.vhclId, v.isVehicleDisabled "
 				+ "FROM Vehicle v JOIN Address a ON v.vhclAddressId = a.addrId JOIN User u ON a.userId = u.userId JOIN ListedVehicle lv ON v.listedVhclId = lv.lvclId "
 				+ "WHERE u.userId = :vendorId "),
-	@NamedQuery(name=VEHICLE_SEARCH_WITH_IDS, query="SELECT v from Vehicle v where v.vhclId IN :vehicleIds"),
+	@NamedQuery(name=VEHICLE_SEARCH_WITH_IDS, query="SELECT v from Vehicle v where v.vhclId = :vehicleId"),
 	@NamedQuery(name=VEHICLE_SEARCH_WITH_ID, query="SELECT v from Vehicle v where v.vhclId = :vehicleId")
 })
 public class Vehicle implements Serializable {

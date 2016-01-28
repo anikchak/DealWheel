@@ -41,10 +41,10 @@ public class VehicleDAOImpl<T>  extends  BaseDAOImpl<Vehicle> implements Vehicle
 		return vehicleDetails;
 	}
 
-	public void disable(List<BigInteger> listIds) {
-		logger.debug("Disabling all the Vehicles with Ids "+listIds);
+	public void disable(BigInteger vehId) {
+		logger.debug("Disabling all the Vehicles with Ids "+vehId);
 		Query q = em.createNamedQuery(VEHICLE_SEARCH_WITH_IDS);
-		q.setParameter("vehicleIds", listIds);
+		q.setParameter("vehicleId", vehId);
 		List<Object[]> vehicleDetails = q.getResultList();
 		List<Vehicle> vList = new ArrayList<Vehicle>();
 		for(Object o : vehicleDetails){

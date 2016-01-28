@@ -79,6 +79,7 @@ $(document).ready(function(){
 <tr><td>Address Line 2</td><td><input type="text" id="addr2" name="addr2"></td></tr>
 <tr><td>Address Line 3</td><td><input type="text" id="addr3" name="addr3"></td></tr>
 <tr><td>Locality</td><td><input type="text" id="locality" name="locality"></td></tr>
+<%-- 
 <% 
 List<String> countries = new LocationOfOperationController().getCountryNames();
 List<String> states = new LocationOfOperationController().getStateNamesForCountry(countries.get(0));
@@ -102,7 +103,8 @@ List<String> cities = new LocationOfOperationController().getCityNamesForCountry
 	<%for(String ct : cities){ %>
 		<option value=<%=ct %>><%=ct %></option>
 	<%} %></select></td></tr>
-	
+
+--%>
 <tr><td>Pin Code</td><td><input type="text" id="pinCode" name="pinCode"></td></tr>
 </table></div></td></tr>
 <tr><td colspan="2" align="center"><input type="submit" name="Add" value="Add"></td></tr>

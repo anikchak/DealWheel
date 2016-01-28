@@ -26,7 +26,7 @@ public class AddVehicleController {
 		Vehicle vehicleNew = null;
 		String addressId = null;
 		Address addrNew = null;
-		
+		System.out.println("AddVehicleController:addNewVehicle");
 		try{
 			if("Yes".equals(params.get("useDifferentAddress"))){
 				Address addr = new Address();
