@@ -9,14 +9,14 @@ public class QueryConstant {
 			+ "AND a.addrId = v.vhclAddressId "
 			+ "AND lv.lvclId = v.listedVhclId "
 			+ "AND vProvider.userId = a.userId "
-			+ "AND b.bkngStatus IN (:UPCOMING,:COMPLETED,:CANCELLED) "
+			+ "AND b.bkngStatus IN (:UPCOMING,:COMPLETED,:CANCELLED,:VENDORCANCELLED) "
 			+ "AND b.userId = :USERID";
 	public static String CLEAN_BOOKINGS = "update bookingshistory b set b.BKNG_STATUS = ? where TIME_TO_SEC(TIMEDIFF(NOW(),b.LAST_UPDATED))> ? and b.BKNG_STATUS in (?)";
 	public static String LIST_AVAILABLE_VEHICLES = "SELECT v, a, u, lv "
 			+ "FROM Vehicle v ,  Address a , User u , ListedVehicle lv WHERE v.vhclId NOT IN "
 			+ "(SELECT bh.bkngVehicle FROM Bookingshistory bh WHERE bh.bkngFromDate <= :toDate AND bh.bkngToDate >= :fromDate "
 			+ "AND bh.bkngStatus  IN (:UPCOMING,:VIEWING)) AND a.addrId = v.vhclAddressId "
-			//+ "AND a.addrType = :addrType "
+			+ "AND v.isVehicleDisabled = false "
 			+ "AND u.userId = a.userId AND upper(a.addrCity) = :addrCity AND v.listedVhclId = lv.lvclId "
 			+ "GROUP BY lv.lvclName,v.vhclAddressId,u.userId "
 			+ "ORDER BY v.vhclPerDayCost,lv.lvclName";

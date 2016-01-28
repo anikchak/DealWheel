@@ -99,7 +99,7 @@ var pageContext = '<%=request.getContextPath()%>';
         		 Bookingshistory bh = (Bookingshistory)o[0];
         		 if("UPCOMING".equalsIgnoreCase(bh.getBkngStatus())){
         			 upcomingBookingsList.add(o);
-        		 }else if("CANCELLED".equalsIgnoreCase(bh.getBkngStatus())){
+        		 }else if("CANCELLED".equalsIgnoreCase(bh.getBkngStatus()) || "VENDORCANCELLED".equalsIgnoreCase(bh.getBkngStatus())){
         			 cancelledBookingsList.add(o);
         		 }else if("COMPLETED".equalsIgnoreCase(bh.getBkngStatus())){
         			 completedBookingsList.add(o);
@@ -280,7 +280,15 @@ var pageContext = '<%=request.getContextPath()%>';
     				</span>
          		</td>
          		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclPerDayCost()*noOfDays %></span></td>
-         		<td><span class="label label-danger">CANCELLED</span></td>
+         		<td>
+         		<%if("CANCELLED".equalsIgnoreCase(bh.getBkngStatus())){ %>
+         		<span class="label label-danger">CANCELLED</span>
+         		<%}
+         		else if("VENDORCANCELLED".equalsIgnoreCase(bh.getBkngStatus())){
+         		%>
+         		<span class="label label-danger">VENDOR CANCELLED</span>
+         		<%} %>
+         		</td>
          	</tr>
          <%
         		 }

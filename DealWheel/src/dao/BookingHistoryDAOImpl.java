@@ -6,6 +6,7 @@ import static services.utility.GenericConstant.CANCELLED;
 import static services.utility.GenericConstant.BOOKING_HISTORY_FOR_ID_BY_DATE;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -22,8 +23,14 @@ public class BookingHistoryDAOImpl<T>  extends  BaseDAOImpl<Bookingshistory> imp
 	@Override
 	public List<Object[]> getBookingDetailsForVendorId(BigInteger vendorId) {
 		logger.debug("Fetching all the Booking detail for Vendor Id "+vendorId);
+		List<String> bookingStatusList = new ArrayList<String>();
+		bookingStatusList.add("UPCOMING");
+		bookingStatusList.add("COMPLETED");
+		bookingStatusList.add("CANCELLED");
+		bookingStatusList.add("VENDORCANCELLED");
 		Query q = em.createNamedQuery(BOOKING_HISTORY_FOR_VENDOR);
 		q.setParameter("vendorId", vendorId);
+		q.setParameter("bookingstatus", bookingStatusList);
 		List<Object[]> bookingDetails = q.getResultList();
 		return bookingDetails;
 	}
@@ -39,7 +46,7 @@ public class BookingHistoryDAOImpl<T>  extends  BaseDAOImpl<Bookingshistory> imp
 	public void cancelBooking(String bookingId){
 		logger.debug("Cancelling booking with Id "+bookingId);
 		Bookingshistory bkngHistory = findBookingHistoryById(bookingId);
-		bkngHistory.setBkngStatus(CANCELLED);
+		bkngHistory.setBkngStatus("VENDORCANCELLED");
 		update(bkngHistory);
 	}
 

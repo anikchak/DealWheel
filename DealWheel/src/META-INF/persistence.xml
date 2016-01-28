@@ -7,9 +7,9 @@
 		<class>model.Code</class>
 		<class>model.Payment</class>
 		<class>model.User</class>
-		<class>model.Vehicle</class>
 		<class>model.LoginDetail</class>
 		<class>model.ListedVehicle</class>
+		<class>model.Vehicle</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mydb"/>

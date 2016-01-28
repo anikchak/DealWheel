@@ -446,6 +446,7 @@ public class CustomerControllerService {
 		q.setParameter(UPCOMING, UPCOMING);
 		q.setParameter("COMPLETED", "COMPLETED");
 		q.setParameter("CANCELLED", "CANCELLED");
+		q.setParameter("VENDORCANCELLED", "VENDORCANCELLED");
 		searchResultSet = (List<Object[]>) q.getResultList();
 		}catch(Exception e){
 			e.printStackTrace();

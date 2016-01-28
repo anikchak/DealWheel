@@ -15,9 +15,9 @@ import static services.utility.GenericConstant.*;
 @NamedQueries({
 	@NamedQuery(name=BOOKING_HISTORY_FIND_ALL, query="SELECT b FROM Bookingshistory b"),
 	@NamedQuery(name=BOOKING_HISTORY_FOR_VENDOR, query="SELECT lv.lvclMake, lv.lvclName, v.vhclRegistrationNo, b.bkngFromDate, b.bkngToDate,"
-			+ " b.bkngCreationDate, v.vhclPerDayCost, b.bkngStatus, b.bkngSeq FROM Bookingshistory b JOIN Vehicle v ON b.bkngVehicle = v.vhclId"
+			+ " b.bkngCreationDate, v.vhclPerDayCost, b.bkngStatus, b.bkngSeq, v.vhclSecurityDeposit,b.bkngNumber FROM Bookingshistory b JOIN Vehicle v ON b.bkngVehicle = v.vhclId"
 			+ " JOIN Address a ON v.vhclAddressId = a.addrId JOIN User u ON a.userId = u.userId JOIN ListedVehicle lv ON v.listedVhclId = lv.lvclId"
-				+ " WHERE u.userId=:vendorId"),
+				+ " WHERE u.userId=:vendorId AND b.bkngStatus IN :bookingstatus"),
 	@NamedQuery(name=BOOKING_HISTORY_FIND_BOOKING_BY_SEQ, query="select b.bkngSeq FROM Bookingshistory b order by b.bkngSeq DESC"),
 	@NamedQuery(name=BOOKING_HISTORY_UPDATE, query="update Bookingshistory b set b.bkngStatus = :bkngStatus ,b.bkngNumber = :bkngNumber where b.bkngSeq = :bkngSeq and b.bkngStatus in (:bkngStatusWhereClause)"),
 	@NamedQuery(name=BOOKING_HISTORY_BY_ID, query="select b FROM Bookingshistory b where b.bkngSeq = :bookingId"),

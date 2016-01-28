@@ -28,12 +28,16 @@ public class CancelBookingForVendor extends HttpServlet {
 			throws ServletException, IOException {
 		try{
 			BookingHistoryDAOImpl<Bookingshistory> bkngDAO = new BookingHistoryDAOImpl<Bookingshistory>();
+			System.out.println("bookingToCancel="+req.getParameter("bookingToCancel"));
+			bkngDAO.cancelBooking(req.getParameter("bookingToCancel"));
+			/*
 			Object[] list = req.getParameterValues("arrayList");
 			for (int i = 0; i < list.length; i++) {
 			if("Yes".equals(req.getParameter("check" + i)))
 				bkngDAO.cancelBooking(list[i].toString());
 			}
-			resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_BOOKINGS_PAGE);
+			*/
+			resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_HOME_PAGE);
 		}catch(Exception e){
 			logger.error("ERROR"+e);
 			resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_HOME_PAGE);

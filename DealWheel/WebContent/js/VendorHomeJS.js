@@ -456,5 +456,20 @@ function resetErrorMessages() {
 	$("#pinCode").css("border-color", "");
 }
 
-//Changes for My Profile tab ends
+//Changes for My Bookings tab starts
+function vendorCancellation(bookingId){
+	$("#bookingToCancel").val(bookingId);
+	$("#confirmVendorCancelId").modal({
+		backdrop: 'static',
+		keyboard: false
+	});
+}
+function cancelVendorBooking(val){
+	if(val=='YES'){
+		$("#vendorBookingCancelForm").submit();
+	}else{
+		$("#confirmVendorCancelId").hide();
+	}
+}
+//Changes for My Bookings tab ends
 
