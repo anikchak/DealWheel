@@ -1,0 +1,112 @@
+<% 
+    		List<Object[]> vehicleDetailList = new VehicleDAOImpl<Vehicle>().getVehicleDetailsForUserId(user.getUserId()); 
+    		if(vehicleDetailList!=null && vehicleDetailList.size()>0){
+    		%>
+    		<br>
+    		<div id="listVehiclesBlockId">
+    		<div class="table-responsive">
+    		<form action="${pageContext.request.contextPath}/DeleteVehicle" method="post" name="listedVehicleAction" id="listedVehicleActionFormId">
+    		
+      			<table class="table table-hover text-center">
+      	 		<thead>
+      	 			<tr>
+      	 				<th class="text-center"><span style="color:#687074;font-size:12px;">Vehicle</span></th>
+        				<th class="text-center"><span style="color:#687074;font-size:12px;">Registration#</span></th>
+        				<th class="text-center"><span style="color:#687074;font-size:12px;">Manufacture Year</span></th>
+        				<th class="text-center"><span style="color:#687074;font-size:12px;">Cost/Day</span></th>
+        				<th class="text-center"><span style="color:#687074;font-size:12px;">Security Deposit</span></th>
+        				<th class="text-center"><span style="color:#687074;font-size:12px;">Pickup/Dropff Location</span></th>
+        				<th class="text-center"><span style="color:#687074;font-size:12px;">Vehicle Status</span></th>
+        				<th class="text-center"><span style="color:#687074;font-size:12px;">Action</span></th>
+      	 			</tr>
+      	 		</thead>
+      	 		<tbody>
+      	 			<% 
+      	 			for(Object[] vehicleDetail : vehicleDetailList ){ 
+					%>
+      	 			<tr>
+      	 			<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%= (String)vehicleDetail[1] %><br><%= (String)vehicleDetail[0] %></span></td>
+      	 			<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%= (String)vehicleDetail[2] %></span></td>
+      	 			<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%= (String)vehicleDetail[3] %></span></td>
+      	 			<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%= (Integer)vehicleDetail[4] %></span></td>
+      	 			<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%= (Integer)vehicleDetail[5] %></span></td>
+      	 			<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%=(String)vehicleDetail[6]+", " %><%=(String)vehicleDetail[7]+", " %><br><%=(String)vehicleDetail[8]+", " %>
+      	 				<%=(String)vehicleDetail[9]+", " %><br><%=(String)vehicleDetail[10]+", " %><%=(String)vehicleDetail[11]+", " %><br><%=(String)vehicleDetail[12]+" - " %><%=(Integer)vehicleDetail[13] %>
+      	 				</span>
+      	 			</td>
+      	 			<td>
+      	 			<% 
+      	 			boolean isDisabled = (Boolean)vehicleDetail[15]; 
+					   if(isDisabled){
+					 %>
+					 <span class="label label-danger" data-toggle="tooltip" title="This vehicle will not be shown to the customer dusring search.">Disabled</span>
+					 <%
+					   }else{
+					 %>
+					 <span class="label label-success">Available</span>
+					 <%
+					   }
+					 %>
+      	 			</td>
+      	 			<td>
+      	 				<% 
+      	 				boolean isDisabledVeh = (Boolean)vehicleDetail[15]; 
+					    if(isDisabledVeh){
+					 	%>
+					 	<div class="row">
+      	 				<button class="btn btn-xs btn-success" data-toggle="tooltip" title="Use this to show the vehicle to the customer." onclick="vehicleAction('<%=(BigInteger)vehicleDetail[14] %>','Enable')">Enable</button>
+      	 				<div class="row" style="padding:3px;">
+      	 				<button type="button" class="btn btn-xs btn-danger"  data-toggle="tooltip" title="Use this to completely remove the vehicle record." onclick="vehicleAction('<%=(BigInteger)vehicleDetail[14] %>','Delete')">Remove</button>
+      	 				</div>
+      	 				</div>
+      	 				<%
+					   	}else{
+					 	%>
+      	 				<div class="row" style="padding:3px;">
+      	 				<button type="button" class="btn btn-xs btn-warning" data-toggle="tooltip" title="Use this to temporarily hide the vehicle from getting shown to the customer" onclick="vehicleAction('<%=(BigInteger)vehicleDetail[14] %>','Disable')">Disable</button>
+      	 				</div>
+      	 				<div class="row" style="padding:3px;">
+      	 				<button type="button" class="btn btn-xs btn-danger"  data-toggle="tooltip" title="Use this to completely remove the vehicle record." onclick="vehicleAction('<%=(BigInteger)vehicleDetail[14] %>','Delete')">Remove</button>
+      	 				</div>
+      	 				<%
+      	 				}
+      	 				%>
+      	 			</td>
+      	 			</tr>
+      	 			<%
+      	 			}
+      	 			%>
+      	 		</tbody>
+      	 		</table>
+      	 		<input type="hidden" id="selectedVehicleRecordId" name="selectedVehicleRecordId" />
+      	 		<input type="hidden" id="opCode" name="opCode" />
+      	 		</form>
+      	 	</div>
+    		<%    			
+    		}else{
+    		%>
+    		<br>
+    		<span style="color:rgba(217, 83, 79, 1);font-size:14px;text-transform:uppercase;">No vehicles added yet.</span>
+    		<br>
+    		<%	
+    		}
+    		%>
+    		<br>
+    		<button type="button" class="btn btn-info btn-md pull-right" onclick="openAddVehicleModal()" ><span class="glyphicon glyphicon-plus"></span> Add a new vehicle</button>
+    		<br>
+    	 </div>
+    	 
+    	<!-- Delete/Disable alert pop-up starts-->
+		<div class="modal fade text-center" id="alertDisableDeleteModalId" role="dialog">
+   		 <div class="modal-dialog">
+    		 <!-- Modal content-->
+     		 <div class="modal-content">
+        		<div class="modal-body">
+          		<p style="color:#687074;font-weight:bold;font-size:14px;text-transform:uppercase;"><span id="deleteDisableSpanId"></span></p>
+          		<button type="button" class="btn btn-info btn-sm" data-dismiss="modal" onclick="submitVehicleForm()" style="">Yes</button>
+          		<button type="button" class="btn btn-info btn-sm" data-dismiss="modal" style="background-color: rgba(217, 83, 79, 1);">No</button>
+        		</div>
+      		</div>
+    	 </div>
+  		</div>
+	<!-- Delete/Disable alert pop-up ends -->

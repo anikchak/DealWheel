@@ -1,0 +1,237 @@
+
+	<div class="panel-group vehicleDisplay" style="width:70%;display:none;" id="addVehicleBlockId">
+    	<div class="panel panel-default ">
+		 <div class="panel-heading">
+      			<span style="font-weight: bold;font-size: 16px; color: #687074;">Add Vehicle Details</span>
+      	 </div>
+        <div class="panel-body">
+        	<div class="row">
+      			<p style="font-size: 12px;color: rgba(217, 83, 79, 1);float:right;margin-right:5px;font-weight: bold;">All fields marked (*) are mandatory.</p>
+      		</div>
+          <form role="form" action="${pageContext.request.contextPath}/AddVehicle" method="post" id="addVehicleFormId">
+          	<div class="form-group row">
+          	<div class="col-sm-2" style="">
+          	<label for="" style="color: rgba(217, 83, 79, 1);font-size:12px;">Select Manufacturer*</label>
+          	</div>
+          	<div class="col-sm-4" style="">
+          	
+          	  <select class="form-control" name="vehicleManufacturer"  id="vehicleManufacturer">
+          	  <%! 
+					ListedVehicleDAOImpl<ListedVehicle> lvDAO = new ListedVehicleDAOImpl<ListedVehicle>();
+					List<String>  vehicleManufacturers = lvDAO.getVehiclesMakers();
+					List<String>   vehicleNames = new ArrayList<String>();
+			%>
+				<option value="defaultMake">Select Manufacturer</option>
+			<%	 
+					for(String vehicleManufacturer : vehicleManufacturers)
+					{
+			%>
+          	 	<option value="<%=vehicleManufacturer %>"><%=vehicleManufacturer %></option>
+    			<%
+					}
+				%>
+				</select>
+			   <span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none;" id="vehMakeMandateAdd">Field cannot be empty</span>		
+			 </div>
+			 <div class="col-sm-2" style="">
+          	<label for="" style="color: rgba(217, 83, 79, 1);font-size:12px;">Select Vehicle*</label>
+          	</div>
+          	<div class="col-sm-3">
+          	 <select class="form-control" name="vehicleName"  id="vehicleName">
+          	 	<option value="defaultName">Select Vehicle</option>
+          	  <% 
+          		for(String vehicle : vehicleNames)	
+					{
+				%>
+          	 	<option value="<%=vehicle %>"><%=vehicle %></option>
+    			<%
+					}
+				%>
+				</select>
+				<span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none;" id="vehNameMandateAdd">Field cannot be empty</span>		
+			 </div>
+			 
+			 </div>	
+			 <div class="form-group row" >
+      			<div class="col-sm-2" style="">
+    			<label for="regNoAdd" style="color: rgba(217, 83, 79, 1);font-size:12px;">Registration #*</label>
+    			</div>
+    			<div class="col-sm-4 ">
+    			<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-barcode"></span></span>
+					<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" id="registrationNo" name="registrationNo" value= "" placeholder="Registration No">
+				</div>
+				<span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none" id="registrationNoMandateAdd">Field cannot be empty</span>
+				</div>
+				<div class="col-sm-2" style="">
+				<label for="makeYearAdd" style="color: rgba(217, 83, 79, 1);font-size:12px;">Year of Manufacture*</label>
+    			</div>
+    			<div class="col-sm-3">
+    			<div class="input-group">
+    				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+    				<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" id="yearOfManufacture" name="yearOfManufacture" value= "" placeholder="Year">
+				</div>
+				<span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none" id="yearOfManufactureMandateAdd">Field cannot be empty</span>
+				</div>
+  				</div>
+  				
+  				<div class="form-group row" >
+      			<div class="col-sm-2" style="">
+    			<label for="perDayCostAdd" style="color: rgba(217, 83, 79, 1);font-size:12px;">Per Day Cost*</label>
+    			</div>
+    			<div class="col-sm-4 ">
+    			<div class="input-group">
+					<span class="input-group-addon"><span style='font-family:Arial;'>&#8377;</span></span>
+					<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" id="perDayCost" name="perDayCost" value= "" placeholder="Cost/Day (INR Only)">
+				</div>
+				<span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none" id="perDayCostMandateAdd">Field cannot be empty</span>
+				</div>
+				<div class="col-sm-2" style="">
+				<label for="depositAdd" style="color: rgba(217, 83, 79, 1);font-size:12px;">Security Deposit*</label>
+    			</div>
+    			<div class="col-sm-3">
+    			<div class="input-group">
+    				<span class="input-group-addon"><span style='font-family:Arial;'>&#8377;</span></span>
+    				<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" id="securityDeposit" name="securityDeposit" value= "" placeholder="Deposit (INR)">
+				</div>
+				<span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none" id="securityDepositMandateAdd">Field cannot be empty</span>
+				</div>
+  				</div>
+  				
+  				<div class="form-group row" id="defaultPickupAddr">
+      			<div class="col-sm-2" style="">
+    			<label for="pickupAdd" style="color: rgba(217, 83, 79, 1);font-size:12px;">Pickup Location*</span></label>
+    			</div>
+    			<div class="col-sm-10 ">
+    			<div class="" >
+					<span class=""><span class="glyphicon glyphicon-map-marker"></span> </span>
+					<span class="" style="color:#687074;font-size:12px;text-transform:uppercase;">
+						<%=address.getAddrLine1() %>, <%=address.getAddrLine2() %>, <%=address.getAddrLine3() %>, 
+      	 				<%=address.getAddrLocality()%>, <%=address.getAddrCity() %>, <%=address.getAddrState() %>, 
+      	 				<%=address.getAddrCountry() %> - <%=address.getAddrPinCode() %>
+      	 			</span>
+				</div>
+				</div>
+  				</div>
+  				<div class="form-group row checkbox">
+  					<div class="col-sm-12">
+  					<label style="color:#687074;"><input type="checkbox" id="useDifferentAddress" name="useDifferentAddress" value="Yes" onclick="showDifferentAddrBlock()">Use different address for <span style="font-weight: bold;color: rgba(217, 83, 79, 1);">PICKUP/DROPOFF</span></label>
+  					</div>
+				</div>
+      	 			
+			   <div id="differentAddrBlock" style="display:none;">	 
+			    <hr style="border-color:#85b213;">				
+  				<div class="form-group row" >
+      			<div class="col-sm-2" style="">
+    			<label for="addr1Add" style="color: rgba(217, 83, 79, 1);font-size:12px;">Address Line 1*</span></label>
+    			</div>
+    			<div class="col-sm-10 ">
+    			<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-list"></span></span>
+					<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" id="addr1Add" name="addr1Add" value= "" placeholder="Flat/House No, Floor, Building, Company Name">
+				</div>
+				<span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none" id="addr1MandateAdd">Field cannot be empty</span>
+				</div>
+  				</div>
+  				
+  				<div class="form-group row" >
+      			<div class="col-sm-2" >
+    			<label for="addr2Add" style="color: rgba(217, 83, 79, 1);font-size:12px;">Address Line 2*</label>
+    			</div>
+    			<div class="col-sm-10" >
+    			<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-list"></span></span>
+					<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" id="addr2Add" name="addr2Add" value= "" placeholder="Colony/Society, Street">
+				</div>
+				<span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none;" id="addr2MandateAdd">Field cannot be empty</span>
+				</div>
+  				</div>
+  				
+  				<div class="form-group row">
+      			<div class="col-sm-2">
+    			<label for="addr3Add" style="color: rgba(217, 83, 79, 1);font-size:12px;">Address Line 3</label>
+    			</div>
+    			<div class="col-sm-10 " >
+    			<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-list"></span></span>
+					<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" id="addr3Add" name="addr3Add" value= "" placeholder="Address line 3 (optional)">
+				</div>
+				</div>
+  				</div>
+  				
+  				<div class="form-group row" >
+      			<div class="col-sm-2">
+    			<label for="localityAdd" style="color: rgba(217, 83, 79, 1);font-size:12px;">Locality*</label>
+    			</div>
+    			<div class="col-sm-10 " >
+    			<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span></span>
+					<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" id="localityAdd" name="localityAdd" value="" placeholder="Locality">
+				</div>
+				<span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none;" id="localityMandateAdd">Field cannot be empty</span>
+				</div>
+  				</div>
+  				
+  				<div class="form-group row" >
+      			<div class="col-sm-2" >
+    			<label for="cityAdd" style="color: rgba(217, 83, 79, 1);font-size:12px;">Town/City*</label>
+    			</div>
+    			<div class="col-sm-10 ">
+    			<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span></span>
+					<select class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" name="cityAdd"  id="cityAdd" onchange="selectState()">
+          	 		<option value="defaultCity" selected="selected">Select City</option>
+          	  		<% 
+          	  		String serviceCities = CommonUtility.getValuesFromProperties("activeCities");
+          	  		String showCities[] = serviceCities.split("#",-1);
+          				for(String cities : showCities)	
+						{
+					%>
+          	 			<option value="<%=cities %>"><%=cities %></option>
+    				<%
+						}
+					%>
+				</select>
+				</div>
+				<span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none;" id="cityMandateAdd">Field cannot be empty</span>
+				
+				</div>
+  				</div>
+  				
+  				<div class="form-group row" >
+      			<div class="col-sm-2">
+    			<label for="stateAdd" style="color: rgba(217, 83, 79, 1);font-size:12px;">State*</label>
+    			</div>
+    			<div class="col-sm-10 " >
+    			<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span></span>
+					<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" name="stateAdd" id="stateAdd" value="" placeholder="State" readonly/>
+				</div>
+				<span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none;" id="stateMandateAdd">Field cannot be empty</span>
+				</div>
+  				</div>
+  				
+  				<div class="form-group row">
+      			<div class="col-sm-2" >
+    			<label for="pincodeAdd" style="color: rgba(217, 83, 79, 1);font-size:12px;">Pincode*</label>
+    			</div>
+    			<div class="col-sm-10 " >
+    			<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-screenshot"></span></span>
+					<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" id="pinCodeAdd" name="pinCodeAdd" value="" placeholder="Pincode">
+				</div>
+				<span style="color: rgba(217, 83, 79, 1);font-size:10px; display:none;" id="pinCodeMandateAdd">Field cannot be empty</span>
+				</div>
+  				</div>
+  			</div>
+          </form>
+        </div>
+        <div class="text-center">
+        <hr style="border-color:#85b213;">
+          <button type="button" class="btn btn-info btn-sm " data-dismiss="modal" onclick="validateData()" style=""><span class="glyphicon glyphicon-plus"></span> Add</button>
+          <button type="button" class="btn btn-info btn-sm " data-dismiss="modal" onclick="closeAddBlock()" style="background-color: rgba(217, 83, 79, 1);"><span class="glyphicon glyphicon-remove"></span> Close</button>
+        </div>
+        <br>
+      </div>
+    </div>
+	
