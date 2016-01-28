@@ -120,20 +120,30 @@ $(document).ready(function(){
 						
 					},
 					function(responseText) {
-						//alert("ResponseText=" + responseText);
 						if (responseText != null && responseText != '') {
 							if(responseText == "SIGNUPPWDMISMATCH"){
 								$("#signup_error").hide();
 								$("#vendorSignupErrorMsgSpan").text("Passwords do not match.");
 								$("#signup_error").show();
-							}else if(responseText == "LOGINERROR"){
-								$("#login_Error_Login").hide();
-								$("#vendorLoginErrorMsgSpan").text("Username or Password is incorrect.");
-								$("#login_Error_Login").show();
+							}else if(responseText == "USERALREADYPRESENT"){
+								$("#signup_error").hide();
+								$("#vendorSignupErrorMsgSpan").text("Username already exists");
+								$("#signup_error").show();
 							}else if(responseText == "USRNMISSUE"){
 								$("#signup_error").hide();
-								$("#vendorSignupErrorMsgSpan").text("Username parsing error. Try again.");
+								$("#vendorSignupErrorMsgSpan").text("Invalid Username.");
 								$("#signup_error").show();
+								$("#login_Error_Login").hide();
+								$("#vendorLoginErrorMsgSpan").text("Invalid Username.");
+								$("#login_Error_Login").show();
+							}else if(responseText == "NOLOGIN"){
+								$("#login_Error_Login").hide();
+								$("#vendorLoginErrorMsgSpan").text("Username cannot be found.");
+								$("#login_Error_Login").show();
+							}else if(responseText == "WRONGPASSWORD"){
+								$("#login_Error_Login").hide();
+								$("#vendorLoginErrorMsgSpan").text("Password is incorrect.");
+								$("#login_Error_Login").show();
 							}else{
 								$(location).attr('href',pageContext + responseText);
 							}

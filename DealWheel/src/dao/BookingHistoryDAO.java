@@ -11,4 +11,5 @@ public interface BookingHistoryDAO  extends BaseDAO<Bookingshistory>{
 	
 	public void cancelBooking(String bookingId);
 	
+	public boolean checkFutureBookingAvailable(BigInteger id);	
 }

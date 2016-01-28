@@ -86,6 +86,8 @@ public class GenericConstant {
 	public static final String BOOKING_HISTORY_FOR_VENDOR = "Bookingshistory.findAllForVendor";
 	public static final String BOOKING_HISTORY_FIND_BOOKING_BY_SEQ = "Bookingshistory.findBookingSeq";
 	public static final String BOOKING_HISTORY_UPDATE = "Bookingshistory.UpdateBooking";
+	public static final String BOOKING_HISTORY_FOR_ID_BY_DATE = "Bookingshistory.checkFutureBookingAvailableForId";
+	
 	
 	public static final String ADDRESS_FIND_ALL = "Address.findAll";
 	public static final String ADDRESS_FIND_FOR_USER_ID_AND_TYPE = "Address.findAddressForUserId";

@@ -20,7 +20,8 @@ import static services.utility.GenericConstant.*;
 				+ " WHERE u.userId=:vendorId"),
 	@NamedQuery(name=BOOKING_HISTORY_FIND_BOOKING_BY_SEQ, query="select b.bkngSeq FROM Bookingshistory b order by b.bkngSeq DESC"),
 	@NamedQuery(name=BOOKING_HISTORY_UPDATE, query="update Bookingshistory b set b.bkngStatus = :bkngStatus ,b.bkngNumber = :bkngNumber where b.bkngSeq = :bkngSeq and b.bkngStatus in (:bkngStatusWhereClause)"),
-	@NamedQuery(name=BOOKING_HISTORY_BY_ID, query="select b FROM Bookingshistory b where b.bkngSeq = :bookingId")
+	@NamedQuery(name=BOOKING_HISTORY_BY_ID, query="select b FROM Bookingshistory b where b.bkngSeq = :bookingId"),
+	@NamedQuery(name=BOOKING_HISTORY_FOR_ID_BY_DATE, query="select b FROM Bookingshistory b where b.bkngVehicle = :vehicleId and b.bkngFromDate <= :today ")
 })
 
 public class Bookingshistory implements Serializable {

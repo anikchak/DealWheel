@@ -54,7 +54,7 @@ var pageContext = '<%=request.getContextPath()%>';
 		<div class="container">
 		<br>
 		<br>
-		<h3 class="text-center" style="color:#687074;">My Profile Summary</h3>
+		<h3 class="text-center" style="color:#687074;">Welcome <%=user.getUserName() %></h3>
 		<br>
   			<ul class="nav nav-tabs">
   				<li><a data-toggle="tab" href="#myProfile" style="color:#687074;">My Profile</a></li>
@@ -101,10 +101,27 @@ var pageContext = '<%=request.getContextPath()%>';
 					<span class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" id="primaryContactSpan" ><%=user.getUserPrimaryContact()%></span>
 					<input type="text" class="form-control" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;" id="primaryContact" name="primaryContact" value="<%=user.getUserPrimaryContact()%>" placeholder="Enter your primary contact">
 				</div>
+				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="errmsgContact1">Digits Only</span>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="primaryContactMandate">Field cannot be empty</span>
+				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="incompleteContactNo1">Contact number is less than 10 digits</span>
 				</div>
   				</div>
-  				  				  				
+  				
+  				<div class="form-group row">
+      			<div class="col-sm-2 " style="padding-top:0px;">
+    			<label for="secondaryContact" style="color: rgba(217, 83, 79, 1);font-size:14px;">Secondary Contact</label>
+    			</div>
+    			<div class="col-sm-10" style="">
+    			<div class="input-group">
+					<span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></span>
+					<span class="form-control" id="secondaryContactSpan" style= "font-size: 15px; color: #687074;text-transform: uppercase;"><%=user.getUserSecondaryContact()%></span>
+					<input type="text" class="form-control" id="secondaryContact" name="secondaryContact" value="<%=user.getUserSecondaryContact()%>" placeholder="Enter your secondary contact (optional)" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;">
+				</div>
+				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="errmsgContact2">Digits Only</span>
+				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="incompleteContactNo2">Contact number is less than 10 digits</span>
+				</div>
+  				</div>
+  				  				
   				<div class="form-group row">
       			<div class="col-sm-2 " style="">
     			<label for="addr1" style="color: rgba(217, 83, 79, 1);font-size:12.5px;">Address Line 1 <span style="font-size:10px;">(or company name)</span></label>
@@ -198,7 +215,9 @@ var pageContext = '<%=request.getContextPath()%>';
 					<span class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" id="pinCodeSpan" ><%=address.getAddrPinCode()%></span>
 					<input class="form-control" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;" type="text" id="pinCode" name="pinCode" value="<%=address.getAddrPinCode()%>" placeholder="Pincode">
 				</div>
+				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="errmsgPin">Digits Only</span>
 				<span style="color: rgba(217, 83, 79, 1);font-size:12px; display:none;" id="pinCodeMandate">Field cannot be empty</span>
+				<span style="color: rgba(217, 83, 79, 1);font-size:12px; display:none;" id="incompletePinCode">Pin Code is less than 6 digits</span>
 				</div>
   				</div>
   				
