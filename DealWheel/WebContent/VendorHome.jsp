@@ -65,187 +65,8 @@ var pageContext = '<%=request.getContextPath()%>';
   		<!-- My Profile starts -->	
 		<div class="tab-content">
     	<div id="myProfile" class="tab-pane fade ">
-    	<br><br>
-    	<form action="${pageContext.request.contextPath}/VendorRegistration" method="post" role="form" id="updateDetailsFormId">
-		<!-- Start of Personal Details block -->
-		<div class="panel-group vehicleDisplay" style="width:70%;" id="personalDetailsId">
-    	<div class="panel panel-default ">
-      		<div class="panel-heading">
-      			<span style="font-weight: bold;font-size: 16px; color: #687074;text-transform:uppercase;">Details</span>
-      		</div>
-      		<div class="panel-body">
-      			<div class="row" id="editMsg" style="display:none;">
-      			<p style="font-size: 11px;color: rgba(217, 83, 79, 1);float:right;margin-right:5px;">All fields are mandatory.</p>
-      			</div>
-      			<div class="form-group row">
-      			<div class="col-sm-2 " style="padding-top:5px;">
-    			<label for="fullname" style="color: rgba(217, 83, 79, 1);font-size:14px;">Full Name</label>
-    			</div>
-    			<div class="col-sm-10" style="">
-    			<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-					<span class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" id="fullNameSpan"><%= user.getUserName()%></span>
-					<input class="form-control" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;" type="text" id="fullName" name="fullName" placeholder="Enter your name" value="<%= user.getUserName()%>">
-				</div>
-    			<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="fullnameMandate">Field cannot be empty</span>
-    			</div>
-  				</div>
-  				
-  				<div class="form-group row">
-      			<div class="col-sm-2 " style="padding-top:0px;">
-    			<label for="primaryContact" style="color: rgba(217, 83, 79, 1);font-size:14px;">Primary Contact</label>
-    			</div>
-    			<div class="col-sm-10" style="">
-    			<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-phone"></span></span>
-					<span class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" id="primaryContactSpan" ><%=user.getUserPrimaryContact()%></span>
-					<input type="text" class="form-control" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;" id="primaryContact" name="primaryContact" value="<%=user.getUserPrimaryContact()%>" placeholder="Enter your primary contact">
-				</div>
-				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="errmsgContact1">Digits Only</span>
-				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="primaryContactMandate">Field cannot be empty</span>
-				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="incompleteContactNo1">Contact number is less than 10 digits</span>
-				</div>
-  				</div>
-  				
-  				<div class="form-group row">
-      			<div class="col-sm-2 " style="padding-top:0px;">
-    			<label for="secondaryContact" style="color: rgba(217, 83, 79, 1);font-size:14px;">Secondary Contact</label>
-    			</div>
-    			<div class="col-sm-10" style="">
-    			<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></span>
-					<span class="form-control" id="secondaryContactSpan" style= "font-size: 15px; color: #687074;text-transform: uppercase;"><%=user.getUserSecondaryContact()%></span>
-					<input type="text" class="form-control" id="secondaryContact" name="secondaryContact" value="<%=user.getUserSecondaryContact()%>" placeholder="Enter your secondary contact (optional)" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;">
-				</div>
-				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="errmsgContact2">Digits Only</span>
-				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="incompleteContactNo2">Contact number is less than 10 digits</span>
-				</div>
-  				</div>
-  				  				
-  				<div class="form-group row">
-      			<div class="col-sm-2 " style="">
-    			<label for="addr1" style="color: rgba(217, 83, 79, 1);font-size:12.5px;">Address Line 1 <span style="font-size:10px;">(or company name)</span></label>
-    			</div>
-    			<div class="col-sm-10 " >
-    			<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-list"></span></span>
-					<span class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" id="addr1Span" ><%= address.getAddrLine1()%></span>
-					<input class="form-control" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;" type="text" id="addr1" name="addr1" value= "<%= address.getAddrLine1()%>" placeholder="Flat/House No, Floor, Building, Company Name">
-				</div>
-				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="addr1Mandate">Field cannot be empty</span>
-				</div>
-  				</div>
-  				
-  				<div class="form-group row">
-      			<div class="col-sm-2 " style="padding-top:5px;">
-    			<label for="addr2" style="color: rgba(217, 83, 79, 1);font-size:12.5px;">Address Line 2</label>
-    			</div>
-    			<div class="col-sm-10 " >
-    			<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-list"></span></span>
-					<span class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" id="addr2Span" ><%= address.getAddrLine2()%></span>
-					<input class="form-control" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;" type="text" id="addr2" name="addr2" value= "<%= address.getAddrLine2()%>" placeholder="Colony/Society, Street">
-				</div>
-				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="addr2Mandate">Field cannot be empty</span>
-				</div>
-  				</div>
-  				
-  				<div class="form-group row">
-      			<div class="col-sm-2 " style="padding-top:5px;">
-    			<label for="addr3" style="color: rgba(217, 83, 79, 1);font-size:12.5px;">Address Line 3</label>
-    			</div>
-    			<div class="col-sm-10 " >
-    			<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-list"></span></span>
-					<span class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" id="addr3Span" ><%= address.getAddrLine3()%></span>
-					<input class="form-control" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;" type="text" id="addr3" name="addr3" value= "<%= address.getAddrLine3()%>" placeholder="Address line 3 (optional)">
-				</div>
-				</div>
-  				</div>
-  				
-  				<div class="form-group row">
-      			<div class="col-sm-2 " style="padding-top:5px;">
-    			<label for="locality" style="color: rgba(217, 83, 79, 1);font-size:14px;">Locality</label>
-    			</div>
-    			<div class="col-sm-10 " >
-    			<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span></span>
-					<span class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" id="localitySpan" ><%=address.getAddrLocality()%></span>
-					<input class="form-control" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;" type="text" id="locality" name="locality" value="<%=address.getAddrLocality()%>" placeholder="Locality">
-				</div>
-				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="localityMandate">Field cannot be empty</span>
-				</div>
-  				</div>
-  				
-  				<div class="form-group row">
-      			<div class="col-sm-2 " style="padding-top:5px;">
-    			<label for="city" style="color: rgba(217, 83, 79, 1);font-size:14px;">Town/City</label>
-    			</div>
-    			<div class="col-sm-10 " >
-    			<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span></span>
-					<span class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;"  id="citySpan"><%=address.getAddrCity()%></span>
-					<input class="form-control" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;" type="text" name="city"  id="city" value="<%=address.getAddrCity()%>" placeholder="Town/City">
-				</div>
-				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="cityMandate">Field cannot be empty</span>
-				</div>
-  				</div>
-  				
-  				<div class="form-group row">
-      			<div class="col-sm-2 " style="padding-top:5px;">
-    			<label for="state" style="color: rgba(217, 83, 79, 1);font-size:14px;">State</label>
-    			</div>
-    			<div class="col-sm-10 " >
-    			<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span></span>
-					<span class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" id="stateSpan"><%=address.getAddrState()%></span>
-					<input class="form-control" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;" type="text" name="state" id="state" value="<%=address.getAddrState()%>" placeholder="State">
-				</div>
-				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="stateMandate">Field cannot be empty</span>
-				</div>
-  				</div>
-  				
-  				<div class="form-group row">
-      			<div class="col-sm-2 " style="padding-top:5px;">
-    			<label for="pincode" style="color: rgba(217, 83, 79, 1);font-size:14px;">Pincode</label>
-    			</div>
-    			<div class="col-sm-10 " >
-    			<div class="input-group">
-					<span class="input-group-addon"><span class="glyphicon glyphicon-screenshot"></span></span>
-					<span class="form-control" style= "font-size: 15px; color: #687074;text-transform: uppercase;" id="pinCodeSpan" ><%=address.getAddrPinCode()%></span>
-					<input class="form-control" style= "font-size: 15px; color: #687074;display:none;text-transform: uppercase;" type="text" id="pinCode" name="pinCode" value="<%=address.getAddrPinCode()%>" placeholder="Pincode">
-				</div>
-				<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="errmsgPin">Digits Only</span>
-				<span style="color: rgba(217, 83, 79, 1);font-size:12px; display:none;" id="pinCodeMandate">Field cannot be empty</span>
-				<span style="color: rgba(217, 83, 79, 1);font-size:12px; display:none;" id="incompletePinCode">Pin Code is less than 6 digits</span>
-				</div>
-  				</div>
-  				
-      		</div>
-      		<div class="row text-center" >
-    	 	<button type="button" class="btn btn-info btn-md" id="saveBtn" onclick="saveChanges()" disabled><span class="glyphicon glyphicon-ok"></span> Save</button>
-    	 	<button type="button" class="btn btn-info btn-md" id="cancelBtn" onclick="cancelOperation('alert')" style="background-color: rgba(217, 83, 79, 1);display:none;"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
-    	 	<button type="button" class="btn btn-info btn-md" id="editBtn" style="background-color: rgba(217, 83, 79, 1);" onclick="editFields()"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
-    		</div>
-    		<br>
-    	</div>
-    	</div>
-		</form>
-		<!-- Empty Error message pop-up starts-->
-		<div class="modal fade text-center" id="cancelAlertModalId" role="dialog">
-   		 <div class="modal-dialog">
-    		 <!-- Modal content-->
-     		 <div class="modal-content">
-        		<div class="modal-body">
-          		<p style="color:#687074;font-weight:bold;font-size:14px;text-transform:uppercase;">All your changes will be lost.</p>
-          		<button type="button" class="btn btn-info btn-sm" data-dismiss="modal" onclick="cancelOperation('ok')" style="">Ok</button>
-          		<button type="button" class="btn btn-info btn-sm" data-dismiss="modal" style="background-color: rgba(217, 83, 79, 1);">Cancel</button>
-        		</div>
-      		</div>
-    	 </div>
-  		</div>
-	<!-- Empty Error message pop-up ends -->
-    	</div>
+    	<%@include file="commonResources/VendorMyProfile" %>
+		</div>
     	<!-- My Profile ends -->
     	<!-- My Vehicle Details start -->
     	<div id="vehicleDetails" class="tab-pane fade in active">
@@ -362,7 +183,7 @@ var pageContext = '<%=request.getContextPath()%>';
   		</div>
 	<!-- Empty Error message pop-up ends -->
 	
-	<!-- Add Vehicle Modal Starts -->
+	<!-- Add Vehicle Block Starts -->
 
 	<div class="panel-group vehicleDisplay" style="width:70%;display:none;" id="addVehicleBlockId">
     	<div class="panel panel-default ">
@@ -370,6 +191,9 @@ var pageContext = '<%=request.getContextPath()%>';
       			<span style="font-weight: bold;font-size: 16px; color: #687074;">Add Vehicle Details</span>
       	 </div>
         <div class="panel-body">
+        	<div class="row">
+      			<p style="font-size: 12px;color: rgba(217, 83, 79, 1);float:right;margin-right:5px;font-weight: bold;">All fields marked (*) are mandatory.</p>
+      		</div>
           <form role="form" action="${pageContext.request.contextPath}/AddVehicle" method="post" id="addVehicleFormId">
           	<div class="form-group row">
           	<div class="col-sm-2" style="">
@@ -392,8 +216,7 @@ var pageContext = '<%=request.getContextPath()%>';
     			<%
 					}
 				%>
-				<option value="vehMakeOther">Other</option>
-			   </select>
+				</select>
 			   <span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none;" id="vehMakeMandateAdd">Field cannot be empty</span>		
 			 </div>
 			 <div class="col-sm-2" style="">
@@ -440,7 +263,7 @@ var pageContext = '<%=request.getContextPath()%>';
   				
   				<div class="form-group row" >
       			<div class="col-sm-2" style="">
-    			<label for="perDayCostAdd" style="color: rgba(217, 83, 79, 1);font-size:12px;">Per Day Cost</label>
+    			<label for="perDayCostAdd" style="color: rgba(217, 83, 79, 1);font-size:12px;">Per Day Cost*</label>
     			</div>
     			<div class="col-sm-4 ">
     			<div class="input-group">
@@ -478,7 +301,7 @@ var pageContext = '<%=request.getContextPath()%>';
   				</div>
   				<div class="form-group row checkbox">
   					<div class="col-sm-12">
-  					<label style="color:#687074;"><input type="checkbox" id="useDifferentAddress" name="useDifferentAddress" value="Yes" onclick="showDifferentAddrBlock()">Use different address for <span style="font-weight: bold;color: rgba(217, 83, 79, 1);">PICKUP</span></label>
+  					<label style="color:#687074;"><input type="checkbox" id="useDifferentAddress" name="useDifferentAddress" value="Yes" onclick="showDifferentAddrBlock()">Use different address for <span style="font-weight: bold;color: rgba(217, 83, 79, 1);">PICKUP/DROPOFF</span></label>
   					</div>
 				</div>
       	 			
@@ -542,20 +365,33 @@ var pageContext = '<%=request.getContextPath()%>';
     			<div class="col-sm-10 ">
     			<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span></span>
-					<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" name="cityAdd"  id="cityAdd" value="<%=address.getAddrCity()%>" placeholder="Town/City">
+					<select class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" name="cityAdd"  id="cityAdd" onchange="selectState()">
+          	 		<option value="defaultCity" selected="selected">Select City</option>
+          	  		<% 
+          	  		String serviceCities = CommonUtility.getValuesFromProperties("activeCities");
+          	  		String showCities[] = serviceCities.split("#",-1);
+          				for(String cities : showCities)	
+						{
+					%>
+          	 			<option value="<%=cities %>"><%=cities %></option>
+    				<%
+						}
+					%>
+				</select>
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none;" id="cityMandateAdd">Field cannot be empty</span>
+				
 				</div>
   				</div>
   				
   				<div class="form-group row" >
       			<div class="col-sm-2">
-    			<label for="stateAdd" style="color: rgba(217, 83, 79, 1);font-size:12px;">State</label>
+    			<label for="stateAdd" style="color: rgba(217, 83, 79, 1);font-size:12px;">State*</label>
     			</div>
     			<div class="col-sm-10 " >
     			<div class="input-group">
 					<span class="input-group-addon"><span class="glyphicon glyphicon-map-marker"></span></span>
-					<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" name="stateAdd" id="stateAdd" value="<%=address.getAddrState()%>" placeholder="State">
+					<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" name="stateAdd" id="stateAdd" value="" placeholder="State" readonly/>
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none;" id="stateMandateAdd">Field cannot be empty</span>
 				</div>
@@ -563,7 +399,7 @@ var pageContext = '<%=request.getContextPath()%>';
   				
   				<div class="form-group row">
       			<div class="col-sm-2" >
-    			<label for="pincodeAdd" style="color: rgba(217, 83, 79, 1);font-size:12px;">Pincode</label>
+    			<label for="pincodeAdd" style="color: rgba(217, 83, 79, 1);font-size:12px;">Pincode*</label>
     			</div>
     			<div class="col-sm-10 " >
     			<div class="input-group">
