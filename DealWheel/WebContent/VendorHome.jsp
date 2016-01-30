@@ -72,117 +72,33 @@ var pageContext = '<%=request.getContextPath()%>';
     	<!-- My Profile ends -->
     	<!-- My Vehicle Details start -->
     	<div id="vehicleDetails" class="tab-pane fade in active">
-    		<!-- Display Listed Vehicles starts -->
-    		<%@include file="commonResources/VendorDisplayListedVehicles" %>
-			<!-- Display Listed Vehicles ends -->
-			<!-- Add Vehicle Block Starts -->
-			<%@include file="commonResources/AddVehicleBlock" %>
-			<!-- Add Vehicle Modal Ends -->
+    	<!-- Listed Vehicle details starts -->
+    	<%@include file="commonResources/VendorDisplayListedVehicles" %>
+    	<!-- Listed Vehicle details ends -->
+    	<!-- Add vehicle block starts -->
+    	<%@include file="commonResources/AddVehicleBlock" %>
+    	<!-- Add Vehicle block ends -->
+    	<!-- Delete/Disable alert pop-up starts-->
+		<div class="modal fade text-center" id="alertDisableDeleteModalId" role="dialog">
+   		 <div class="modal-dialog">
+    		 <!-- Modal content-->
+     		 <div class="modal-content">
+        		<div class="modal-body">
+          		<p style="color:#687074;font-weight:bold;font-size:14px;text-transform:uppercase;"><span id="deleteDisableSpanId"></span></p>
+          		<button type="button" class="btn btn-info btn-sm" data-dismiss="modal" onclick="submitVehicleForm()" style="">Yes</button>
+          		<button type="button" class="btn btn-info btn-sm" data-dismiss="modal" style="background-color: rgba(217, 83, 79, 1);">No</button>
+        		</div>
+      		</div>
+    	 </div>
+  		</div>
+	<!-- Delete/Disable alert pop-up ends -->	
     	</div>
     	<!-- My Vehicle Details end -->
     	<!-- My Booking History start -->
     	<div id="bookingHistory" class="tab-pane fade ">
-    	<br><br>
-    	 <% 
-    		List<Object[]> bookingDetailList = new BookingHistoryDAOImpl<Bookingshistory>().getBookingDetailsForVendorId(user.getUserId());
-    		if(bookingDetailList!=null && bookingDetailList.size()>0){
-    	%>	
-    	 <div class="table-responsive">
-      	 <form action="${pageContext.request.contextPath}/CancelBookingForVendor" method="post" id="vendorBookingCancelForm">
-      	 <table class="table table-hover">
-      	 <thead>
-      	  <tr>
-        	<th class="text-center"><span style="color:#687074;font-size:12px;">Booking #</span></th>
-        	<th class="text-center"><span style="color:#687074;font-size:12px;">Vehicle Details</span></th>
-        	<th class="text-center"><span style="color:#687074;font-size:12px;">Registration #</span></th>
-        	<th class="text-center"><span style="color:#687074;font-size:12px;"><span class="glyphicon glyphicon-calendar" style="color:#687074;font-size:12px;"></span> Booking Dates </span></th>
-        	<th class="text-center"><span style="color:#687074;font-size:12px;">Booked On</span></th>
-        	<th class="text-center"><span style="color:#687074;font-size:12px;">Amount Paid</span></th>
-        	<th class="text-center"><span style="color:#687074;font-size:12px;">Security Deposited</span></th>
-        	<th class="text-center"><span style="color:#687074;font-size:12px;">Current Status</span></th>
-        	<th class="text-center"><span style="color:#687074;font-size:12px;">Action</span></th>
-          </tr>
-         </thead>
-         <% 
-    		for(Object[] bookingDetail : bookingDetailList ){ 
-    			long duration = ((((Date)bookingDetail[4]).getTime()-((Date)bookingDetail[3]).getTime())/ (1000 * 60 * 60 * 24));
-    	 %>
-         <tbody class="text-center">
-          <tr>
-           <td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%= (String)bookingDetail[10]%></span></td>
-           <td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%= (String)bookingDetail[0]%> <%= (String)bookingDetail[1]%></span></td>
-           <td><span style="color:#85b213;font-size:11px;text-transform:uppercase;font-weight:bold;"><%=(String)bookingDetail[2]%></span></td>
-           <td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%=(new SimpleDateFormat("dd/MM/yyyy").format((Date)bookingDetail[3]).toString())%> - <%=(new SimpleDateFormat("dd/MM/yyyy").format((Date)bookingDetail[4]).toString()) %></span></td>
-           <td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%= new SimpleDateFormat("dd/MM/yyyy").format((Date)bookingDetail[5])%></span></td>
-           <td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%= duration*((Integer)bookingDetail[6]).longValue()%></span></td>
-           <td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%= ((Integer)bookingDetail[9]).longValue()%></span></td>
-           <td>
-           <%
-           String status  = (String)bookingDetail[7];
-           if("UPCOMING".equalsIgnoreCase(status)) 
-           {
-           %>
-           <span class="label label-success">UPCOMING</span>
-           <%
-           }else if("COMPLETED".equalsIgnoreCase(status)){
-        	%>
-            <span class="label label-warning">COMPLETED</span>
-           <%
-           }else if("CANCELLED".equalsIgnoreCase(status)){
-           %>
-            <span class="label label-danger">CANCELLED</span>
-           <%
-           }else if("VENDORCANCELLED".equalsIgnoreCase(status)){
-           %>
-           <span class="label label-danger">VENDOR CANCELLED</span>
-           <%
-        	}
-           %>
-           </td>
-           <td>
-           <%
-            if("UPCOMING".equalsIgnoreCase(status)) 
-           {
-           %>
-           <button type="button" class="btn btn-xs btn-danger" data-dismiss="modal" style="background-color: rgba(217, 83, 79, 1);" onclick="vendorCancellation('<%=(String)bookingDetail[8] %>')">CANCEL</button>
-           <%
-        	}
-           %>
-           </td>
-          </tr>
-         </tbody>
-         <%
-    		}
-          %>
-         </table>
-         <input type="hidden" name="bookingToCancel" id="bookingToCancel">
-         
-         <!-- Confirm Booking cancellation starts -->
-         <div class="modal fade text-center" id="confirmVendorCancelId" role="dialog">
-    		<div class="modal-dialog">
-     		<!-- Modal content-->
-      		<div class="modal-content">
-        		<div class="modal-body">
-          		<p style="color:#687074;font-weight:600;font-size:13.5px;text-transform:uppercase;">Sure you want to cancel this upcoming booking ?? This calls for penalty.</p>
-          		<button type="button" class="btn btn-info btn-md" data-dismiss="modal" style="background-color: rgba(217, 83, 79, 1);" onclick="cancelVendorBooking('YES')">YES</button>
-          		<button type="button" class="btn btn-info btn-md" data-dismiss="modal" style="background-color: #85b213;" onclick="cancelVendorBooking('NO')">NO</button>
-        		</div>
-      		</div>
-    		</div>
-    	 </div>
-         <!-- Confirm Booking cancellation ends -->
-         
-         </form>
-         </div>
-         <%
- 			}else{
-    	 %>
-         <br>
-    	  <span style="color:rgba(217, 83, 79, 1);font-size:14px;text-transform:uppercase;">No booking records found.</span>
-    	 <br>
-         <%
-    		}
-         %>
+    	<!-- Bookings history block starts -->
+    	<%@include file="commonResources/VendorBookingsHistory" %>
+    	<!-- Bookings history block ends -->
     	</div>
     	<!-- My Booking History end -->
     	<!-- My Payment History start -->

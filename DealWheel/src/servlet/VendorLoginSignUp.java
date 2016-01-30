@@ -39,6 +39,7 @@ public class VendorLoginSignUp extends HttpServlet {
 		String pagecontext = req.getContextPath();
 		String output = null;
 		if(req.getParameter("identifier")!=null && "signup".equals(req.getParameter("identifier"))){
+			req.getSession().setAttribute("vendorFlow", "vendorFlow");
 			if(req.getParameter("email") == null || isValidEmailAddress(req.getParameter("email"))){
 				output = "USRNMISSUE";
 			}

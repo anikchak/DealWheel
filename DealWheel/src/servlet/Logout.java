@@ -45,7 +45,8 @@ public class Logout extends HttpServlet {
         String pagecontext = request.getContextPath();
         String initiateVendorFlow = (String)request.getParameter("invoke");
         System.out.println("initiateFlow = "+initiateVendorFlow);
-        
+        String selectedLocation = (String)request.getSession().getAttribute("selectedLocation");
+        System.out.println("Selected Location during logout = "+selectedLocation);
         String pageId = (String)request.getSession().getAttribute("currentPage");
         System.out.println("Logout.java: tempBookingId="+(String)request.getParameter("fetchSelectedVehicle"));
         //If logout flow is invoked from Review Page then clearing the held vehicle first 
@@ -61,7 +62,7 @@ public class Logout extends HttpServlet {
             session.invalidate();
         }
         if(initiateVendorFlow!=null && "vendorFlow".equalsIgnoreCase(initiateVendorFlow)){
-        	response.sendRedirect(pagecontext+"/VendorLoginSignUp.jsp?invoke=vendorFlow");
+        	response.sendRedirect(pagecontext+"/VendorLoginSignUp.jsp?invoke=vendorFlow&selectedLocation="+selectedLocation);
         }
         else{
          response.sendRedirect(pagecontext+"/LandingPage.jsp");

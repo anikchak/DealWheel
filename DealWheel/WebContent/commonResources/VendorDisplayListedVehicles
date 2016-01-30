@@ -1,9 +1,10 @@
+<div id="listVehiclesBlockId">
 <% 
     		List<Object[]> vehicleDetailList = new VehicleDAOImpl<Vehicle>().getVehicleDetailsForUserId(user.getUserId()); 
     		if(vehicleDetailList!=null && vehicleDetailList.size()>0){
     		%>
     		<br>
-    		<div id="listVehiclesBlockId">
+    		
     		<div class="table-responsive">
     		<form action="${pageContext.request.contextPath}/DeleteVehicle" method="post" name="listedVehicleAction" id="listedVehicleActionFormId">
     		

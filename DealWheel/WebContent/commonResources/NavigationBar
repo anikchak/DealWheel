@@ -20,9 +20,17 @@
 			<li class="dropdown" >
 				<%
 				String selectedLocation = (String)session.getAttribute("selectedLocation"); 
+				String selectedLocURL = (String)request.getParameter("selectedLocation"); 
+				String setLocation = null;
 				if(selectedLocation!=null){
+					setLocation = selectedLocation;
+				}else if(selectedLocURL!=null){
+					setLocation = selectedLocURL;
+					session.setAttribute("selectedLocation",setLocation);
+				}
+				if(setLocation!=null){
 				%>
-				<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:#fff;font-size:13px;text-transform:uppercase;"><span class="glyphicon glyphicon-map-marker"></span><span id="locationId" name="locationSpanName"> <%=selectedLocation%> </span><span class="caret"></span></a>
+				<a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color:#fff;font-size:13px;text-transform:uppercase;"><span class="glyphicon glyphicon-map-marker"></span><span id="locationId" name="locationSpanName"> <%=setLocation%> </span><span class="caret"></span></a>
 				<%
 				}else{
 				%>
