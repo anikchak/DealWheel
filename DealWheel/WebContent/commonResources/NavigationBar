@@ -58,7 +58,7 @@
 							</a>
 							<ul class="dropdown-menu">
 								<li>
-									<a href="#" style="color: #687074; font-weight:400;">
+									<a href="${pageContext.request.contextPath}/MyProfile.jsp" style="color: #687074; font-weight:400;">
 										<span class="glyphicon glyphicon-cog"></span> My Profile
 									</a>
 								</li>

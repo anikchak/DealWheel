@@ -1,8 +1,10 @@
 package model;
 
+import static services.utility.GenericConstant.BOOKING_HISTORY_UPDATE;
 import static services.utility.GenericConstant.USER_FIND_ALL;
 import static services.utility.GenericConstant.USER_FIND_BY_EMAIL;
 import static services.utility.GenericConstant.USER_FIND_BY_ID;
+import static services.utility.GenericConstant.USER_UPDATE_QUERY;
 
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -33,6 +35,7 @@ import javax.persistence.TemporalType;
 		@NamedQuery(name=USER_FIND_ALL, query="SELECT u FROM User u"),
 		@NamedQuery(name=USER_FIND_BY_ID, query="SELECT u FROM User u where u.userId = :userId"),
 		@NamedQuery(name=USER_FIND_BY_EMAIL, query="SELECT u FROM User u where u.userEmail = :email"),
+		@NamedQuery(name=USER_UPDATE_QUERY, query="update User u set u.userName = :userName ,u.userEmail = :userEmail, u.userGender = :userGender, u.userPrimaryContact = :userPrimaryContact  where u.userId = :userId")
 })
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;

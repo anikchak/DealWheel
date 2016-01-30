@@ -223,6 +223,7 @@ public class CustomerControllerService {
 				q.setParameter(UPCOMING, UPCOMING);
 				q.setParameter(VIEWING, VIEWING);
 				//q.setParameter(ADDR_TYPE, PICKUP);
+				System.out.println(selectedLocation);
 				q.setParameter("addrCity", selectedLocation.toUpperCase());
 
 				List<Object[]> searchResultSet = (List<Object[]>) q
@@ -402,10 +403,39 @@ public class CustomerControllerService {
 				q.setParameter(BKNG_STATUS_WHERE_CLAUSE, GenericConstant.VIEWING);
 				updateStatus = q.executeUpdate();
 				et.commit();
-				Query q1= em.createNativeQuery(QueryConstant.GET_USER_EMAIL);
-				q1.setParameter(1,uName);
-				uMail = (String) q1.getSingleResult();
-				logger.info("User Email"+uMail);
+				//Query q1= em.createNativeQuery(QueryConstant.GET_USER_EMAIL);
+				//q1.setParameter(1,uName);
+				//uMail = (String) q1.getSingleResult();
+				//logger.info("User Email"+uMail);
+				//cu.sendEmailNotification("confirmationEmail",generatedOrderId,uMail);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			logger.info("Finally invoked");
+		    em.close();
+		}
+		return (updateStatus == 1) ? true : false;
+	}
+	
+	
+	public boolean updateUserDetails(BigInteger userId,String[] params) {
+		logger.info("Inside method UpdateUserDetails");
+		CommonUtility cu = new CommonUtility();
+		int updateStatus = 0;String uMail;
+		try {
+			if (em != null) {
+				
+				et.begin();
+				Query q = em.createNamedQuery(USER_UPDATE_QUERY);
+							// q.setParameter(1, "UPCMNG");
+				q.setParameter(USER_ID, userId);
+				q.setParameter("userName",params[1]);
+				q.setParameter("userEmail",params[0]);
+				q.setParameter("userGender",params[4]);
+				q.setParameter("userPrimaryContact",new BigInteger(params[3]));
+				updateStatus = q.executeUpdate();
+				et.commit();
 				//cu.sendEmailNotification(generatedOrderId,uMail);
 			}
 		} catch (Exception e) {
@@ -416,6 +446,8 @@ public class CustomerControllerService {
 		}
 		return (updateStatus == 1) ? true : false;
 	}
+	
+	
 	
 	 @SuppressWarnings("unchecked")
 	public List<Object[]> getMyBookingsHistory(BigInteger userId) {
@@ -428,6 +460,22 @@ public class CustomerControllerService {
 		q.setParameter(UPCOMING, UPCOMING);
 		q.setParameter("COMPLETED", "COMPLETED");
 		q.setParameter("CANCELLED", "CANCELLED");
+		searchResultSet = (List<Object[]>) q.getResultList();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return searchResultSet;
+} 
+	
+	
+	 @SuppressWarnings("unchecked")
+	public List<Object[]> getMyProfile(BigInteger userId) {
+		logger.info("Inside getMyProfile() where userId passed = "+userId);
+		List<Object[]> searchResultSet= null;
+		try{
+		em.getEntityManagerFactory().getCache().evictAll();
+		Query q = em.createQuery(QueryConstant.GET_USER_DETAILS);
+		q.setParameter("USERID", userId);
 		searchResultSet = (List<Object[]>) q.getResultList();
 		}catch(Exception e){
 			e.printStackTrace();

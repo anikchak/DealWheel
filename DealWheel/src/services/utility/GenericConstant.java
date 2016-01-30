@@ -30,6 +30,7 @@ public class GenericConstant {
 	public static final String VIEWING = "VIEWING";
 	public static final String PICKUP = "PICKUP";
 	public static final String BKNG_STATUS = "bkngStatus";
+	public static final String USER_ID = "userId";
 	public static final String BKNG_NUMBER = "bkngNumber";
 	public static final String BKNG_SEQ = "bkngSeq";
 	public static final String BKNG_STATUS_WHERE_CLAUSE = "bkngStatusWhereClause";
@@ -51,6 +52,7 @@ public class GenericConstant {
 	public static final String NAV_TO_CONFIRMBOOKING_PAGE= "/ConfirmBooking.jsp";
 	public static final String NAV_TO_LOGIN_PAGE = "/Login.jsp";
 	public static final String NAV_TO_SEARCHRESULT_PAGE = "/SearchResult.jsp";
+	public static final String NAV_TO_MYPROFILE_PAGE = "/MyProfile.jsp";
 	
 	public static final String NAV_TO_VENDORLOGINSIGNUP_PAGE = "/VendorLoginSignUp.jsp";
 	public static final String NAV_TO_VENDORREGISTRATION_PAGE = "/VendorRegister.jsp";
@@ -71,6 +73,7 @@ public class GenericConstant {
 	public static final String USER_FIND_ALL = "User.findAll";
 	public static final String USER_FIND_BY_ID = "User.findByUserId";
 	public static final String USER_FIND_BY_EMAIL = "User.findByEmail";
+	public static final String USER_UPDATE_QUERY="User.updateQuery";
 	
 	public static final String LISTED_VEHICLE_GET_MAKES = "ListedVehicle.getAllMakersNames";
 	public static final String LISTED_VEHICLE_GET_NAMES = "ListedVehicle.getAllNames";
@@ -83,6 +86,7 @@ public class GenericConstant {
 	public static final String BOOKING_HISTORY_FOR_VENDOR = "Bookingshistory.findAllForVendor";
 	public static final String BOOKING_HISTORY_FIND_BOOKING_BY_SEQ = "Bookingshistory.findBookingSeq";
 	public static final String BOOKING_HISTORY_UPDATE = "Bookingshistory.UpdateBooking";
+
 	
 	public static final String ADDRESS_FIND_ALL = "Address.findAll";
 	public static final String ADDRESS_FIND_FOR_USER_ID_AND_TYPE = "Address.findAddressForUserId";

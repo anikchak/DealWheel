@@ -7,6 +7,7 @@
 <%@ page import="model.Vehicle" %>
 <%@ page import="model.Bookingshistory" %>
 <%@ page import="model.Address" %>
+<%@ page import="model.LoginDetail" %>
 <%@ page import="model.ListedVehicle" %>
 <%@ page import="java.util.Map" %>  
 <%@ page import="java.util.Map.Entry" %>  

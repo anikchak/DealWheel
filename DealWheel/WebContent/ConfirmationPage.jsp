@@ -29,6 +29,7 @@ var pageContext = '<%=request.getContextPath()%>';
 	new CustomerControllerService().cleanBookings();
 	String userName = null;
 	String sessionID = null;
+	String BODY = null;
 	long tempBookingId = 0;
 	session.setAttribute("currentPage", "ConfirmationPage");
 	if(session.getAttribute("LoggedInUserDetailsObject")!=null){
@@ -75,6 +76,7 @@ var pageContext = '<%=request.getContextPath()%>';
 			String fetchSelectedVehicle = (String)session.getAttribute("tempBookingOrderId");
 		    if(fetchSelectedVehicle!=null && !"".equalsIgnoreCase(fetchSelectedVehicle)){
 			session.setAttribute("tempLockedVehicle", fetchSelectedVehicle);
+			String bookingSequence = null;
 			List<Object[]> vehicleDetailsList = (List<Object[]>)CommonUtility.fetchVehicleUsingTempBooking(fetchSelectedVehicle);
 			if(vehicleDetailsList!=null && vehicleDetailsList.size()==1){
 				Vehicle v = (Vehicle)((Object)vehicleDetailsList.get(0)[0]);
@@ -82,16 +84,58 @@ var pageContext = '<%=request.getContextPath()%>';
 				Bookingshistory bh = (Bookingshistory)((Object)vehicleDetailsList.get(0)[2]);
 				Address a = (Address)((Object)vehicleDetailsList.get(0)[3]);
 				User u = (User)((Object)vehicleDetailsList.get(0)[4]);
+				bookingSequence = bh.getBkngSeq();
 			
+		// Creating Email Subject
+		
+		 BODY = "<h3> Hi "+u.getUserName()+",</h3> <br><br> " + 
+
+			    		" <h4> Your booking "+bh.getBkngNumber()+" is confirmed with Dealwheel. Details of the bookings  are given below </h4><br><br>"+
+
+			    		 "<table>"+
+			    		 "<tr>"+
+			    		 "<td> Bike </td>"+
+			    		 "<td>"+ lv.getLvclName()+" </td>"+
+			    		 "</tr>"+
+			    		 "<tr>"+
+			    		 "<td> Make </td>"+
+			    		 "<td>"+lv.getLvclMake() +"</td>"+
+			    		 "</tr>"+
+			    		 "<tr>"+
+			    		 "<td> Vehicle Registeration </td>"+
+			    		 "<td>"+v.getVhclRegistrationNo()+" </td>"+
+			    		 "</tr>"+
+			    		 "<tr>"+
+			    		 "<td> From Date </td>"+
+			    		 "<td>"+bh.getBkngFromDate() +"</td>"+
+			    		 "</tr>"+
+			    		 "<tr>"+
+			    		"<td> To Date </td>"+
+			    		 "<td>"+bh.getBkngToDate() +"</td>"+
+			    		 "</tr>"+
+			    		"</table></br></br>"+
+
+			    		 "You can pick the bike from the following location"+
+
+			    		 "<h4>"+a.getAddrLine1()+a.getAddrLine2()+a.getAddrLine3()+"<br>"
+			    		 		 +a.getAddrLocality()+"<br>"
+			    		 		+a.getAddrCity()+"<br>"
+			    		 		 +a.getAddrPinCode()+"</h4>"
+			    		 		 		+ "<br> <br>Happy Riding!!! <br><br> Regards,<br> Deal Wheel Admin Team<br>";
+				
+				
+				
 			%>
+			 	 <div id="emailSample" style="display:none">
+    	 	 <span style="color:#687074;font-size:14px;" id="emailBody"><%=BODY%></span>
+    		 </div>
   			<div class="panel panel-default">
   			 <div class="panel-heading">
-    	 	 <span style="color:#85b213;font-size:16px;font-weight: bold;">Congratulations..!!!</span> 
+  		 	 <span style="color:#85b213;font-size:16px;font-weight: bold;">Congratulations..!!!</span> 
     	 	 <span style="color:#687074;font-size:14px;">Booking Successful </span>
     	 	 <span style="float:right">
-    	 	 <span style="color:rgba(217, 83, 79, 1);">Booking Id:</span> 
-    		 <span style="color:#687074;font-size:18px;font-weight: bold;" id="bookingId"><%=bh.getBkngNumber() %></span>
-    		 </span>
+    	 	 <span style="color:rgba(217, 83, 79, 1);">Booking Id:</span>
+    	
     	 	 </div>
   			</div>
   			<div class="panel-body" >
@@ -177,10 +221,8 @@ var pageContext = '<%=request.getContextPath()%>';
 				"TriggerEmail",
 				{
 					actionCode : "confirmationEmail",
-					bookingId : $("#bookingId").text(),
-					vehicleDetails: $("#vehicleMakeId").text()+"#"+$("#vehicleNameId").text()+"#"+$("#startDateDetailsId").text()+"#"+$("#endDateDetailsId").text()+"#"+
-									$("#addressDetailsId").text()+"#"+$("#perDayCostId").text()+"#"+$("#securityDepositId").text()+"#"+$("#noOfDaysId").text()+"#"+
-									$("#payableAmount").text(),
+					bookingId :'<%=BODY%>' ,
+					vehicleDetails: '<%=BODY%>',
 					userId : '<%=userName%>'				
 				},
 				function(responseText) {

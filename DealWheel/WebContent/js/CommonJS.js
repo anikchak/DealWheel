@@ -190,7 +190,7 @@ function submitForAuthentication(authType, pageContext) {
 		{
 			$('#forgotPswdErrorMsgSpan').html("Enter value for all fields");
 			$('#forgotPswdErrorMsgDiv').css('display', 'block');
-		}else{
+		}else {
 
 			$.post("Login",
 							{
