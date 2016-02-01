@@ -276,6 +276,7 @@ function closeAddBlock() {
 	$("#stateAdd").css("border-color", "");
 	$('#stateAdd').val('');
 	$('#pinCodeMandateAdd').hide();
+	$('#add_vehicle_error').hide();
 	$("#pinCodeAdd").hide();
 	$("#pinCodeAdd").css("border-color", "");
 	$('#pinCodeAdd').val('');
@@ -289,7 +290,21 @@ function closeAddBlock() {
 
 function validateData() {
 	var emptyField = 'N';
-
+	var vehicleManufacturer = $("#vehicleManufacturer").val();
+	var vehicleName = $("#vehicleName").val();
+	var registrationNo = $("#registrationNo").val();
+	var yearOfManufacture = $("#yearOfManufacture").val();
+	var perDayCost  = $("#perDayCost").val();
+	var securityDeposit = $("#securityDeposit").val();
+	var useDifferentAddress = $("#useDifferentAddress").is(":checked");
+	var addr1Add = $("#addr1Add").val();
+	var addr2Add = $("#addr2Add").val();
+	var addr3Add = $("#addr3Add").val();
+	var localityAdd = $("#localityAdd").val();
+	var cityAdd = $("#cityAdd").val();
+	var stateAdd = $("#stateAdd").val();
+	var pinCodeAdd = $("#pinCodeAdd").val();
+	
 	resetErrorMsgsVehicleDetails();
 	$('#vehMakeMandateAdd').hide();
 	$("#vehicleName").css("border-color", "");
@@ -304,85 +319,113 @@ function validateData() {
 	$('#securityDepositMandateAdd').hide();
 	$("#securityDeposit").css("border-color", "");
 
-	if ($("#vehicleManufacturer").val() == 'defaultMake'
-			|| $("#vehicleManufacturer").val() == null) {
+	if (vehicleManufacturer == 'defaultMake' || vehicleManufacturer == null) {
 		$("#vehicleManufacturer").css("border-color", "red");
 		$('#vehMakeMandateAdd').show();
 		emptyField = 'Y';
 	}
-	if ($("#vehicleName").val() == 'defaultName'
-			|| $("#vehicleName").val() == null) {
+	if (vehicleName == 'defaultName' || vehicleName == null) {
 		$("#vehicleName").css("border-color", "red");
 		$('#vehNameMandateAdd').show();
 		emptyField = 'Y';
 	}
-	if ($("#registrationNo").val() == '' || $("#registrationNo").val() == null) {
+	if (registrationNo == '' || registrationNo == null) {
 		$("#registrationNo").css("border-color", "red");
 		$('#registrationNoMandateAdd').show();
 		emptyField = 'Y';
 	}
-	if ($("#yearOfManufacture").val() == ''
-			|| $("#yearOfManufacture").val() == null) {
+	if (yearOfManufacture == ''|| yearOfManufacture == null) {
 		$("#yearOfManufacture").css("border-color", "red");
 		$('#yearOfManufactureMandateAdd').show();
 		emptyField = 'Y';
 	}
-	if($('#invalidYearAdd').val() > 5 ||($('#invalidYearAdd').val() > 0 && $('#invalidYearAdd').val() < 4)){
+	if(yearOfManufacture.length > 5 ||(yearOfManufacture.length > 0 && yearOfManufacture.length < 4)){
 		$("#yearOfManufacture").css("border-color", "red");
 		$('#invalidYearAdd').show();
+		emptyField = 'Y';
 	}
-	if ($("#perDayCost").val() == '' || $("#perDayCost").val() == null) {
+	if (perDayCost == '' || perDayCost == null) {
 		$("#perDayCost").css("border-color", "red");
 		$('#perDayCostMandateAdd').show();
 		emptyField = 'Y';
 	}
-	if ($("#securityDeposit").val() == ''
-			|| $("#securityDeposit").val() == null) {
+	if (securityDeposit == '' || securityDeposit == null) {
 		$("#securityDeposit").css("border-color", "red");
 		$('#securityDepositMandateAdd').show();
 		emptyField = 'Y';
 	}
 
-	var check = $("#useDifferentAddress").is(":checked");
-	if (check) {
-		if ($("#addr1Add").val() == '' || $("#addr1Add").val() == null) {
+	if (useDifferentAddress) {
+		if (addr1Add == '' || addr1Add == null) {
 			$("#addr1Add").css("border-color", "red");
 			$('#addr1MandateAdd').show();
 			emptyField = 'Y';
 		}
-		if ($("#addr2Add").val() == '' || $("#addr2Add").val() == null) {
+		if (addr2Add == '' || addr2Add == null) {
 			$("#addr2Add").css("border-color", "red");
 			$('#addr2MandateAdd').show();
 			emptyField = 'Y';
 		}
-		if ($("#localityAdd").val() == '' || $("#localityAdd").val() == null) {
+		if (localityAdd == '' || localityAdd == null) {
 			$("#localityAdd").css("border-color", "red");
 			$('#localityMandateAdd').show();
 			emptyField = 'Y';
 		}
-		if ($("#cityAdd").val() == 'defaultCity' || $("#cityAdd").val() == null) {
+		if (cityAdd == 'defaultCity' || cityAdd == null) {
 			$("#cityAdd").css("border-color", "red");
 			$('#cityMandateAdd').show();
 			emptyField = 'Y';
 		}
-		if ($("#stateAdd").val() == '' || $("#stateAdd").val() == null) {
+		if (stateAdd == '' || stateAdd == null) {
 			$("#stateAdd").css("border-color", "red");
 			$('#stateMandateAdd').show();
 			emptyField = 'Y';
 		}
-		if ($("#pinCodeAdd").val() == '' || $("#pinCodeAdd").val() == null) {
+		if (pinCodeAdd == '' || pinCodeAdd == null) {
 			$("#pinCodeAdd").css("border-color", "red");
 			$('#pinCodeMandateAdd').show();
 			emptyField = 'Y';
 		}
 	}
 	if (emptyField == 'N') {
-		$('#addVehicleFormId').submit();
+		$.ajax({
+			url : 'AddVehicle',
+			data : {
+				vehicleManufacturer : vehicleManufacturer,
+				vehicleName : vehicleName,
+				registrationNo : registrationNo,
+				yearOfManufacture : yearOfManufacture,
+				perDayCost  : perDayCost,
+				securityDeposit : securityDeposit,
+				useDifferentAddress : useDifferentAddress,
+				addr1Add : addr1Add,
+				addr2Add : addr2Add,
+				addr3Add : addr3Add,
+				localityAdd : localityAdd,
+				cityAdd : cityAdd,
+				stateAdd : stateAdd,
+				pinCodeAdd : pinCodeAdd
+			},
+			type : 'POST',
+			dataType : 'html',
+			success : function(response) {
+				if(response == "ADDVEHICLEERROR"){
+					$('#add_vehicle_error').hide();
+					$('#addVehicleErrorMsg').text("Ahoy there! Vehicle with same registration number already listed with us.");
+					$('#add_vehicle_error').show();
+				}else{
+					$(location).attr('href',pageContext + response);
+				}
+			},
+			error : function(request, textStatus, errorThrown) {
+				alert(errorThrown);
+			}
+		});
 	}
 }
 function showDifferentAddrBlock() {
-	var check = $("#useDifferentAddress").is(":checked");
-	if (check) {
+	var useDifferentAddress = $("#useDifferentAddress").is(":checked");
+	if (useDifferentAddress) {
 		resetErrorMsgsVehicleDetails();
 		$("#addr1Add").val('');
 		$("#addr2Add").val('');
@@ -412,6 +455,8 @@ function resetErrorMsgsVehicleDetails() {
 	$("#stateAdd").css("border-color", "");
 	$('#pinCodeMandateAdd').hide();
 	$("#pinCodeAdd").css("border-color", "");
+	$('#invalidYearAdd').hide();
+	$('#add_vehicle_error').hide();
 }
 
 $(document).ready(function() {
@@ -479,8 +524,6 @@ function loadVehicleNames() {
 						$('<option></option>').val(splitResult[i]).html(
 								splitResult[i]));
 			}
-			/*$('#vehicleName').append(
-					$('<option></option>').val("vehNameOther").html("Other"));*/
 		},
 		error : function(request, textStatus, errorThrown) {
 			alert(errorThrown);

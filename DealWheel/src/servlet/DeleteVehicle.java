@@ -53,7 +53,6 @@ public class DeleteVehicle extends HttpServlet {
 				vDAO.enable(vehicleId);
 			}
 			resp.getWriter().write(output);
-//			resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_HOME_PAGE);
 		}catch(Exception e){
 //			throw new SomeThingNotRightException();
 		}

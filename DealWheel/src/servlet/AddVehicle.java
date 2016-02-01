@@ -62,14 +62,14 @@ public class AddVehicle extends HttpServlet {
 
 			params.put("userId", u.getUserId().toString());
 			
-			System.out.println("Add Vehicle Params="+params);
-			
 			AddVehicleController controller = new AddVehicleController();
 			Vehicle addedVehicle = controller.addNewVehicle(params);
 			
-			if(addedVehicle != null){
-					resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_HOME_PAGE);
-				}
+			if(addedVehicle.getVhclId() != null){
+				resp.getWriter().write(NAV_TO_VENDOR_HOME_PAGE);
+			}else{
+				resp.getWriter().write("ADDVEHICLEERROR");
+			}
 		}catch(Exception e){
 			System.out.println("ERROR"+e);
 		}

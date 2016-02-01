@@ -62,7 +62,6 @@ public class AddVehicleController {
 			v.setLastUpdatedBy(params.get("userName"));
 			
 			vehicleNew = new VehicleDAOImpl<Vehicle>().addNewVehicle(v);
-			
 		}catch(Exception e){
 			e.printStackTrace();
 		}

@@ -1,4 +1,4 @@
-<center> <div class="form-group text-center" id="delete_disable_error" name="delete_disable_error" style="display:none;">
+<br><center> <div class="form-group text-center" id="delete_disable_error" name="delete_disable_error" style="display:none;">
 <label style="font-weight:bold;font-size:14px;" class="label label-danger"><span id="cannotDeleteDisableMsg"></span></label>
 </div></center>
 <div id="listVehiclesBlockId">

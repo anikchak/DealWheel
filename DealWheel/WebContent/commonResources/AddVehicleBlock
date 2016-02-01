@@ -1,4 +1,6 @@
-
+<br><center> <div class="form-group text-center" id="add_vehicle_error" name="add_vehicle_error" style="display:none;">
+<label style="font-weight:bold;font-size:14px;" class="label label-danger"><span id="addVehicleErrorMsg"></span></label>
+</div></center>
 	<div class="panel-group vehicleDisplay" style="width:70%;display:none;" id="addVehicleBlockId">
     	<div class="panel panel-default ">
 		 <div class="panel-heading">
