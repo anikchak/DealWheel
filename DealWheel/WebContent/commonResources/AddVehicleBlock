@@ -72,6 +72,8 @@
     				<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" id="yearOfManufacture" name="yearOfManufacture" value= "" placeholder="Year">
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none" id="yearOfManufactureMandateAdd">Field cannot be empty</span>
+				<span style="color: rgba(217, 83, 79, 1);font-size:10px; display:none;" id="YOMAdd">Digits Only</span>
+				<span style="color: rgba(217, 83, 79, 1);font-size:10px; display:none;" id="invalidYearAdd">Invalid Year</span>
 				</div>
   				</div>
   				
@@ -85,6 +87,7 @@
 					<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" id="perDayCost" name="perDayCost" value= "" placeholder="Cost/Day (INR Only)">
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none" id="perDayCostMandateAdd">Field cannot be empty</span>
+				<span style="color: rgba(217, 83, 79, 1);font-size:10px; display:none;" id="PDCAdd">Digits Only</span>
 				</div>
 				<div class="col-sm-2" style="">
 				<label for="depositAdd" style="color: rgba(217, 83, 79, 1);font-size:12px;">Security Deposit*</label>
@@ -95,6 +98,7 @@
     				<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" id="securityDeposit" name="securityDeposit" value= "" placeholder="Deposit (INR)">
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:10px;display:none" id="securityDepositMandateAdd">Field cannot be empty</span>
+				<span style="color: rgba(217, 83, 79, 1);font-size:10px; display:none;" id="SDAdd">Digits Only</span>
 				</div>
   				</div>
   				
@@ -221,6 +225,7 @@
 					<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" id="pinCodeAdd" name="pinCodeAdd" value="" placeholder="Pincode">
 				</div>
 				<span style="color: rgba(217, 83, 79, 1);font-size:10px; display:none;" id="pinCodeMandateAdd">Field cannot be empty</span>
+				<span style="color: rgba(217, 83, 79, 1);font-size:10px; display:none;" id="errmsgPinAdd">Digits Only</span>
 				</div>
   				</div>
   			</div>

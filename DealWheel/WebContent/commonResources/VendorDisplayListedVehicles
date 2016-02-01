@@ -1,10 +1,12 @@
+<center> <div class="form-group text-center" id="delete_disable_error" name="delete_disable_error" style="display:none;">
+<label style="font-weight:bold;font-size:14px;" class="label label-danger"><span id="cannotDeleteDisableMsg"></span></label>
+</div></center>
 <div id="listVehiclesBlockId">
 <% 
     		List<Object[]> vehicleDetailList = new VehicleDAOImpl<Vehicle>().getVehicleDetailsForUserId(user.getUserId()); 
     		if(vehicleDetailList!=null && vehicleDetailList.size()>0){
     		%>
     		<br>
-    		
     		<div class="table-responsive">
     		<form action="${pageContext.request.contextPath}/DeleteVehicle" method="post" name="listedVehicleAction" id="listedVehicleActionFormId">
     		
@@ -40,7 +42,7 @@
       	 			boolean isDisabled = (Boolean)vehicleDetail[15]; 
 					   if(isDisabled){
 					 %>
-					 <span class="label label-danger" data-toggle="tooltip" title="This vehicle will not be shown to the customer dusring search.">Disabled</span>
+					 <span class="label label-danger" data-toggle="tooltip" title="This vehicle will not be shown to the customer during search.">Disabled</span>
 					 <%
 					   }else{
 					 %>

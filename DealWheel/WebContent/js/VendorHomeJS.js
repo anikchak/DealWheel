@@ -4,6 +4,10 @@
 
 // Changes for My Profile tab starts
 $(document).ready(function() {
+	
+	$('#delete_error').hide();
+	$('#disable_error').hide();
+	
 	$("#primaryContact").keypress(function(e) {
 		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
 			$("#errmsgContact1").show().fadeOut(2000);
@@ -200,7 +204,30 @@ function vehicleAction(vehId, action) {
 
 }
 function submitVehicleForm() {
-	$("#listedVehicleActionFormId").submit();
+	var selectedVehicleRecordId = $("#selectedVehicleRecordId").val();
+	var opCode = $("#opCode").val();
+	$.ajax({
+		url : 'DeleteVehicle',
+		data : {selectedVehicleRecordId:selectedVehicleRecordId, opCode:opCode},
+		type : 'POST',
+		dataType : 'html',
+		success : function(response) {
+			if(response == "BOOKINGEXISTDELETE"){
+				$('#delete_disable_error').hide();
+				$('#cannotDeleteDisableMsg').text("Future booking(s) exist for this vehicle. Cannot remove this vehicle.");
+				$('#delete_disable_error').show();
+			}else if(response == "BOOKINGEXISTDISABLE"){
+				$('#delete_disable_error').hide();
+				$('#cannotDeleteDisableMsg').text("Future booking(s) exist for this vehicle. Cannot disable this vehicle.");
+				$('#delete_disable_error').show();
+			}else{
+				$(location).attr('href',pageContext + response);
+			}
+		},
+		error : function(request, textStatus, errorThrown) {
+			alert(errorThrown);
+		}
+	});
 }
 
 function openAddVehicleModal() {
@@ -221,12 +248,16 @@ function closeAddBlock() {
 	$("#registrationNo").css("border-color", "");
 	$('#yearOfManufacture').val('');
 	$('#yearOfManufactureMandateAdd').hide();
+	$("#YOMAdd").hide();
+	$('#invalidYearAdd').hide();
 	$("#yearOfManufacture").css("border-color", "");
 	$('#perDayCost').val('');
 	$('#perDayCostMandateAdd').hide();
+	$("#PDCAdd").hide();
 	$("#perDayCost").css("border-color", "");
 	$('#securityDeposit').val('');
 	$('#securityDepositMandateAdd').hide();
+	$("#SDAdd").hide();
 	$("#securityDeposit").css("border-color", "");
 	$('#addr1MandateAdd').hide();
 	$("#addr1Add").css("border-color", "");
@@ -245,6 +276,7 @@ function closeAddBlock() {
 	$("#stateAdd").css("border-color", "");
 	$('#stateAdd').val('');
 	$('#pinCodeMandateAdd').hide();
+	$("#pinCodeAdd").hide();
 	$("#pinCodeAdd").css("border-color", "");
 	$('#pinCodeAdd').val('');
 	$("#useDifferentAddress").removeAttr('checked');
@@ -265,6 +297,7 @@ function validateData() {
 	$('#registrationNoMandateAdd').hide();
 	$("#registrationNo").css("border-color", "");
 	$('#yearOfManufactureMandateAdd').hide();
+	$('#invalidYearAdd').hide();
 	$("#yearOfManufacture").css("border-color", "");
 	$('#perDayCostMandateAdd').hide();
 	$("#perDayCost").css("border-color", "");
@@ -293,6 +326,10 @@ function validateData() {
 		$("#yearOfManufacture").css("border-color", "red");
 		$('#yearOfManufactureMandateAdd').show();
 		emptyField = 'Y';
+	}
+	if($('#invalidYearAdd').val() > 5 ||($('#invalidYearAdd').val() > 0 && $('#invalidYearAdd').val() < 4)){
+		$("#yearOfManufacture").css("border-color", "red");
+		$('#invalidYearAdd').show();
 	}
 	if ($("#perDayCost").val() == '' || $("#perDayCost").val() == null) {
 		$("#perDayCost").css("border-color", "red");
@@ -386,6 +423,34 @@ $(document).ready(function() {
 	$('#vehicleManufacturer').change(function() {
 		loadVehicleNames();
 	});
+	
+	$("#yearOfManufacture").keypress(function(e) {
+		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+			$("#YOMAdd").show().fadeOut(2000);
+			return false;
+		}
+	});
+	
+	$("#perDayCost").keypress(function(e) {
+		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+			$("#PDCAdd").show().fadeOut(2000);
+			return false;
+		}
+	});
+	
+	$("#securityDeposit").keypress(function(e) {
+		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+			$("#SDAdd").show().fadeOut(2000);
+			return false;
+		}
+	});
+	
+	$("#pinCodeAdd").keypress(function(e) {
+		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+			$("#errmsgPinAdd").show().fadeOut(2000);
+			return false;
+		}
+	});
 });
 function loadVehicleNames() {
 	$('#vehicleName').empty();
@@ -414,8 +479,8 @@ function loadVehicleNames() {
 						$('<option></option>').val(splitResult[i]).html(
 								splitResult[i]));
 			}
-			$('#vehicleName').append(
-					$('<option></option>').val("vehNameOther").html("Other"));
+			/*$('#vehicleName').append(
+					$('<option></option>').val("vehNameOther").html("Other"));*/
 		},
 		error : function(request, textStatus, errorThrown) {
 			alert(errorThrown);

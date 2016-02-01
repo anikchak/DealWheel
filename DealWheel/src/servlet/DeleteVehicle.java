@@ -1,12 +1,10 @@
 package servlet;
 
-import static services.utility.GenericConstant.NAV_TO_DISPLAY_VEHICLE_PAGE;
+import static services.utility.GenericConstant.NAV_TO_VENDORREGISTRATION_PAGE;
 import static services.utility.GenericConstant.NAV_TO_VENDOR_HOME_PAGE;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,6 +19,7 @@ import org.apache.log4j.Logger;
 
 import dao.BookingHistoryDAOImpl;
 import dao.VehicleDAOImpl;
+import exception.SomeThingNotRightException;
 
 @WebServlet("/DeleteVehicle")
 public class DeleteVehicle extends HttpServlet {
@@ -29,49 +28,35 @@ public class DeleteVehicle extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+		String output= NAV_TO_VENDOR_HOME_PAGE;
 		try{
 			VehicleDAOImpl<Vehicle> vDAO = new VehicleDAOImpl<Vehicle>();
 			BookingHistoryDAOImpl<Bookingshistory> bhDAO = new BookingHistoryDAOImpl<Bookingshistory>();
-			//Object[] list=  req.getParameterValues("arrayList");
 			System.out.println("VehicleId="+req.getParameter("selectedVehicleRecordId")+" opCode="+req.getParameter("opCode"));
-			String vehicleRecord = (String)req.getParameter("selectedVehicleRecordId");
+			BigInteger vehicleId = new BigInteger(req.getParameter("selectedVehicleRecordId"));
 			if("Delete".equals(req.getParameter("opCode"))){
-				/*
-				for (int i = 0; i < list.length; i++) {
-					if("Yes".equals(req.getParameter("check" + i)))
-						vDAO.delete(new BigInteger(list[i].toString()));
-					}
-				*/
-				if(!bhDAO.checkFutureBookingAvailable((new BigInteger(vehicleRecord)))){
-				vDAO.delete(new BigInteger(vehicleRecord));
+				if(!bhDAO.checkFutureBookingAvailable(vehicleId)){
+				vDAO.delete(vehicleId);
+				}else{
+					output = "BOOKINGEXISTDELETE";
 				}
 			}
 			else if("Disable".equals(req.getParameter("opCode"))){
-				/*
-				List<BigInteger> listIds = new ArrayList<BigInteger>();;
-				for (int i = 0; i < list.length; i++) {
-					if("Yes".equals(req.getParameter("check" + i)))
-						listIds.add(new BigInteger(list[i].toString()));
-					}
-				vDAO.disable(listIds);
-				*/
-				if(!bhDAO.checkFutureBookingAvailable(new BigInteger(vehicleRecord))){
-				vDAO.disable(new BigInteger(vehicleRecord));
+				if(!bhDAO.checkFutureBookingAvailable(vehicleId)){
+				vDAO.disable(vehicleId);
+				}else{
+					output = "BOOKINGEXISTDISABLE";
 				}
-				
 			}
 			else if("Enable".equals(req.getParameter("opCode"))){
-				vDAO.enable(new BigInteger(vehicleRecord));
+				vDAO.enable(vehicleId);
 			}
-			resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_HOME_PAGE);
+			resp.getWriter().write(output);
+//			resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_HOME_PAGE);
 		}catch(Exception e){
-			logger.error("ERROR"+e);
-			resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_HOME_PAGE);
+//			throw new SomeThingNotRightException();
 		}
-		
-		
 	}
 	
 	@Override

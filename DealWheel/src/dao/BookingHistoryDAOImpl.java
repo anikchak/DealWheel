@@ -51,14 +51,14 @@ public class BookingHistoryDAOImpl<T>  extends  BaseDAOImpl<Bookingshistory> imp
 	}
 
 	public boolean checkFutureBookingAvailable(BigInteger vehicleId) {
-		boolean isAvailable = false;
+		boolean isAvailable = true;
 		logger.debug("Checking if booking for Vehicle Id "+vehicleId+" is available after "+new Date());
-		Query q = em.createNamedQuery(BOOKING_HISTORY_FOR_ID_BY_DATE);
-		q.setParameter("vehicleId", vehicleId);
-		q.setParameter("today", new Date());
-		Bookingshistory bookingDetail = (Bookingshistory) q.getResultList();
-		if(bookingDetail == null || bookingDetail.getBkngSeq().isEmpty())
-			isAvailable = true;
-		return isAvailable;
+			Query q = em.createNamedQuery(BOOKING_HISTORY_FOR_ID_BY_DATE);
+			q.setParameter("vehicleId", vehicleId);
+			q.setParameter("today", new Date());
+			Bookingshistory bookingDetail = (Bookingshistory)(q.getResultList().size()!=0?q.getResultList().get(0):null);
+			if(bookingDetail == null || bookingDetail.getBkngSeq().isEmpty())
+				isAvailable = false;
+			return isAvailable;
 	}
 }
