@@ -30,6 +30,7 @@ var pageContext = '<%=request.getContextPath()%>';
 	String userName = null;
 	String sessionID = null;
 	String BODY = null;
+	String realUserName = null;
 	long tempBookingId = 0;
 	session.setAttribute("currentPage", "ConfirmationPage");
 	if(session.getAttribute("LoggedInUserDetailsObject")!=null){
@@ -37,6 +38,7 @@ var pageContext = '<%=request.getContextPath()%>';
 	if(validUserDetails!=null & validUserDetails.size()>0){
 		for(User u : validUserDetails){
 			userName = u.getUserEmail();
+			realUserName = u.getUserName();
 		}
 	}
 	}
@@ -88,7 +90,7 @@ var pageContext = '<%=request.getContextPath()%>';
 			
 		// Creating Email Subject
 		
-		 BODY = "<h3> Hi "+u.getUserName()+",</h3> <br><br> " + 
+		 BODY = "<h3> Hi "+realUserName+",</h3> <br><br> " + 
 
 			    		" <h4> Your booking "+bh.getBkngNumber()+" is confirmed with Dealwheel. Details of the bookings  are given below </h4><br><br>"+
 
