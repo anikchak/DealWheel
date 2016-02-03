@@ -27,32 +27,35 @@ function ButtonClickHandler(val){
 		
 	}
 }
-    function confirmPass() {
-        var pass = document.getElementById("Password").value
-        var confPass = document.getElementById("RePassword").value
-        if(pass!=null && pass != confPass) {
-            alert('Password Mismatch !');
-        }
-    }
+
+
 
      function OnSubmit(){ 
     	 
-    	    var demail = document.getElementById("Email").value;
-    	 
-    	    var re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    	    if (!re.test(demail)){
-    	    	alert('Email Id InCorrect');
-    	    	return;
-    	    }
-       	 
+    
     	 var pass = document.getElementById("Password").value
          var confPass = document.getElementById("RePassword").value
          if(pass!=null && pass != confPass) {
-             alert('Password Mismatch !');
+             $("#email_validation").hide();
+             $("#ProfileLoginErrorMsgSpan1").text("Password Not Matching!!!!");
+             $("#email_validation").show();
              return;
          }
          
-    	 document.getElementById("ConfirmUpdateBooking").submit(); 	 
+    	 var pContact = document.getElementById("PContact1").value;
+    	 var phoneno = /^([0|\+[0-9]{1,5})?([7-9][0-9]{9})$/;
+    	 if(!phoneno.test(pContact)){
+             $("#email_validation").hide();
+             $("#ProfileLoginErrorMsgSpan1").text("Not a Valid Phone Number");
+             $("#email_validation").show();
+             return;
+         } 
+    	 
+    	 
+    	 document.getElementById("ConfirmUpdateBooking").submit(); 
+    	 
+    	 
+    	 
     	 
      }
 
@@ -166,41 +169,41 @@ function ButtonClickHandler(val){
 <form class="form-horizontal">
 <div  class="row form-group">
 <div class="col-xs-2"></div>
-  <label for="Name" class="col-xs-2 control-label" style="color: #687074;font-size:14.5px; font-weight:600;">User Name </label>
+  <label for="Name" class="col-xs-2 control-label" style="color: #687074;">User Name </label>
     <div class="col-xs-6">
-  <span class="control-label"><%=userdetails.getUserName()%></span>
+  <span class="control-label" style="color: #687074;font-size:14.5px; font-weight:600;"><%=userdetails.getUserName()%></span>
   </div>
   <div class="col-xs-2"></div>
 </div>
 <div class="row form-group">
 <div class="col-xs-2"></div>
-  <label for="Email" class="col-xs-2 control-label" style="color: #687074;font-size:14.5px; font-weight:600;">Email </label>
+  <label for="Email" class="col-xs-2 control-label" style="color: #687074;">Email </label>
    <div class="col-xs-6">
-  <span class="control-label"><%=userdetails.getUserEmail()%></span>
+  <span class="control-label" style="color: #687074;font-size:14.5px; font-weight:600;"><%=userdetails.getUserEmail()%></span>
   </div>
     <div class="col-xs-2"></div>
 </div>
 <div class="row form-group">
 <div class="col-xs-2"></div>
-  <label for="PContact" class="col-xs-2 control-label" style="color: #687074;font-size:14.5px; font-weight:600;">Password</label>
+  <label for="PContact" class="col-xs-2 control-label" style="color: #687074;">Password</label>
    <div class="col-xs-6">
-  <span class="control-label password">**********</span>
+  <span class="control-label password" style="color: #687074;font-size:14.5px; font-weight:600;">**********</span>
    </div>
      <div class="col-xs-2"></div>
 </div>
 <div class="row form-group">
   <div class="col-xs-2"></div>
-  <label for="SContact" class="col-xs-2 control-label" style="color: #687074;font-size:14.5px; font-weight:600;">Primary Contact</label>
+  <label for="SContact" class="col-xs-2 control-label" style="color: #687074;">Primary Contact</label>
    <div class="col-xs-6">
-  <span class="control-label"><%=userdetails.getUserPrimaryContact()%></span>
+  <span class="control-label" style="color: #687074;font-size:14.5px; font-weight:600;"><%=userdetails.getUserPrimaryContact()%></span>
   </div>
     <div class="col-xs-2"></div>
 </div>
 <div class="row form-group">
   <div class="col-xs-2"></div>
-  <label for="Gender" class="col-xs-2 control-label" style="color: #687074;font-size:14.5px; font-weight:600;">Gender</label>
+  <label for="Gender" class="col-xs-2 control-label" style="color: #687074;">Gender</label>
    <div class="col-xs-6">
-  <span class="control-label"><%=userdetails.getUserGender()%></span>
+  <span class="control-label" style="color: #687074;font-size:14.5px; font-weight:600;"><%=userdetails.getUserGender()%></span>
   </div>
     <div class="col-xs-2"></div>
 </div>
@@ -217,6 +220,9 @@ function ButtonClickHandler(val){
 <div class="panel-body">
 <div class="form-horizontal">
 <input type="hidden" name="UserId" id = "UserId" value = "<%=userId%>"> 
+<div class="form-group text-center" id="email_validation" name="email_validation" style="display:none;">
+       <label style="font-weight:bold;font-size:14px;" class="label label-danger"><span id="ProfileLoginErrorMsgSpan1">Not a valid Email! </span></label>
+</div>
 <div  class="row form-group">
   <div class="col-xs-2"></div>
   <label for="Name" class="col-xs-2 control-label" style="color: #687074;font-size:14.5px; font-weight:600;">User Name </label>
@@ -229,7 +235,7 @@ function ButtonClickHandler(val){
   <div class="col-xs-2"></div>
   <label for="Email" class="col-xs-2 control-label" style="color: #687074;font-size:14.5px; font-weight:600;">Email </label>
    <div class="col-xs-6">
-  <input type="text" class="form-control" id="Email" value="<%=userdetails.getUserEmail()%>" name="Email">
+  <span class="control-label"><%=userdetails.getUserEmail()%></span>
   </div>
     <div class="col-xs-2"></div>
 </div>
@@ -247,7 +253,7 @@ function ButtonClickHandler(val){
   <label for="ConfirmPassword" class="col-xs-2 control-label" style="color: #687074;font-size:14.5px; font-weight:600;">Confirm Password</label>
   
    <div class="col-xs-6">
-  <input type="password" class="form-control" id="RePassword" onblur="confirmPass()" name="RePassword" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
+  <input type="password" class="form-control" id="RePassword" name="RePassword" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;">
   </div>
     <div class="col-xs-2"></div>
 </div>
@@ -256,7 +262,7 @@ function ButtonClickHandler(val){
   <div class="col-xs-2"></div>
   <label for="SContact" class="col-xs-2 control-label" style="color: #687074;font-size:14.5px; font-weight:600;">Primary Contact</label>
    <div class="col-xs-6">
-  <input type="number" class="form-control" id="PContact" value = "<%=userdetails.getUserPrimaryContact()%>" name="PContact">
+  <input type="number" class="form-control" id="PContact1" value = "<%=userdetails.getUserPrimaryContact()%>" name="PContact1">
   </div>
     <div class="col-xs-2"></div>
 </div>

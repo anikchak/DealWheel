@@ -49,7 +49,7 @@ public class MyProfile extends HttpServlet {
 		String userEmail = request.getParameter("Email");
 		String userName = request.getParameter("Name");
 		String userPassword = request.getParameter("Password");
-		String userPContact = request.getParameter("PContact");
+		String userPContact = request.getParameter("PContact1");
 		String userGender = request.getParameter("Gender");
 		BigInteger userId = new BigInteger(request.getParameter("UserId"));
 		CustomerControllerService ccs = new CustomerControllerService();
