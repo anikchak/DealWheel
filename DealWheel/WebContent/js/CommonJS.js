@@ -47,14 +47,14 @@ $(document).ready(function() {
 		clearBtn : "true",
 		title : "pickup",
 	});
-	$('[data-toggle="tooltip"]').tooltip();
-
+	 $('[data-toggle="tooltip"]').tooltip();   
+	 
 });
 
-// This function is used to default the drop-off date to (start-date + 1)
-function defaultDropDate() {
-	var startDate = $('#pickupDate').datepicker('getDate', '+1d');
-	startDate.setDate(startDate.getDate() + 1);
+//This function is used to default the drop-off date to (start-date + 1)
+function defaultDropDate(){
+	var startDate = $('#pickupDate').datepicker('getDate', '+1d'); 
+	startDate.setDate(startDate.getDate()+1);
 	$('#dropoffDate').datepicker('setStartDate', startDate);
 }
 
@@ -76,7 +76,7 @@ function openSignUpPopUp() {
 	$("#signupModal").modal();
 }
 
-function openForgotPswd() {
+function openForgotPswd(){
 	$('#forgotPswdErrorMsgDiv').css('display', 'none');
 	$('#forgotPswdUsrname').val("");
 	$('#forgotPswdmobileNumber').val("");

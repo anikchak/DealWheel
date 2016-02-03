@@ -19,7 +19,7 @@ import org.apache.log4j.Logger;
 
 import dao.BookingHistoryDAOImpl;
 import dao.VehicleDAOImpl;
-import exception.SomeThingNotRightException;
+//import exception.SomeThingNotRightException;
 
 @WebServlet("/DeleteVehicle")
 public class DeleteVehicle extends HttpServlet {

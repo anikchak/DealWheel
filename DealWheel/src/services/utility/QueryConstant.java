@@ -29,4 +29,10 @@ public class QueryConstant {
 			+ "and v.vhclId = b.bkngVehicle "
 			+ "and b.bkngStatus in (:UPCOMING,:VIEWING) "
 			+ "and b.bkngSeq = :BOOKINGID";
+	
+	public static String GET_USER_DETAILS = "select u,ld from User u,LoginDetail ld "
+	                                        + "Where u.userId = ld.lognUserId"
+			                                + " AND u.userId = :USERID";
+
+
 }

@@ -11,6 +11,8 @@ import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -21,7 +23,11 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Address;
+import model.Bookingshistory;
+import model.ListedVehicle;
 import model.User;
+import model.Vehicle;
 import services.CustomerControllerService;
 
 public class CommonUtility {
@@ -117,48 +123,103 @@ public class CommonUtility {
 		}
 	}
 	
-	public static void sendEmailNotification(String actionCode,String bookingNo,String uEmail,String vehicleDetails,String tempBookingPswd) {
-		final String username = "bala@doctordekhoo.in";
-		final String password = "Sriramajayam1";
-
-
-		Properties props = new Properties();
-
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-
-		props.put("mail.smtp.host", "mail.doctordekhoo.in");
-		props.put("mail.smtp.port", "25");
-
-
-		Session session = Session.getInstance(props,
-				new javax.mail.Authenticator() {
-					protected PasswordAuthentication getPasswordAuthentication() {
-						return new PasswordAuthentication(username, password);
-					}
-				});
-
-		try {
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("admin@doctordekhoo.in"));
-			message.setRecipients(Message.RecipientType.TO,
-			InternetAddress.parse("anikchak@gmail.com"));
-			if("confirmationEmail".equalsIgnoreCase(actionCode)){
-			message.setSubject("Confirmation: Booking Id - "+bookingNo);
-			message.setText("Dear Guest,"
-					+ "\n\n Your booking was successful! Booking reference id="
-					+ bookingNo
-					+ "\n\n This mail is auto-generated using Java Code.");
-			}else if("forgotPassword".equalsIgnoreCase(actionCode)){
-				message.setSubject("Reset password for - "+uEmail);
-				message.setText("Dear Guest,"
-						+ "\n\n Your password has been successfully reset. \n New password is ="
-						+ tempBookingPswd 
-						+ "\n\n This mail is auto-generated using Java Code.");
-			}
-			Transport.send(message);
-
+	public static void sendEmailNotification(String actionCode,String emailbody,String uEmail) {
+		
+		//get the vehicle details
+		
+	/*	List<Object[]> bd = (List<Object[]>) fetchVehicleUsingTempBooking(bookingNo);
+		System.out.println(bookingNo);
+		Vehicle v = null;
+		ListedVehicle lv = null;
+		Bookingshistory hb = null;
+		Address ad = null;
+		User users = null;
+		
+		for (Object[]  bdresultList:bd) {
+			 v = (Vehicle) bdresultList[0];
+			 lv = (ListedVehicle) bdresultList[1];
+			 hb = (Bookingshistory) bdresultList[2];
+			 ad = (Address) bdresultList[3];
+			 users = (User) bdresultList[4];
+			
+		} */
+		
+	
+try{
 			System.out.println("Done Email");
+			System.out.println(emailbody);
+			  String FROM = "admin@dealwheel.in";   // Replace with your "From" address. This address must be verified.
+			     String TO = uEmail;  // Replace with a "To" address. If your account is still in the 
+			                                                       // sandbox, this address must be verified.
+			    
+
+			     // Need to add disclaimer and phone number details
+			     
+			     String SUBJECT = "Booking Confirmation from Deal Wheel";
+			    
+			    // Supply your SMTP credentials below. Note that your SMTP credentials are different from your AWS credentials.
+			    String SMTP_USERNAME = "AKIAIJW5C4MJ3Z4PUWAQ";  // Replace with your SMTP username.
+			     String SMTP_PASSWORD = "AvC6NNet34rYTa2tPAPOFUVCdTty8ddsoswIqkC4ZT9u";  // Replace with your SMTP password.
+			    
+			    // Amazon SES SMTP host name. This example uses the US West (Oregon) region.
+			    String HOST = "email-smtp.us-west-2.amazonaws.com";    
+			    
+			    // Port we will connect to on the Amazon SES SMTP endpoint. We are choosing port 25 because we will use
+			    // STARTTLS to encrypt the connection.
+			     int PORT = 25;
+
+			     
+
+			        // Create a Properties object to contain connection configuration information.
+			    	Properties props = System.getProperties();
+			    	props.put("mail.transport.protocol", "smtp");
+			    	props.put("mail.smtp.port", PORT); 
+			    	
+			    	// Set properties indicating that we want to use STARTTLS to encrypt the connection.
+			    	// The SMTP session will begin on an unencrypted connection, and then the client
+			        // will issue a STARTTLS command to upgrade to an encrypted connection.
+			    	props.put("mail.smtp.auth", "true");
+			    	props.put("mail.smtp.starttls.enable", "true");
+			    	//props.put("mail.smtp.starttls.required", "true");
+
+			        // Create a Session object to represent a mail session with the specified properties. 
+			    	Session session = Session.getDefaultInstance(props);
+
+			        // Create a message with the specified information. 
+			        MimeMessage msg = new MimeMessage(session);
+			        msg.setFrom(new InternetAddress(FROM));
+			        msg.setRecipient(Message.RecipientType.TO, new InternetAddress(TO));
+			        msg.setSubject(SUBJECT);
+			        msg.setContent(emailbody,"text/html");
+			            
+			        // Create a transport.        
+			        Transport transport = session.getTransport();
+			                    
+			        // Send the message.
+			        try
+			        {
+			            System.out.println("Attempting to send an email through the Amazon SES SMTP interface...");
+			            
+			            // Connect to Amazon SES using the SMTP username and password you specified above.
+			            transport.connect(HOST, SMTP_USERNAME, SMTP_PASSWORD);
+			        	
+			            // Send the email.
+			            transport.sendMessage(msg, msg.getAllRecipients());
+			            System.out.println("Email sent!");
+			        }
+			        catch (Exception ex) {
+			            System.out.println("The email was not sent.");
+			            System.out.println("Error message: " + ex.getMessage());
+			        }
+			        finally
+			        {
+			            // Close and terminate the connection.
+			            transport.close();        	
+			        }
+			    
+			
+			
+			
 
 		} catch (MessagingException e) {
 			System.out.println("Error in Email");
@@ -217,7 +278,7 @@ public class CommonUtility {
 	@SuppressWarnings("unchecked")
 	public static List fetchVehicleUsingTempBooking(String tempBookingId){
 		System.out.println("Inside fetchVehicleUsingTempBooking");
-		System.out.println("Temp booking Id="+Long.parseLong(tempBookingId));
+		//System.out.println("Temp booking Id="+tempBookingId);
 		CustomerControllerService s = new CustomerControllerService();
 		List<Object[]> vehicleDetailsUsingTempBookingId = null;
 		if(tempBookingId!=null){
@@ -231,5 +292,12 @@ public class CommonUtility {
 		CustomerControllerService s = new CustomerControllerService();
 		List<Object[]> myBookingsHistoryList= s.getMyBookingsHistory (userId);
 		return myBookingsHistoryList;
+	}
+	
+	public static List fetchMyProfile(BigInteger userId){
+		System.out.println("Inside Fetch My Profile");
+		CustomerControllerService s = new CustomerControllerService();
+		List<Object[]> myprofiledetails = s.getMyProfile(userId);
+		return myprofiledetails;
 	}
 }
