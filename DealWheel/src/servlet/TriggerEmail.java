@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import services.mail.SendMail;
 import services.utility.CommonUtility;
 import services.utility.QueryConstant;
 
@@ -53,7 +54,7 @@ public class TriggerEmail extends HttpServlet {
 		//	System.out.println("userId="+userId+" BookingId="+bookingId +" vehicleDetails="+vehicleDetails);
 			//logger.info("User Email"+uMail);
 			System.out.println(uMail); */
-			CommonUtility.sendEmailNotification("confirmationEmail",vehicleDetails,userId);
+			SendMail.sendEmailNotification("confirmationEmail",vehicleDetails,"Booking Confirmation from Deal Wheel",userId);
 			//CommonUtility.sendEmailNotification("confirmationEmail",bookingId,userId,vehicleDetails,null);
 		}else if("forgotPassword".equalsIgnoreCase(actionCode)){
 			String tempPwd = (String)request.getParameter("tempPwd");
