@@ -34,7 +34,6 @@ var pageContext = '<%=request.getContextPath()%>';
 	System.out.println("comingFromPage - Landing Page="+comingFromPage);
 	if("ReviewBooking".equalsIgnoreCase(comingFromPage)){
 		String lockedBookingId = (String)session.getAttribute("tempLockedVehicle");
-		System.out.println("Landing Page-lockedBookingId: "+lockedBookingId);
 		new CustomerControllerService().cleanBookingUsingTempBookingId(lockedBookingId);
 	}
 	
