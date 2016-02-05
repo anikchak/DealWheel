@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 
 
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -23,34 +24,38 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import model.Address;
 import model.Bookingshistory;
 import model.ListedVehicle;
 import model.User;
 import model.Vehicle;
 import services.CustomerControllerService;
+import services.mail.SendMail;
 
 public class CommonUtility {
+	static final Logger logger = Logger.getLogger(CommonUtility.class);
 	/**
 	 * The method is used to enter records in Bookingdetails table
 	 * */
 
 	@SuppressWarnings("unchecked")
 	public static long lockRecord(HttpServletRequest request) {
-		System.out.println("Inside lock record");
+		logger.info("Inside lock record");
 		CustomerControllerService s = new CustomerControllerService();
-		System.out.println("Username="
+		logger.info("Username="
 				+ (String) request.getSession().getAttribute("username"));
-		System.out.println("FromDate="
+		logger.info("FromDate="
 				+ (String) request.getSession().getAttribute("fromDateString"));
-		System.out.println("FromDate="
+		logger.info("FromDate="
 				+ (String) request.getSession().getAttribute("toDateString"));
-		System.out.println("VehicleDetails="
+		logger.info("VehicleDetails="
 				+ (String) request.getSession().getAttribute(
 						"selectedVehicleDetails"));
 		long loggedInUserId = 0L;
 		// Logged in user details
-		System.out.println(request.getSession().getAttribute("LoggedInUserDetailsObject"));
+		logger.info(request.getSession().getAttribute("LoggedInUserDetailsObject"));
 
 		if (request.getSession().getAttribute("LoggedInUserDetailsObject") != null) {
 			List<User> validUserDetails = (List<User>) request.getSession().getAttribute("LoggedInUserDetailsObject");
@@ -62,7 +67,7 @@ public class CommonUtility {
 		}
 
 		// loggedInUserId = (loggedInUserId!=null)?loggedInUserId:0;
-		System.out.println("LoggedInUserId in lockRecord()=" + loggedInUserId);
+		logger.info("LoggedInUserId in lockRecord()=" + loggedInUserId);
 
 		SimpleDateFormat sdf = new SimpleDateFormat(GenericConstant.DATEFORMAT);
 		long tempBookingId = 0L;
@@ -85,7 +90,7 @@ public class CommonUtility {
 								loggedInUserId);
 					}
 				} catch (ParseException e) {
-					System.out.println("Date Parsing error");
+					logger.info("Date Parsing error");
 					e.printStackTrace();
 				}
 
@@ -114,11 +119,11 @@ public class CommonUtility {
 				}
 			} else if (comingFromPage == null
 					|| "LandingPage".equalsIgnoreCase(comingFromPage)) {
-				System.out.println("navigate");
+				logger.info("navigate");
 				response.sendRedirect(pagecontext + "/LandingPage.jsp");
 			}
 		} catch (Exception e) {
-			System.out.println("Exception occured while navigating=");
+			logger.info("Exception occured while navigating=");
 			e.printStackTrace();
 		}
 	}
@@ -144,7 +149,7 @@ public class CommonUtility {
 		Matcher matcher = null;
 		pattern = Pattern.compile(GenericConstant.EMAIL_PATTERN);
 		matcher = pattern.matcher(hex);
-		System.out.println("validateEmail return result="+matcher.matches());
+		logger.info("validateEmail return result="+matcher.matches());
 		return matcher.matches();
 
 	}
@@ -167,14 +172,14 @@ public class CommonUtility {
 		if(rb.containsKey(searchKey)){
 			value = rb.getString(searchKey);
 		}
-		//System.out.println("Value from resource bndl="+value);
+		//logger.info("Value from resource bndl="+value);
 		return value;
 	}
 	
 	@SuppressWarnings("unchecked")
 	public static List fetchVehicleUsingTempBooking(String tempBookingId){
-		System.out.println("Inside fetchVehicleUsingTempBooking");
-		//System.out.println("Temp booking Id="+tempBookingId);
+		logger.info("Inside fetchVehicleUsingTempBooking");
+		//logger.info("Temp booking Id="+tempBookingId);
 		CustomerControllerService s = new CustomerControllerService();
 		List<Object[]> vehicleDetailsUsingTempBookingId = null;
 		if(tempBookingId!=null){
@@ -184,14 +189,14 @@ public class CommonUtility {
 	}
 	
 	public static List fetchMyBookingsHistory(BigInteger userId){
-		System.out.println("Inside fetchMyBookingsHistory");
+		logger.info("Inside fetchMyBookingsHistory");
 		CustomerControllerService s = new CustomerControllerService();
 		List<Object[]> myBookingsHistoryList= s.getMyBookingsHistory (userId);
 		return myBookingsHistoryList;
 	}
 	
 	public static List fetchMyProfile(BigInteger userId){
-		System.out.println("Inside Fetch My Profile");
+		logger.info("Inside Fetch My Profile");
 		CustomerControllerService s = new CustomerControllerService();
 		List<Object[]> myprofiledetails = s.getMyProfile(userId);
 		return myprofiledetails;

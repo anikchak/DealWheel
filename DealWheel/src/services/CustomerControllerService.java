@@ -28,6 +28,7 @@ import model.ListedVehicle;
 import model.LoginDetail;
 import model.User;
 import model.Vehicle;
+import services.mail.SendMail;
 import services.security.SecurePassword;
 import services.utility.CommonUtility;
 import services.utility.GenericConstant;
@@ -35,7 +36,6 @@ import services.utility.MessageBundle;
 import services.utility.QueryConstant;
 
 public class CustomerControllerService {
-
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("DealWheel");
 	EntityManager em = emf.createEntityManager();
 	EntityTransaction et = em.getTransaction();
@@ -223,7 +223,7 @@ public class CustomerControllerService {
 				q.setParameter(UPCOMING, UPCOMING);
 				q.setParameter(VIEWING, VIEWING);
 				//q.setParameter(ADDR_TYPE, PICKUP);
-				System.out.println(selectedLocation);
+				logger.info(selectedLocation);
 				q.setParameter("addrCity", selectedLocation.toUpperCase());
 
 				List<Object[]> searchResultSet = (List<Object[]>) q
@@ -541,7 +541,7 @@ public class CustomerControllerService {
 					return fetchedVehicleList;
 				}
 				else{
-					System.out.println("Fetched List Size using tempBookingId="+fetchedVehicleList.size());
+					logger.info("Fetched List Size using tempBookingId="+fetchedVehicleList.size());
 				}
 			}
 		}catch(Exception e){
@@ -562,7 +562,7 @@ public class CustomerControllerService {
 				q.setParameter(2, tempBookingId);
 				int updateStatus = q.executeUpdate();
 				et.commit();
-				System.out.println("Update Status from cleanBookingUsingTempBookingId = "+updateStatus);
+				logger.info("Update Status from cleanBookingUsingTempBookingId = "+updateStatus);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -570,7 +570,7 @@ public class CustomerControllerService {
 	}
 	
 	public String resetPassword(String userName, BigInteger mobileNumber){
-		System.out.println("resetPassword: Username= "+userName+ " mobileNumber="+mobileNumber);
+		logger.info("resetPassword: Username= "+userName+ " mobileNumber="+mobileNumber);
 		try{
 		if(em!=null){
 			Query q = em.createNativeQuery("select user_id from users where user_email = ? and user_primary_contact = ?");
@@ -578,10 +578,10 @@ public class CustomerControllerService {
 			q.setParameter(2, mobileNumber);
 			Long validUserDetail = (Long) q.getSingleResult();
 			if(validUserDetail!=null){
-				System.out.println("validUserDetail after fetch = "+validUserDetail);
+				logger.info("validUserDetail after fetch = "+validUserDetail);
 				String tempPwdGenerated =  Long.toHexString(Double.doubleToLongBits(Math.random()));
 				String pwdToInsert = null;
-				System.out.println("Generating random password = "+tempPwdGenerated);
+				logger.info("Generating random password = "+tempPwdGenerated);
 				// Secure password
 				// get Salt to be used with password
 				SecurePassword securePwd = new SecurePassword();

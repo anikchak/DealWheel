@@ -21,7 +21,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import services.CustomerControllerService;
+import services.mail.SendMail;
 import services.utility.CommonUtility;
 import services.utility.GenericConstant;
 
@@ -31,7 +34,7 @@ import services.utility.GenericConstant;
 @WebServlet("/ConfirmationSummary")
 public class ConfirmationSummary extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	static final Logger logger = Logger.getLogger(ConfirmationSummary.class);   
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -52,7 +55,7 @@ public class ConfirmationSummary extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("Hitting Confirmation Summary post method");
+		logger.info("Hitting Confirmation Summary post method");
 		String paymentStatus = "success";
 		String pageContext = request.getContextPath();
 		if(paymentStatus!=null && "success".equalsIgnoreCase(paymentStatus)){
@@ -60,9 +63,9 @@ public class ConfirmationSummary extends HttpServlet {
 			String tempBookingseq = (String)request.getParameter("tempSelectedVehicle");
 			//String vehicleDetails = (String)request.getParameter("vehicleDetail");
 			String orderLocationName = (String)request.getParameter("orderLocationName");
-			System.out.println("tempBookingseq="+tempBookingseq);
-			//System.out.println("vehicleDetails="+vehicleDetails);
-			System.out.println("orderLocationName="+orderLocationName);
+			logger.info("tempBookingseq="+tempBookingseq);
+			//logger.info("vehicleDetails="+vehicleDetails);
+			logger.info("orderLocationName="+orderLocationName);
 			String hexString = "Order-"+tempBookingseq;
 			String bookingId = orderLocationName+" - "+String.format("%x", new BigInteger(1, hexString.getBytes(StandardCharsets.UTF_8)));
 			CustomerControllerService s = new CustomerControllerService();

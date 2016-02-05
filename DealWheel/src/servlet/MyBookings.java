@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import services.CustomerControllerService;
+import services.mail.SendMail;
 import services.utility.GenericConstant;
 
 /**
@@ -20,6 +23,7 @@ import services.utility.GenericConstant;
 @WebServlet("/MyBookings")
 public class MyBookings extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static final Logger logger = Logger.getLogger(MyBookings.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -34,7 +38,7 @@ public class MyBookings extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("DoGet");
+		logger.info("DoGet");
 		
 	}
 	
@@ -47,7 +51,7 @@ public class MyBookings extends HttpServlet {
 		String pagecontext = request.getContextPath();
 		
 		if (request.getParameter("tempBookingName")!=null){
-			System.out.println("tempBookingId = "+request.getParameter("tempBookingName"));
+			logger.info("tempBookingId = "+request.getParameter("tempBookingName"));
 			String bookingIdToCancel = (String)request.getParameter("tempBookingName");
 			CustomerControllerService s = new CustomerControllerService();
 			int status = s.cancelBooking(bookingIdToCancel);

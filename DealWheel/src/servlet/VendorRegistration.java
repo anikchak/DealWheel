@@ -17,15 +17,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import model.Address;
 import model.User;
 import services.VendorRegistrationController;
+import services.mail.SendMail;
 
 @WebServlet("/VendorRegistration")
 public class VendorRegistration extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-
+	static final Logger logger = Logger.getLogger(VendorRegistration.class);
+	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -41,7 +45,7 @@ public class VendorRegistration extends HttpServlet {
 		params.put("country", "India");
 		params.put("pinCode", req.getParameter("pinCode"));
 		
-		System.out.println("Email id = "+req.getSession().getAttribute("email"));
+		logger.info("Email id = "+req.getSession().getAttribute("email"));
 		String emailUserName = (String)req.getSession().getAttribute("email");
 		if( emailUserName!=null)
 			params.put("email", emailUserName);
@@ -58,7 +62,7 @@ public class VendorRegistration extends HttpServlet {
 		params.put("secondaryContact", req.getParameter("secondaryContact"));
 		
 		VendorRegistrationController controller = new VendorRegistrationController();
-		System.out.println("Map params = "+params);
+		logger.info("Map params = "+params);
 		if(password!=null)
 			entities = controller.registerVendor(params);
 		else

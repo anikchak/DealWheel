@@ -12,7 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import model.User;
+import services.mail.SendMail;
 import services.utility.CommonUtility;
 import services.utility.GenericConstant;
 
@@ -21,6 +24,7 @@ import services.utility.GenericConstant;
  */
 @WebServlet("/ConfirmBooking")
 public class Booking extends HttpServlet {
+	static final Logger logger = Logger.getLogger(Booking.class);
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -46,21 +50,21 @@ public class Booking extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("Post method hit for Booking");
+		logger.info("Post method hit for Booking");
 		String pagecontext = request.getContextPath();
 		
 		HttpSession session = request.getSession();
-		System.out.println("session while booking=" + session);
+		logger.info("session while booking=" + session);
 		
 		String selectedVehicleDetails = request.getParameter(GenericConstant.SELECTEDVEHICLEDETAILS);
-		System.out.println("selectedVehicleDetails = " + selectedVehicleDetails);
+		logger.info("selectedVehicleDetails = " + selectedVehicleDetails);
 		session.setAttribute(GenericConstant.SELECTEDVEHICLEDETAILS,selectedVehicleDetails);
 
 		if (session != null
 				&& session.getAttribute(GenericConstant.USERNAME) != null) {
-			System.out.println("Proceed with booking");
+			logger.info("Proceed with booking");
 			long tempBookingSeq = CommonUtility.lockRecord(request);
-			System.out.println("tempBookingSeq from lockRecord()="+tempBookingSeq);
+			logger.info("tempBookingSeq from lockRecord()="+tempBookingSeq);
 			if(tempBookingSeq>0L){
 			request.getSession().setAttribute(GenericConstant.TEMPBOOKINGSEQ,tempBookingSeq );
 			response.sendRedirect(response.encodeRedirectURL(pagecontext+"/ReviewBooking.jsp"+"?fetchVehicleSelected="+tempBookingSeq));
@@ -71,7 +75,7 @@ public class Booking extends HttpServlet {
 			
 		} else {
 			session.setAttribute(GenericConstant.COMINGFROMPAGE, GenericConstant.BOOKING);
-			System.out.println("No User hence log in first");
+			logger.info("No User hence log in first");
 			response.sendRedirect(pagecontext+ GenericConstant.NAV_TO_LOGIN_PAGE);
 
 		}

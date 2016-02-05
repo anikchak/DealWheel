@@ -28,7 +28,7 @@ public class CancelBookingForVendor extends HttpServlet {
 			throws ServletException, IOException {
 		try{
 			BookingHistoryDAOImpl<Bookingshistory> bkngDAO = new BookingHistoryDAOImpl<Bookingshistory>();
-			System.out.println("bookingToCancel="+req.getParameter("bookingToCancel"));
+			logger.info("bookingToCancel="+req.getParameter("bookingToCancel"));
 			bkngDAO.cancelBooking(req.getParameter("bookingToCancel"));
 			/*
 			Object[] list = req.getParameterValues("arrayList");

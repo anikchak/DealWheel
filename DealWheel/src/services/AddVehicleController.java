@@ -7,7 +7,7 @@ import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
+import org.apache.log4j.Logger;
 import model.Address;
 import model.ListedVehicle;
 import model.Vehicle;
@@ -16,7 +16,8 @@ import dao.ListedVehicleDAOImpl;
 import dao.VehicleDAOImpl;
 
 public class AddVehicleController {
-
+	
+	static final Logger logger = Logger.getLogger(AddVehicleController.class);
 	public List<String> getVehicleNames(){
 		return new VehicleDAOImpl<Vehicle>().getNames();
 	}
@@ -26,7 +27,7 @@ public class AddVehicleController {
 		Vehicle vehicleNew = null;
 		String addressId = null;
 		Address addrNew = null;
-		System.out.println("AddVehicleController:addNewVehicle");
+		logger.info("AddVehicleController:addNewVehicle");
 		try{
 			if("Yes".equals(params.get("useDifferentAddress"))){
 				Address addr = new Address();

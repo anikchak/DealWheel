@@ -11,8 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import model.User;
 import services.CustomerControllerService;
+import services.mail.SendMail;
 import services.utility.CommonUtility;
 import services.utility.GenericConstant;
 
@@ -22,6 +25,7 @@ import services.utility.GenericConstant;
 @WebServlet("/Login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static final Logger logger = Logger.getLogger(Login.class);
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -57,13 +61,13 @@ public class Login extends HttpServlet {
 		String comingFromPage = (String) request.getSession().getAttribute("currentPage");
 		HttpSession session = null;
 		String msg=null;
-		System.out.println("uName="+uName);
-		System.out.println("authType="+authType);
-		System.out.println("Coming from page = " + comingFromPage);
+		logger.info("uName="+uName);
+		logger.info("authType="+authType);
+		logger.info("Coming from page = " + comingFromPage);
 		
 		if((uName !=null && "".equals(uName.trim())) || (pwd !=null && "".equals(pwd.trim()))){
 			msg = "emptyFields";
-			System.out.println("empty fields");
+			logger.info("empty fields");
 		}else if(uName!=null && !CommonUtility.validateEmail(uName)){
 			msg = "invalidEmail";
 		}
@@ -75,7 +79,7 @@ public class Login extends HttpServlet {
 				session.setAttribute("LoggedInUserDetailsObject",validUserDetails );
 				msg = CommonUtility.getPageName(comingFromPage);
 			}else{
-				System.out.println("Invalid username or password");
+				logger.info("Invalid username or password");
 				request.getSession().removeAttribute("LoggedInUserDetailsObject");
 				msg = "authenticationFailed";
 				}
@@ -84,7 +88,7 @@ public class Login extends HttpServlet {
 			String regex = "\\d+";
 			if(pwd!=null && !"".equals(pwd) && (mobileNumber!=null && !"".equals(mobileNumber) && mobileNumber.matches(regex) && mobileNumber.length()==11)){
 			List<User> newUserEntryList = s.inserNewUser(uName, pwd,BigInteger.valueOf(Long.parseLong(mobileNumber)));
-			System.out.println("status post registration=" + newUserEntryList);
+			logger.info("status post registration=" + newUserEntryList);
 			if (newUserEntryList!=null && newUserEntryList.size()==1) {
 				session = generateSession(request, uName);
 				session.setAttribute("LoggedInUserDetailsObject",newUserEntryList );
@@ -93,7 +97,7 @@ public class Login extends HttpServlet {
 		        //response.getWriter().write("/LandingPage.jsp");
 				msg = CommonUtility.getPageName(comingFromPage);
 			}else{
-				System.out.println("Username already exists. Error..!!");
+				logger.info("Username already exists. Error..!!");
 				request.getSession().removeAttribute("LoggedInUserDetailsObject");
 				msg = "userNameExists";
 			}
@@ -110,7 +114,7 @@ public class Login extends HttpServlet {
 			String regex = "\\d+";
 			if((mobileNumber!=null && !"".equals(mobileNumber) && mobileNumber.matches(regex) && mobileNumber.length()==11)){
 				String resetPwd = s.resetPassword(uName, BigInteger.valueOf(Long.parseLong(mobileNumber)));
-				System.out.println("resetPwd = "+resetPwd);
+				logger.info("resetPwd = "+resetPwd);
 				if(resetPwd!=null){
 					msg = "/LandingPage.jsp#"+resetPwd;
 				}
@@ -131,7 +135,7 @@ public class Login extends HttpServlet {
 
 	private HttpSession generateSession(HttpServletRequest request, String uName) {
 		HttpSession session = request.getSession();
-		System.out.println("New Session created=" + session.getId());
+		logger.info("New Session created=" + session.getId());
 		session.setAttribute(GenericConstant.USERNAME, uName.toUpperCase());
 		session.setAttribute(GenericConstant.SESSIONID, session.getId());
 		return session;

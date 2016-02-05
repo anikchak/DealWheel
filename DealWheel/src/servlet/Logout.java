@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import services.CustomerControllerService;
+import services.mail.SendMail;
 
 /**
  * Servlet implementation class Logout
@@ -19,6 +22,7 @@ import services.CustomerControllerService;
 @WebServlet("/Logout")
 public class Logout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static final Logger logger = Logger.getLogger(Logout.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -40,15 +44,15 @@ public class Logout extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("POst method hit in Logout");
+		logger.info("POst method hit in Logout");
 		response.setContentType("text/html");
         String pagecontext = request.getContextPath();
         String initiateVendorFlow = (String)request.getParameter("invoke");
-        System.out.println("initiateFlow = "+initiateVendorFlow);
+        logger.info("initiateFlow = "+initiateVendorFlow);
         String selectedLocation = (String)request.getSession().getAttribute("selectedLocation");
-        System.out.println("Selected Location during logout = "+selectedLocation);
+        logger.info("Selected Location during logout = "+selectedLocation);
         String pageId = (String)request.getSession().getAttribute("currentPage");
-        System.out.println("Logout.java: tempBookingId="+(String)request.getParameter("fetchSelectedVehicle"));
+        logger.info("Logout.java: tempBookingId="+(String)request.getParameter("fetchSelectedVehicle"));
         //If logout flow is invoked from Review Page then clearing the held vehicle first 
         if("ReviewBooking".equalsIgnoreCase(pageId)){
         	if((String)request.getParameter("fetchSelectedVehicle") != null){

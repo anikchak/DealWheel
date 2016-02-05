@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigInteger;
 
 import services.CustomerControllerService;
+import services.mail.SendMail;
 import services.utility.CommonUtility;
 import services.utility.GenericConstant;
 
@@ -14,12 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 /**
  * Servlet implementation class MyProfile
  */
 @WebServlet("/MyProfile")
 public class MyProfile extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static final Logger logger = Logger.getLogger(MyProfile.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -43,7 +47,7 @@ public class MyProfile extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		System.out.println("Here Inside MyProfile");
+		logger.info("Here Inside MyProfile");
 		String pageContext = request.getContextPath();
 		HttpSession session = request.getSession();
 		String userEmail = request.getParameter("Email");

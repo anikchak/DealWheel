@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Map;
 
 
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,7 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import services.CustomerControllerService;
+import services.mail.SendMail;
 import services.utility.GenericConstant;
 
 /**
@@ -22,6 +26,7 @@ import services.utility.GenericConstant;
 @WebServlet("/Search")
 public class Search extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static final Logger logger = Logger.getLogger(Search.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -43,7 +48,7 @@ public class Search extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("Post method hit for Search");
+		logger.info("Post method hit for Search");
 		
 		CustomerControllerService s = new CustomerControllerService();
 		
@@ -58,21 +63,21 @@ public class Search extends HttpServlet {
 		if(comingFromPage!=null && "ReviewBooking".equalsIgnoreCase(comingFromPage)){
 		String tempLockedVehicleId = (String)request.getSession().getAttribute("tempLockedVehicle");
 		s.cleanBookingUsingTempBookingId(tempLockedVehicleId);
-		System.out.println("Coming from page = "+comingFromPage+" tempLockedVehicle="+tempLockedVehicleId);
+		logger.info("Coming from page = "+comingFromPage+" tempLockedVehicle="+tempLockedVehicleId);
 		}
 		try{
-			System.out.println("fromDate = "+fromDateString+" endDate="+toDateString+" Selected Location="+selectedLocation);
+			logger.info("fromDate = "+fromDateString+" endDate="+toDateString+" Selected Location="+selectedLocation);
 			SimpleDateFormat sdf = new SimpleDateFormat(GenericConstant.DATEFORMAT);
 			if(fromDateString!=null && toDateString!=null){
 				Date fromDate = sdf.parse(fromDateString);
 				Date toDate = sdf.parse(toDateString);
-				System.out.println("Date:"+fromDate+"....."+toDate);
+				logger.info("Date:"+fromDate+"....."+toDate);
 				displaySearchResultMap = s.fetchSearchResult(fromDate, toDate,selectedLocation);
 				
 			}
 			
 		}catch(Exception e){
-			System.out.println("Exception while searching vehicles");
+			logger.info("Exception while searching vehicles");
 		}
 		
 		HttpSession session = request.getSession();

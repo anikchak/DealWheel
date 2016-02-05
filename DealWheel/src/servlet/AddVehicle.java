@@ -15,14 +15,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
 import model.Address;
 import model.User;
 import model.Vehicle;
 import services.AddVehicleController;
+import services.mail.SendMail;
 
 @WebServlet("/AddVehicle")
 public class AddVehicle extends HttpServlet {
-
+	static final Logger logger = Logger.getLogger(AddVehicle.class);
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -71,7 +74,7 @@ public class AddVehicle extends HttpServlet {
 				resp.getWriter().write("ADDVEHICLEERROR");
 			}
 		}catch(Exception e){
-			System.out.println("ERROR"+e);
+			logger.info("ERROR"+e);
 		}
 	}
 	

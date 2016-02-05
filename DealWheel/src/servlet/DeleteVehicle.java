@@ -33,7 +33,7 @@ public class DeleteVehicle extends HttpServlet {
 		try{
 			VehicleDAOImpl<Vehicle> vDAO = new VehicleDAOImpl<Vehicle>();
 			BookingHistoryDAOImpl<Bookingshistory> bhDAO = new BookingHistoryDAOImpl<Bookingshistory>();
-			System.out.println("VehicleId="+req.getParameter("selectedVehicleRecordId")+" opCode="+req.getParameter("opCode"));
+			logger.info("VehicleId="+req.getParameter("selectedVehicleRecordId")+" opCode="+req.getParameter("opCode"));
 			BigInteger vehicleId = new BigInteger(req.getParameter("selectedVehicleRecordId"));
 			if("Delete".equals(req.getParameter("opCode"))){
 				if(!bhDAO.checkFutureBookingAvailable(vehicleId)){

@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import services.mail.SendMail;
 import services.utility.CommonUtility;
 import services.utility.QueryConstant;
@@ -22,6 +24,7 @@ import services.utility.QueryConstant;
 @WebServlet("/TriggerEmail")
 public class TriggerEmail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static final Logger logger = Logger.getLogger(TriggerEmail.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -38,7 +41,7 @@ public class TriggerEmail extends HttpServlet {
 		// TODO Auto-generated method stub
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("DealWheel");
 		EntityManager em = emf.createEntityManager();
-		System.out.println("Trigger Email: Post Hit");
+		logger.info("Trigger Email: Post Hit");
 		String actionCode = (String)request.getParameter("actionCode");
 		if("confirmationEmail".equalsIgnoreCase(actionCode)){
 			String bookingId = (String)request.getParameter("bookingId");
@@ -46,20 +49,20 @@ public class TriggerEmail extends HttpServlet {
 			String userId = (String)request.getParameter("userId");
 			/*Query q1= em.createNativeQuery(QueryConstant.GET_USER_EMAIL);
 			q1.setParameter(1,userId);
-			System.out.println("UserID"+ userId);
-			System.out.println(bookingId);
+			logger.info("UserID"+ userId);
+			logger.info(bookingId);
 			
 			String uMail = (String) q1.getSingleResult();
 			
-		//	System.out.println("userId="+userId+" BookingId="+bookingId +" vehicleDetails="+vehicleDetails);
+		//	logger.info("userId="+userId+" BookingId="+bookingId +" vehicleDetails="+vehicleDetails);
 			//logger.info("User Email"+uMail);
-			System.out.println(uMail); */
+			logger.info(uMail); */
 			SendMail.sendEmailNotification("confirmationEmail",vehicleDetails,"Booking Confirmation from Deal Wheel",userId);
 			//CommonUtility.sendEmailNotification("confirmationEmail",bookingId,userId,vehicleDetails,null);
 		}else if("forgotPassword".equalsIgnoreCase(actionCode)){
 			String tempPwd = (String)request.getParameter("tempPwd");
 			String userEmail = (String)request.getParameter("userId");
-			System.out.println("tempPwd= "+tempPwd+" userEmail="+userEmail);
+			logger.info("tempPwd= "+tempPwd+" userEmail="+userEmail);
 			//CommonUtility.sendEmailNotification("forgotPassword",null,userEmail,null,tempPwd);
 		}
 	}

@@ -9,12 +9,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.log4j.Logger;
+
+import services.mail.SendMail;
+
 /**
  * Servlet implementation class LocationSetting
  */
 @WebServlet("/LocationSetting")
 public class LocationSetting extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	static final Logger logger = Logger.getLogger(LocationSetting.class);
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -36,11 +41,11 @@ public class LocationSetting extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("Location setting invoked");
+		logger.info("Location setting invoked");
 		String selectedLocation = request.getParameter("locationSelected");
-		System.out.println("Location Selected = "+selectedLocation);
+		logger.info("Location Selected = "+selectedLocation);
 		request.getSession().setAttribute("selectedLocation", selectedLocation);
-		System.out.println("selectedLocation ="+request.getSession().getAttribute("selectedLocation")+"--");
+		logger.info("selectedLocation ="+request.getSession().getAttribute("selectedLocation")+"--");
 	}
 
 }

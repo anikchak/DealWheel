@@ -8,8 +8,12 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
-public class SecurePassword {
+import org.apache.log4j.Logger;
 
+import services.VendorRegistrationController;
+
+public class SecurePassword {
+	static final Logger logger = Logger.getLogger(SecurePassword.class);
 	public static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA1";
 
     // The following constants may be changed without breaking existing hashes.

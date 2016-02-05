@@ -9,16 +9,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import model.Address;
 import model.LoginDetail;
 import model.User;
+import services.mail.SendMail;
 import services.utility.LoginUtil;
 import dao.AddressDAOImpl;
 import dao.LoginDAOImpl;
 import dao.UserDAOImpl;
 
 public class VendorRegistrationController {
-	
+	static final Logger logger = Logger.getLogger(VendorRegistrationController.class);
 	
 	/**
 	 * pass set of params to add  in db
