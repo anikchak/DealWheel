@@ -53,10 +53,13 @@ var pageContext = '<%=request.getContextPath()%>';
 		<!-- Begin page content -->
 
 		<div class="container">
-			<h3 class="text-center">Some text/Content goes here</h3>
-  				<br>
-  				<div style="position:relative; z-index:100;">
+			<br><br><br><br>
+  				<div>
   				<%@ include file="commonResources/SearchCriteriaLayout"%>
+  				</div>
+  				<div >
+  				<br><br><br><br><br>
+  				<img alt="How we work" src="https://s3-us-west-2.amazonaws.com/dealwheel/How+we+work.png" style="width:40%;margin-left:28%;">
   				</div>
   		</div>
 	</div>
@@ -77,7 +80,9 @@ var pageContext = '<%=request.getContextPath()%>';
 	var propCities = '<%= CommonUtility.getValuesFromProperties("activeCities")%>';
 	</script>
 	<script src="js/CommonJS.js" type="text/javascript"></script>
-	
+	<style>
+		.vehicleDisplay{padding-right:15px;padding-left:15px;margin-right:auto;margin-left:auto}@media (min-width:768px){.vehicleDisplay{width:750px}}@media (min-width:992px){.vehicleDisplay{width:750px}}@media (min-width:1200px){.vehicleDisplay{width:750px}}
+	</style>
 	
  </body>
 </html>
