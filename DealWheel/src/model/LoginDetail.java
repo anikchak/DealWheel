@@ -1,7 +1,9 @@
 package model;
 
 import java.io.Serializable;
+
 import static services.utility.GenericConstant.*;
+
 import javax.persistence.*;
 
 import java.util.Date;

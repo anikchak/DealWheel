@@ -74,6 +74,12 @@ public class GenericConstant {
 	public static final String USER_FIND_BY_EMAIL = "User.findByEmail";
 	public static final String USER_UPDATE_QUERY="User.updateQuery";
 	
+	
+	public static final String USERTEMP_FIND_ALL = "UsersTemp.findAll";
+	public static final String USERTEMP_FIND_BY_ID = "UsersTemp.findByUserId";
+	public static final String USERTEMP_FIND_BY_EMAIL = "UsersTemp.findByEmail";
+	public static final String USERTEMP_UPDATE_QUERY="UsersTemp.updateQuery";
+	
 	public static final String LISTED_VEHICLE_GET_MAKES = "ListedVehicle.getAllMakersNames";
 	public static final String LISTED_VEHICLE_GET_NAMES = "ListedVehicle.getAllNames";
 	public static final String LISTED_VEHICLE_GET_DETAILS = "ListedVehicle.getDetails";

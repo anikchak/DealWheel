@@ -1,4 +1,5 @@
 package services;
+import java.math.BigInteger;
 
 import static services.utility.GenericConstant.*;
 
@@ -6,15 +7,18 @@ import org.apache.log4j.Logger;
 
 import dao.LoginDAOImpl;
 import dao.UserDAOImpl;
+import dao.UsersTempDAOImpl;
 
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -27,6 +31,7 @@ import model.Bookingshistory;
 import model.ListedVehicle;
 import model.LoginDetail;
 import model.User;
+import model.UsersTemp;
 import model.Vehicle;
 import services.mail.SendMail;
 import services.security.SecurePassword;
@@ -81,14 +86,23 @@ public class CustomerControllerService {
 
 					// Beginning txn for User table record
 					// et.begin();
-					User u = new User();
+					UsersTemp u = new UsersTemp();
 					u.setUserEmail(usr);
 					u.setUserName(usr);
 					u.setUserPrimaryContact(mobileNo);
 					u.setUserType(USER_TYPE_CUSTOMER);
 					u.setLastUpdated(new Date());
 					u.setLastUpdatedBy(usr);
-					User insertedUser = new UserDAOImpl<User>().addNewUser(u);
+					String randString = generateRandomString();
+					u.setSecretCode(randString);
+					SendMail s = new SendMail();
+				//	String emailbody = "<h4>Hi "+usr+"</h4><br><br>Welcome to Deal Wheel"
+				//			+ "<br><br>Complete your registeration by clicking on this link<br><br>"
+				//			+ "http://localhost:8081/DealWheel/UserConfirmation";
+				//	s.sendEmailNotification("RegisterationEmail", emailbody, subject, uEmail);
+					//SecureRandom rands = new SecureRandom();
+					//String s = BigInteger(130, rands).toString(32);
+					UsersTemp insertedUser = new UsersTempDAOImpl<User>().addNewUser(u);
 					// em.persist(u);
 					// et.commit();
 
@@ -612,6 +626,40 @@ public class CustomerControllerService {
 		}
 		return null;
 	}
+	
+	 private static final String CHAR_LIST =
+		        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+		    private static final int RANDOM_STRING_LENGTH = 16;
+		     
+		    /**
+		     * This method generates random string
+		     * @return
+		     */
+		    public String generateRandomString(){
+		         
+		        StringBuffer randStr = new StringBuffer();
+		        for(int i=0; i<RANDOM_STRING_LENGTH; i++){
+		            int number = getRandomNumber();
+		            char ch = CHAR_LIST.charAt(number);
+		            randStr.append(ch);
+		        }
+		        return randStr.toString();
+		    }
+		    /**
+		     * This method generates random numbers
+		     * @return int
+		     */
+		    private int getRandomNumber() {
+		        int randomInt = 0;
+		        Random randomGenerator = new Random();
+		        randomInt = randomGenerator.nextInt(CHAR_LIST.length());
+		        if (randomInt - 1 == -1) {
+		            return randomInt;
+		        } else {
+		            return randomInt - 1;
+		        }
+		    }
+	
 }
 
 
