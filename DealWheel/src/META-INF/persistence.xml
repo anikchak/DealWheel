@@ -10,6 +10,7 @@
 		<class>model.LoginDetail</class>
 		<class>model.ListedVehicle</class>
 		<class>model.Vehicle</class>
+		<class>model.UsersTemp</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://dealwheeltest.cuaav5xfkaxl.us-west-2.rds.amazonaws.com:3306/DealwheelDB"/>
