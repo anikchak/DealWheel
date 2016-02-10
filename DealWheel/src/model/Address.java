@@ -12,6 +12,7 @@ import static services.utility.GenericConstant.*;
  * 
  */
 @Entity
+@Table(name="address")
 @NamedQueries({
 	@NamedQuery(name=ADDRESS_FIND_ALL, query="SELECT a FROM Address a"),
 	@NamedQuery(name=ADDRESS_FIND_FOR_USER_ID_AND_TYPE, query="SELECT a FROM Address a where a.userId = :userId and a.addrType = :userType")
@@ -21,7 +22,7 @@ public class Address implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@SequenceGenerator(name="ADDRESS_ADDRID_GENERATOR", sequenceName="KEYSEQ")
+	@SequenceGenerator(name="ADDRESS_ADDRID_GENERATOR", sequenceName="ADDRESS_ADDRID_GENERATOR")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ADDRESS_ADDRID_GENERATOR")
 	@Column(name="ADDR_ID")
 	private String addrId;

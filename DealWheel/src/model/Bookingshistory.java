@@ -1,9 +1,12 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
 import java.util.Date;
 import java.math.BigInteger;
+
 import static services.utility.GenericConstant.*;
 
 
@@ -12,6 +15,7 @@ import static services.utility.GenericConstant.*;
  * 
  */
 @Entity
+@Table(name="bookingshistory")
 @NamedQueries({
 	@NamedQuery(name=BOOKING_HISTORY_FIND_ALL, query="SELECT b FROM Bookingshistory b"),
 	@NamedQuery(name=BOOKING_HISTORY_FOR_VENDOR, query="SELECT lv.lvclMake, lv.lvclName, v.vhclRegistrationNo, b.bkngFromDate, b.bkngToDate,"

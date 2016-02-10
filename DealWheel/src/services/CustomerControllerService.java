@@ -109,7 +109,7 @@ public class CustomerControllerService {
 					// Beginning txn for LoginDetail table record
 					// et.begin();
 					LoginDetail l = new LoginDetail();
-					l.setLognUserId(insertedUser.getUserId());
+					l.setLognUserId(new BigInteger(insertedUser.getUserId()));
 					l.setLognUserName(usr);
 					l.setLognPassword(pwd);
 					l.setLastUpdatedBy(usr);
@@ -122,8 +122,7 @@ public class CustomerControllerService {
 
 					logger.info("User ID=" + insertedUser.getUserId());
 					if (insertedUser.getUserId() != null) {
-						returnUserList = getValidUserDetails(insertedUser
-								.getUserId());
+						returnUserList = getValidUserDetails(new BigInteger(insertedUser.getUserId()));
 					}
 				}
 			}
