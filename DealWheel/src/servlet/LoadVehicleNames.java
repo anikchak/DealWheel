@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.ListedVehicle;
+
 import org.apache.log4j.Logger;
 
-import services.mail.SendMail;
-import model.ListedVehicle;
 import dao.ListedVehicleDAOImpl;
 
 @WebServlet("/LoadVehicleNames")

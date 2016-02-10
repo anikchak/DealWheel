@@ -9,7 +9,6 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 public class SendMail {
@@ -24,7 +23,6 @@ public class SendMail {
 
 		try {
 			logger.info("Done Email");
-			logger.info(emailbody);
 			String FROM = "admin@dealwheel.in";
 			String TO = uEmail;
 			// TODO
@@ -74,7 +72,7 @@ public class SendMail {
 			msg.setFrom(new InternetAddress(FROM));
 			msg.setRecipient(Message.RecipientType.TO, new InternetAddress(TO));
 			msg.setSubject(subject);
-			msg.setContent(emailbody, "text/html");
+			msg.setContent(emailbody, "text/html; charset=utf-8");
 
 			// Create a transport.
 			Transport transport = session.getTransport();

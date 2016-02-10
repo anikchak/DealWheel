@@ -15,13 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
-
 import model.Address;
 import model.User;
 import model.Vehicle;
+
+import org.apache.log4j.Logger;
+
 import services.AddVehicleController;
-import services.mail.SendMail;
 
 @WebServlet("/AddVehicle")
 public class AddVehicle extends HttpServlet {

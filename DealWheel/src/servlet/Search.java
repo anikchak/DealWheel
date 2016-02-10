@@ -5,8 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
-
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 
 import services.CustomerControllerService;
-import services.mail.SendMail;
 import services.utility.GenericConstant;
 
 /**
@@ -52,6 +49,7 @@ public class Search extends HttpServlet {
 		
 		CustomerControllerService s = new CustomerControllerService();
 		
+		@SuppressWarnings("rawtypes")
 		Map displaySearchResultMap = null;
 		String pagecontext = request.getContextPath();
 		String fromDateString = request.getParameter(GenericConstant.FROMDATE);

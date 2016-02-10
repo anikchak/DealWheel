@@ -3,19 +3,16 @@ package servlet;
 import java.io.IOException;
 import java.math.BigInteger;
 
-import services.CustomerControllerService;
-import services.mail.SendMail;
-import services.utility.CommonUtility;
-import services.utility.GenericConstant;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+
+import services.CustomerControllerService;
+import services.utility.GenericConstant;
 
 /**
  * Servlet implementation class MyProfile
@@ -49,7 +46,6 @@ public class MyProfile extends HttpServlet {
 		
 		logger.info("Here Inside MyProfile");
 		String pageContext = request.getContextPath();
-		HttpSession session = request.getSession();
 		String userEmail = request.getParameter("Email");
 		String userName = request.getParameter("Name");
 		String userPassword = request.getParameter("Password");

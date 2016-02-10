@@ -140,6 +140,11 @@ $(document).ready(function(){
 								$("#login_Error_Login").hide();
 								$("#vendorLoginErrorMsgSpan").text("Username cannot be found.");
 								$("#login_Error_Login").show();
+							}else if(responseText == "NOTVERIFIED"){
+								$("#login_Error_Login").hide();
+								$("#vendorLoginErrorMsgSpan").text("Email Not Verified yet");
+								$("#login_Error_Login").show();
+								alert("OTP POP-UP TO VERIFY");
 							}else if(responseText == "WRONGPASSWORD"){
 								$("#login_Error_Login").hide();
 								$("#vendorLoginErrorMsgSpan").text("Password is incorrect.");
