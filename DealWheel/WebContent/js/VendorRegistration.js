@@ -114,8 +114,8 @@ function checkRequiredFieldsCondition() {
 		emptyField = 'Y';
 	}
 	if (emptyField == 'N') {
-		//Submit form
-		$("#registrationFormId").submit();
+		alert("OTP POP-UP TO VERIFY;On Ok submit form else logout");
+		//$("#registrationFormId").submit();
 	}
 }
 

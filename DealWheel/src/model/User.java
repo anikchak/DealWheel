@@ -58,6 +58,9 @@ public class User implements Serializable {
 
 	@Column(name="USER_EMAIL")
 	private String userEmail;
+	
+	@Column(name="USER_EMAIL_OTP")
+	private BigInteger emailOTP;
 
 	@Column(name="USER_GENDER")
 	private String userGender;
@@ -115,6 +118,14 @@ public class User implements Serializable {
 
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
+	}
+
+	public BigInteger getEmailOTP() {
+		return emailOTP;
+	}
+
+	public void setEmailOTP(BigInteger emailOTP) {
+		this.emailOTP = emailOTP;
 	}
 
 	public String getUserGender() {

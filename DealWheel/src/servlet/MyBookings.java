@@ -1,9 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 
 import services.CustomerControllerService;
-import services.mail.SendMail;
 import services.utility.GenericConstant;
 
 /**

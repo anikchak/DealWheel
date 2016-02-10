@@ -11,11 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.User;
+
 import org.apache.log4j.Logger;
 
-import model.User;
 import services.CustomerControllerService;
-import services.mail.SendMail;
 import services.utility.CommonUtility;
 import services.utility.GenericConstant;
 
@@ -53,7 +53,6 @@ public class Login extends HttpServlet {
 			HttpServletResponse response) throws ServletException, IOException {
 		CustomerControllerService s = new CustomerControllerService();
 		
-		String pagecontext = request.getContextPath();
 		String uName = request.getParameter(GenericConstant.USERNAME);
 		String pwd = request.getParameter(GenericConstant.PASSWORD);
 		

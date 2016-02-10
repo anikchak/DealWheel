@@ -1,9 +1,9 @@
 
 package servlet;
 
+import static services.utility.GenericConstant.ADDRESS_MODEL;
 import static services.utility.GenericConstant.NAV_TO_VENDOR_HOME_PAGE;
 import static services.utility.GenericConstant.USER_MODEL;
-import static services.utility.GenericConstant.ADDRESS_MODEL;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -17,12 +17,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
-
 import model.Address;
 import model.User;
+
+import org.apache.log4j.Logger;
+
 import services.VendorRegistrationController;
-import services.mail.SendMail;
 
 @WebServlet("/VendorRegistration")
 public class VendorRegistration extends HttpServlet {
@@ -34,6 +34,7 @@ public class VendorRegistration extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String password =  (String)req.getSession().getAttribute("password");
+		@SuppressWarnings("rawtypes")
 		List entities = null;
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("addrLine1", req.getParameter("addr1"));

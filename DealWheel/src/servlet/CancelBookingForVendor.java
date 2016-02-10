@@ -1,10 +1,8 @@
 package servlet;
 
-import static services.utility.GenericConstant.NAV_TO_VENDOR_BOOKINGS_PAGE;
 import static services.utility.GenericConstant.NAV_TO_VENDOR_HOME_PAGE;
 
 import java.io.IOException;
-import java.math.BigInteger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,9 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.Bookingshistory;
+
 import org.apache.log4j.Logger;
 
-import model.Bookingshistory;
 import dao.BookingHistoryDAOImpl;
 
 @WebServlet("/CancelBookingForVendor")

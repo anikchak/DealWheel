@@ -1,6 +1,5 @@
 package servlet;
 
-import static services.utility.GenericConstant.NAV_TO_VENDORREGISTRATION_PAGE;
 import static services.utility.GenericConstant.NAV_TO_VENDOR_HOME_PAGE;
 
 import java.io.IOException;

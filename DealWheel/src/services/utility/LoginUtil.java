@@ -1,7 +1,10 @@
 package services.utility;
 
+import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Random;
 
 import model.LoginDetail;
 import model.User;
@@ -69,4 +72,15 @@ public class LoginUtil {
 			return true;
 	}
 	
+	public static BigInteger generateOTP(){
+		BigInteger otp = null;
+		String chars = "0123456789";
+		final int PW_LENGTH = 6;
+		Random rnd = new SecureRandom();
+		StringBuilder pass = new StringBuilder();
+		for (int i = 0; i < PW_LENGTH; i++)
+			pass.append(chars.charAt(rnd.nextInt(chars.length())));
+		otp = new BigInteger(pass.toString());
+		return otp;
+	}
 }

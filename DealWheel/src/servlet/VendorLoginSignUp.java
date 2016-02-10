@@ -36,7 +36,6 @@ public class VendorLoginSignUp extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		VendorLoginController vlc = new VendorLoginController();
-		String pagecontext = req.getContextPath();
 		String output = null;
 		if(req.getParameter("identifier")!=null && "signup".equals(req.getParameter("identifier"))){
 			req.getSession().setAttribute("vendorFlow", "vendorFlow");
@@ -63,7 +62,7 @@ public class VendorLoginSignUp extends HttpServlet {
 			else{
 				if(vlc.userNamexists(req.getParameter("loginEmail"))){
 					User user= vlc.validateVendor(req.getParameter("loginEmail"), req.getParameter("loginPassword"));
-					if(user!=null){
+					if(user!=null && user.getEmailOTP() == null){
 						logger.info("User "+ req.getParameter("loginEmail")+" exists..");
 						Address address = new AddressDAOImpl<Address>().findAddressByUserIdAndType(user.getUserId(), ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);//Aniket: Location for this line changed as if the validation fails the user object will be null and this line will give NPE
 						logger.info("Address for User "+ req.getParameter("loginEmail")+" exists with Id "+ address.getAddrId());
@@ -75,6 +74,9 @@ public class VendorLoginSignUp extends HttpServlet {
 							logger.info("vendor flow = "+req.getSession().getAttribute("vendorFlow"));
 							output = NAV_TO_VENDOR_HOME_PAGE;
 						}
+						
+					}else if(user!=null && user.getEmailOTP() != null){
+						output = "NOTVERIFIED";
 					}else
 						output = "WRONGPASSWORD";
 				}else{
