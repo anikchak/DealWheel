@@ -21,6 +21,8 @@
 			UsersTemp u = insert(usr);
 			return u;
 		}
+		
+		
 
 		@Override
 		public UsersTemp findByUserId(BigInteger lognUserId) {

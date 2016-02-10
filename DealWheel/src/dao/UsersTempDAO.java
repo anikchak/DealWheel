@@ -14,4 +14,6 @@ public interface UsersTempDAO extends BaseDAO<UsersTemp> {
 	
 
 	
+	
+	
 }
