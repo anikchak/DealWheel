@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 
 import dao.LoginDAOImpl;
 import dao.UserDAOImpl;
-import dao.UsersTempDAOImpl;
+
 
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
@@ -31,7 +31,6 @@ import model.Bookingshistory;
 import model.ListedVehicle;
 import model.LoginDetail;
 import model.User;
-import model.UsersTemp;
 import model.Vehicle;
 import services.mail.SendMail;
 import services.security.SecurePassword;
@@ -86,7 +85,7 @@ public class CustomerControllerService {
 
 					// Beginning txn for User table record
 					// et.begin();
-					UsersTemp u = new UsersTemp();
+					User u = new User();
 					u.setUserEmail(usr);
 					u.setUserName(usr);
 					u.setUserPrimaryContact(mobileNo);
@@ -94,22 +93,22 @@ public class CustomerControllerService {
 					u.setLastUpdated(new Date());
 					u.setLastUpdatedBy(usr);
 					String randString = generateRandomString();
-					u.setSecretCode(randString);
-					SendMail s = new SendMail();
+					u.setEmailOTP(null);
+				//	SendMail s = new SendMail();
 				//	String emailbody = "<h4>Hi "+usr+"</h4><br><br>Welcome to Deal Wheel"
 				//			+ "<br><br>Complete your registeration by clicking on this link<br><br>"
 				//			+ "http://localhost:8081/DealWheel/UserConfirmation";
 				//	s.sendEmailNotification("RegisterationEmail", emailbody, subject, uEmail);
 					//SecureRandom rands = new SecureRandom();
 					//String s = BigInteger(130, rands).toString(32);
-					UsersTemp insertedUser = new UsersTempDAOImpl<User>().addNewUser(u);
+					User insertedUser = new UserDAOImpl<User>().addNewUser(u);
 					// em.persist(u);
 					// et.commit();
 
 					// Beginning txn for LoginDetail table record
 					// et.begin();
 					LoginDetail l = new LoginDetail();
-					l.setLognUserId(new BigInteger(insertedUser.getUserId()));
+					l.setLognUserId(insertedUser.getUserId());
 					l.setLognUserName(usr);
 					l.setLognPassword(pwd);
 					l.setLastUpdatedBy(usr);
@@ -122,7 +121,7 @@ public class CustomerControllerService {
 
 					logger.info("User ID=" + insertedUser.getUserId());
 					if (insertedUser.getUserId() != null) {
-						returnUserList = getValidUserDetails(new BigInteger(insertedUser.getUserId()));
+						returnUserList = getValidUserDetails(insertedUser.getUserId());
 					}
 				}
 			}
