@@ -93,7 +93,7 @@ public class CustomerControllerService {
 					u.setLastUpdated(new Date());
 					u.setLastUpdatedBy(usr);
 					String randString = generateRandomString();
-					u.setEmailOTP(null);
+					u.setUserEmailOtp(null);
 				//	SendMail s = new SendMail();
 				//	String emailbody = "<h4>Hi "+usr+"</h4><br><br>Welcome to Deal Wheel"
 				//			+ "<br><br>Complete your registeration by clicking on this link<br><br>"
@@ -108,7 +108,7 @@ public class CustomerControllerService {
 					// Beginning txn for LoginDetail table record
 					// et.begin();
 					LoginDetail l = new LoginDetail();
-					l.setLognUserId(insertedUser.getUserId());
+					l.setLognUserId(new BigInteger(insertedUser.getUserId()));
 					l.setLognUserName(usr);
 					l.setLognPassword(pwd);
 					l.setLastUpdatedBy(usr);
@@ -121,7 +121,7 @@ public class CustomerControllerService {
 
 					logger.info("User ID=" + insertedUser.getUserId());
 					if (insertedUser.getUserId() != null) {
-						returnUserList = getValidUserDetails(insertedUser.getUserId());
+						returnUserList = getValidUserDetails(new BigInteger(insertedUser.getUserId()));
 					}
 				}
 			}

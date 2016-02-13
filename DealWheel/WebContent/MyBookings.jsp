@@ -54,7 +54,7 @@ var pageContext = '<%=request.getContextPath()%>';
 	if(validUserDetails!=null & validUserDetails.size()>0){
 		for(User u : validUserDetails){
 			userName = u.getUserEmail();
-			userId = u.getUserId();
+			userId = new BigInteger(u.getUserId());
 		}
 	}
 	}

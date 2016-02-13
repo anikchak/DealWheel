@@ -97,7 +97,7 @@ function ButtonClickHandler(val){
 	if(validUserDetails!=null & validUserDetails.size()>0){
 		for(User u : validUserDetails){
 			userName = u.getUserEmail();
-			userId = u.getUserId();
+			userId = new BigInteger(u.getUserId());
 		}
 		
 		System.out.println("UserId in MyProfile "+userId);

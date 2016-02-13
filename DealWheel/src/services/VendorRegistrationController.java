@@ -37,7 +37,7 @@ public class VendorRegistrationController {
 		User user = new User();
 		user.setUserName(params.get("fullName"));
 		user.setUserEmail(params.get("email"));
-		user.setEmailOTP(LoginUtil.generateOTP());
+		user.setUserEmailOtp(LoginUtil.generateOTP());
 		user.setUserPrimaryContact(pNum);
 		user.setUserSecondaryContact(sNum);
 		user.setUserType(USER_TYPE_VENDOR);
@@ -57,7 +57,7 @@ public class VendorRegistrationController {
 		addr.setAddrState(params.get("state"));
 		addr.setAddrCountry(params.get("country"));
 		addr.setAddrPinCode(Integer.parseInt(params.get("pinCode")));
-		addr.setUserId(userNew.getUserId());
+		addr.setUserId(new BigInteger(userNew.getUserId()));
 		addr.setAddrType(ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);
 		addr.setLastUpdated(new Date());
 		addr.setLastUpdatedBy(params.get("fullName"));
@@ -65,7 +65,7 @@ public class VendorRegistrationController {
 		committedEntities.add(addrNew);
 		
 		LoginDetail login = new LoginDetail();
-		login.setLognUserId(userNew.getUserId());
+		login.setLognUserId(new BigInteger(userNew.getUserId()));
 		login.setLognUserName(params.get("email"));
 		login.setLognPassword(LoginUtil.CreateEncryptedPassword(params.get("password")));
 		login.setLognLastLoginDetail(new Date());
@@ -97,7 +97,7 @@ public class VendorRegistrationController {
 		User userUpdated = new UserDAOImpl<User>().update(user);
 		committedEntities.add(userUpdated);
 		
-		Address addr = new AddressDAOImpl<Address>().findAddressByUserIdAndType(user.getUserId(), ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);
+		Address addr = new AddressDAOImpl<Address>().findAddressByUserIdAndType(new BigInteger(user.getUserId()), ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);
 		addr.setAddrLine1(params.get("addrLine1"));
 		addr.setAddrLine2(params.get("addrLine2"));
 		addr.setAddrLine3(params.get("addrLine3"));

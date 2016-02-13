@@ -3,6 +3,7 @@ package servlet;
 import static services.utility.GenericConstant.*;
 
 import java.io.IOException;
+import java.math.BigInteger;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -62,9 +63,9 @@ public class VendorLoginSignUp extends HttpServlet {
 			else{
 				if(vlc.userNamexists(req.getParameter("loginEmail"))){
 					User user= vlc.validateVendor(req.getParameter("loginEmail"), req.getParameter("loginPassword"));
-					if(user!=null && user.getEmailOTP() == null){
+					if(user!=null && user.getUserEmailOtp() == null){
 						logger.info("User "+ req.getParameter("loginEmail")+" exists..");
-						Address address = new AddressDAOImpl<Address>().findAddressByUserIdAndType(user.getUserId(), ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);//Aniket: Location for this line changed as if the validation fails the user object will be null and this line will give NPE
+						Address address = new AddressDAOImpl<Address>().findAddressByUserIdAndType(new BigInteger(user.getUserId()), ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);//Aniket: Location for this line changed as if the validation fails the user object will be null and this line will give NPE
 						logger.info("Address for User "+ req.getParameter("loginEmail")+" exists with Id "+ address.getAddrId());
 						HttpSession session = req.getSession();
 						if(session !=null){
@@ -75,7 +76,7 @@ public class VendorLoginSignUp extends HttpServlet {
 							output = NAV_TO_VENDOR_HOME_PAGE;
 						}
 						
-					}else if(user!=null && user.getEmailOTP() != null){
+					}else if(user!=null && user.getUserEmailOtp() != null){
 						output = "NOTVERIFIED";
 					}else
 						output = "WRONGPASSWORD";

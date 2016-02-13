@@ -61,7 +61,7 @@ public class CommonUtility {
 			List<User> validUserDetails = (List<User>) request.getSession().getAttribute("LoggedInUserDetailsObject");
 			if (validUserDetails != null & validUserDetails.size() > 0) {
 				for (User u : validUserDetails) {
-					loggedInUserId = u.getUserId().longValue();
+					loggedInUserId =Long.parseLong(u.getUserId());
 				}
 			}
 		}

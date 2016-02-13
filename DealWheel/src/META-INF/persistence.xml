@@ -5,12 +5,11 @@
 		<class>model.Address</class>
 		<class>model.Bookingshistory</class>
 		<class>model.Code</class>
-		<class>model.Payment</class>
 		<class>model.User</class>
 		<class>model.LoginDetail</class>
 		<class>model.ListedVehicle</class>
 		<class>model.Vehicle</class>
-		<class>model.UsersTemp</class>
+		<class>model.Payment</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://dealwheeltest.cuaav5xfkaxl.us-west-2.rds.amazonaws.com:3306/DealwheelDB"/>

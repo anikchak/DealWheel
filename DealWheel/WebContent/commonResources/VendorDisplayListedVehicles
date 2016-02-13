@@ -3,7 +3,7 @@
 </div></center>
 <div id="listVehiclesBlockId">
 <% 
-    		List<Object[]> vehicleDetailList = new VehicleDAOImpl<Vehicle>().getVehicleDetailsForUserId(user.getUserId()); 
+    		List<Object[]> vehicleDetailList = new VehicleDAOImpl<Vehicle>().getVehicleDetailsForUserId(new BigInteger(user.getUserId())); 
     		if(vehicleDetailList!=null && vehicleDetailList.size()>0){
     		%>
     		<br>

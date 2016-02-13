@@ -44,7 +44,7 @@ public class User implements Serializable {
 	@SequenceGenerator(name="USERS_USERID_GENERATOR", sequenceName="KEYSEQ")
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="USERS_USERID_GENERATOR")
 	@Column(name="USER_ID")
-	private BigInteger userId;
+	private String userId;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="LAST_UPDATED")
@@ -58,9 +58,9 @@ public class User implements Serializable {
 
 	@Column(name="USER_EMAIL")
 	private String userEmail;
-	
+
 	@Column(name="USER_EMAIL_OTP")
-	private BigInteger emailOTP;
+	private BigInteger userEmailOtp;
 
 	@Column(name="USER_GENDER")
 	private String userGender;
@@ -80,11 +80,11 @@ public class User implements Serializable {
 	public User() {
 	}
 
-	public BigInteger getUserId() {
+	public String getUserId() {
 		return this.userId;
 	}
 
-	public void setUserId(BigInteger userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
@@ -120,12 +120,12 @@ public class User implements Serializable {
 		this.userEmail = userEmail;
 	}
 
-	public BigInteger getEmailOTP() {
-		return emailOTP;
+	public BigInteger getUserEmailOtp() {
+		return this.userEmailOtp;
 	}
 
-	public void setEmailOTP(BigInteger emailOTP) {
-		this.emailOTP = emailOTP;
+	public void setUserEmailOtp(BigInteger userEmailOtp) {
+		this.userEmailOtp = userEmailOtp;
 	}
 
 	public String getUserGender() {
