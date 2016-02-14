@@ -30,7 +30,10 @@ $(document).ready(function() {
 	               return false;
 	    }
 	   });
-	
+	$("#vendorOTPPopup").modal({
+		backdrop: 'static',
+		   keyboard: false
+	});
 	$('[data-toggle="tooltip"]').tooltip();
 
 });
@@ -119,6 +122,22 @@ function checkRequiredFieldsCondition() {
 	}
 }
 
+function verifyVendorOTP(){
+	$("#vendorOTPMandate").hide();
+	if ( $("#otpVendor").val() == '' || $("#otpVendor").val() == null ) {
+		$("#otpVendor").css("border-color", "red");
+		$('#vendorOTPMandate').show();
+	}else{
+		//Trigger AJAX to verify OTP : if successful then execute $("#registrationFormId").submit();
+		$("#otpVendor").css("border-color", "");
+		$('#vendorOTPMandate').hide();
+	}
+}
+
+function cancelOTPVerify(pageContext){
+	$("#vendorOTPPopup").hide();
+	$(location).attr('href', pageContext + "/VendorLoginSignUp.jsp?invoke=vendorFlow");
+}
 function resetFields() {
 	$("#fullName").val('');
 	$("input[value='Male']").removeAttr('checked');

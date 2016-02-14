@@ -161,7 +161,7 @@ function ButtonClickHandler(val){
 <h3 class="panel-title" style="color: #687074;font-size:14.5px; font-weight:600;">Personal Details</h3>
 </div>
 <div class="col-xs-6">
-<p class="panel-title pull-right"><button type="button" class="btn btn-info btn-default "  onclick="ButtonClickHandler('FROMEDIT')"><span class="glyphicon glyphicon glyphicon-pencil" ></span> Edit</button></p>
+<p class="panel-title pull-right"><button type="button" class="btn btn-info btn-md"  onclick="ButtonClickHandler('FROMEDIT')"><span class="glyphicon glyphicon glyphicon-pencil" ></span> Edit</button></p>
 </div>
 </div>
 </div>
@@ -303,9 +303,9 @@ function ButtonClickHandler(val){
  <div class="row"> 
  <div class="col-sm-4"></div>
  <div class="col-sm-4">
-<button type="button" class="btn btn-info btn-default navbar-btn" onclick = "OnSubmit()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
+<button type="button" class="btn btn-info btn-md" onclick = "OnSubmit()"><span class="glyphicon glyphicon-floppy-disk"></span> Save</button>
  <div class="col-sm-1"></div>
-  <button type="button" class="btn btn-info btn-default navbar-btn" onclick = "ButtonClickHandler('FROMCANCEL')"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+  <button type="button" class="btn btn-info btn-md" style="background-color: rgba(217, 83, 79, 1);" onclick = "ButtonClickHandler('FROMCANCEL')"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
  </div>
  <div class="col-sm-4">
 </div>

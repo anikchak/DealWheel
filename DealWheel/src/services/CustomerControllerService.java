@@ -208,7 +208,7 @@ public class CustomerControllerService {
 		try {
 			if (em != null) {
 				fetchUserDetails = em.createNamedQuery(USER_FIND_BY_ID);
-				fetchUserDetails.setParameter(USERID, loginUserId);
+				fetchUserDetails.setParameter(USERID, loginUserId.toString());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -459,7 +459,7 @@ public class CustomerControllerService {
 				et.begin();
 				Query q = em.createNamedQuery(USER_UPDATE_QUERY);
 							// q.setParameter(1, "UPCMNG");
-				q.setParameter(USERID, userId);
+				q.setParameter(USERID, userId.toString());
 				q.setParameter("userName",params[1]);
 				q.setParameter("userEmail",params[0]);
 				q.setParameter("userGender",params[4]);
@@ -506,7 +506,7 @@ public class CustomerControllerService {
 		try{
 		em.getEntityManagerFactory().getCache().evictAll();
 		Query q = em.createQuery(QueryConstant.GET_USER_DETAILS);
-		q.setParameter("USERID", userId);
+		q.setParameter("USERID", userId.toString());
 		searchResultSet = (List<Object[]>) q.getResultList();
 		}catch(Exception e){
 			e.printStackTrace();

@@ -64,7 +64,7 @@ var pageContext = '<%=request.getContextPath()%>';
       		
       			<div class="form-group row">
       			<div class="col-sm-2 " style="">
-    			<label for="email" style="color: rgba(217, 83, 79, 1);font-size:14px;">Username/Email</label>
+    			<label for="email" style="color: rgba(217, 83, 79, 1);font-size:14px;">Username</label>
     			</div>
     			<div class="col-sm-8 " >
     			<span class="" style= "font-size: 15px; color: #687074;text-transform:uppercase;" id="email" > <%= session.getAttribute("email") %> </span>
@@ -265,6 +265,37 @@ var pageContext = '<%=request.getContextPath()%>';
 	</div>
 	<!--/wrap-->
 	
+	<!-- OTP Verification pop-up starts -->
+	<div class="modal fade" tabindex="-1" role="dialog" id="vendorOTPPopup">
+    <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p><span style="color:#687074;font-size:13.5px;">We have sent One-Time Password (OTP) to <span style="color:rgba(217, 83, 79, 1); font-weight: bold; font-size:15px;text-transform: uppercase;"><%= session.getAttribute("email") %></span>. Kindly enter the same below to verify your email id.</span></p>
+      	<br>
+      	<form action="">
+      	<div class="row form-group">
+      	<div class="col-sm-5 " style="padding-top:5px;">
+      	<label for="vendorOTP" style="color: rgba(217, 83, 79, 1);font-size:14px;">One-Time Password(OTP):</label>
+      	</div>
+      	<div class="col-sm-7 " style="">
+      	<div class="input-group">
+			<span class="input-group-addon"><span class="glyphicon glyphicon-qrcode"></span></span>
+			<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" id="otpVendor" name="otpVendor" placeholder="One-Time Password">
+		</div>
+			<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="vendorOTPMandate">Field cannot be empty</span>
+		</div>
+		</div>
+		
+      	</form>
+      </div>
+      <div class="modal-footer">
+       <button type="button" class="btn btn-info btn-md" id="" onclick="verifyVendorOTP()"><span class="glyphicon glyphicon-ok"></span> Verify</button>
+       <button type="button" class="btn btn-info btn-md" id="" style="background-color: rgba(217, 83, 79, 1);" onclick="cancelOTPVerify(pageContext)"><span class="glyphicon glyphicon-remove"></span> Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+	<!-- OTP Verification pop-up ends -->
 	<!-- Footer inclusion starts -->
 	<%@ include file="commonResources/Footer"%>
 	<!-- Footer inclusion ends -->
