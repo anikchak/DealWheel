@@ -1,10 +1,9 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import services.mail.EmailType;
 import services.mail.SendMail;
 
 /**
@@ -23,45 +23,33 @@ public class TriggerEmail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static final Logger logger = Logger.getLogger(TriggerEmail.class);
        
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public TriggerEmail() {
         super();
-        // TODO Auto-generated constructor stub
     }
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+    
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory("DealWheel");
-		EntityManager em = emf.createEntityManager();
 		logger.info("Trigger Email: Post Hit");
-		String actionCode = (String)request.getParameter("actionCode");
-		if("confirmationEmail".equalsIgnoreCase(actionCode)){
-			String bookingId = (String)request.getParameter("bookingId");
-			String vehicleDetails = (String)request.getParameter("vehicleDetails");
-			String userId = (String)request.getParameter("userId");
-			/*Query q1= em.createNativeQuery(QueryConstant.GET_USER_EMAIL);
-			q1.setParameter(1,userId);
-			logger.info("UserID"+ userId);
-			logger.info(bookingId);
-			
-			String uMail = (String) q1.getSingleResult();
-			
-		//	logger.info("userId="+userId+" BookingId="+bookingId +" vehicleDetails="+vehicleDetails);
-			//logger.info("User Email"+uMail);
-			logger.info(uMail); */
-			SendMail.sendEmailNotification("confirmationEmail",vehicleDetails,"Booking Confirmation from Deal Wheel",userId);
-			//CommonUtility.sendEmailNotification("confirmationEmail",bookingId,userId,vehicleDetails,null);
-		}else if("forgotPassword".equalsIgnoreCase(actionCode)){
-			String tempPwd = (String)request.getParameter("tempPwd");
-			String userEmail = (String)request.getParameter("userId");
-			logger.info("tempPwd= "+tempPwd+" userEmail="+userEmail);
-			//CommonUtility.sendEmailNotification("forgotPassword",null,userEmail,null,tempPwd);
+		String emailType = (String)request.getParameter("emailType");
+		String list = request.getParameter("list");
+		List<String> params = Arrays.asList(list.split(","));
+		String emailAddress = request.getParameter("emailAddress");
+		if(EmailType.CONFIRM_BOOKING_TO_USER.toString().equals(emailType)){
+			SendMail.sendEmailNotification(EmailType.CONFIRM_BOOKING_TO_USER,emailAddress, params);
+		}
+		else if(EmailType.CONFIRM_BOOKING_TO_VENDOR.toString().equals(emailType)){
+			SendMail.sendEmailNotification(EmailType.CONFIRM_BOOKING_TO_VENDOR,emailAddress, params);
+		}
+		else if(EmailType.CANCEL_BOOKING_BY_USER.toString().equals(emailType)){
+			SendMail.sendEmailNotification(EmailType.CANCEL_BOOKING_BY_USER,emailAddress, params);
+		}
+		else if(EmailType.CANCEL_BOOKING_BY_VENDOR.toString().equals(emailType)){
+			SendMail.sendEmailNotification(EmailType.CANCEL_BOOKING_BY_VENDOR,emailAddress, params);
+		}
+		else if(EmailType.FORGOT_PASSWORD.toString().equals(emailType)){
+			SendMail.sendEmailNotification(EmailType.FORGOT_PASSWORD,emailAddress, params);
+		}
+		else if(EmailType.VERIFY.toString().equals(emailType)){
+			SendMail.sendEmailNotification(EmailType.VERIFY,emailAddress, params);
 		}
 	}
-
 }

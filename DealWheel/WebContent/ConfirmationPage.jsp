@@ -1,3 +1,4 @@
+<%@page import="dao.UserDAOImpl"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ include file="commonResources/CommonViewImports"%>
@@ -31,17 +32,20 @@ var pageContext = '<%=request.getContextPath()%>';
 	<% session.setAttribute("currentPage","ConfirmationPage");
 	new CustomerControllerService().cleanBookings();
 	String userName = null;
+	Vehicle v = null; 
+	Bookingshistory bh = null;
 	String sessionID = null;
-	String BODY = null;
+	String vendorName = null;
+	String vendorEmail = null;
 	String realUserName = null;
 	long tempBookingId = 0;
 	session.setAttribute("currentPage", "ConfirmationPage");
 	if(session.getAttribute("LoggedInUserDetailsObject")!=null){
 	List<User> validUserDetails = (List<User>)session.getAttribute("LoggedInUserDetailsObject");
 	if(validUserDetails!=null & validUserDetails.size()>0){
-		for(User u : validUserDetails){
-			userName = u.getUserEmail();
-			realUserName = u.getUserName();
+		for(User usr : validUserDetails){
+			userName = usr.getUserEmail();
+			realUserName = usr.getUserName();
 		}
 	}
 	}
@@ -84,55 +88,17 @@ var pageContext = '<%=request.getContextPath()%>';
 			String bookingSequence = null;
 			List<Object[]> vehicleDetailsList = (List<Object[]>)CommonUtility.fetchVehicleUsingTempBooking(fetchSelectedVehicle);
 			if(vehicleDetailsList!=null && vehicleDetailsList.size()==1){
-				Vehicle v = (Vehicle)((Object)vehicleDetailsList.get(0)[0]);
+				v = (Vehicle)((Object)vehicleDetailsList.get(0)[0]);
 				ListedVehicle lv = (ListedVehicle)((Object)vehicleDetailsList.get(0)[1]);
-				Bookingshistory bh = (Bookingshistory)((Object)vehicleDetailsList.get(0)[2]);
+				bh = (Bookingshistory)((Object)vehicleDetailsList.get(0)[2]);
 				Address a = (Address)((Object)vehicleDetailsList.get(0)[3]);
 				User u = (User)((Object)vehicleDetailsList.get(0)[4]);
 				bookingSequence = bh.getBkngSeq();
-			
-		// Creating Email Subject
-		
-		 BODY = "<h3> Hi "+realUserName+",</h3> <br><br> " + 
-
-			    		" <h4> Your booking "+bh.getBkngNumber()+" is confirmed with Dealwheel. Details of the bookings  are given below </h4><br><br>"+
-
-			    		 "<table>"+
-			    		 "<tr>"+
-			    		 "<td> Bike </td>"+
-			    		 "<td>"+ lv.getLvclName()+" </td>"+
-			    		 "</tr>"+
-			    		 "<tr>"+
-			    		 "<td> Make </td>"+
-			    		 "<td>"+lv.getLvclMake() +"</td>"+
-			    		 "</tr>"+
-			    		 "<tr>"+
-			    		 "<td> Vehicle Registeration </td>"+
-			    		 "<td>"+v.getVhclRegistrationNo()+" </td>"+
-			    		 "</tr>"+
-			    		 "<tr>"+
-			    		 "<td> From Date </td>"+
-			    		 "<td>"+bh.getBkngFromDate() +"</td>"+
-			    		 "</tr>"+
-			    		 "<tr>"+
-			    		"<td> To Date </td>"+
-			    		 "<td>"+bh.getBkngToDate() +"</td>"+
-			    		 "</tr>"+
-			    		"</table></br></br>"+
-
-			    		 "You can pick the bike from the following location"+
-
-			    		 "<h4>"+a.getAddrLine1()+a.getAddrLine2()+a.getAddrLine3()+"<br>"
-			    		 		 +a.getAddrLocality()+"<br>"
-			    		 		+a.getAddrCity()+"<br>"
-			    		 		 +a.getAddrPinCode()+"</h4>"
-			    		 		 		+ "<br> <br>Happy Riding!!! <br><br> Regards,<br> Deal Wheel Admin Team<br>";
-				
-				
-				
+				vendorName = ((User)new UserDAOImpl<User>().findById(a.getUserId())).getUserName();
+				vendorEmail =  ((User)new UserDAOImpl<User>().findById(a.getUserId())).getUserEmail();
 			%>
 			 	 <div id="emailSample" style="display:none">
-    	 	 <span style="color:#687074;font-size:14px;" id="emailBody"><%=BODY%></span>
+    	 	 <%-- <span style="color:#687074;font-size:14px;" id="emailBody"><%=BODY%></span> --%>
     		 </div>
   			<div class="panel panel-default">
   			 <div class="panel-heading">
@@ -222,18 +188,30 @@ var pageContext = '<%=request.getContextPath()%>';
 	
 	<script>
 	$(document).ready(function(){
+		var list = "<%=v.getVhclRegistrationNo()%>,<%=sdtDay%> <%=sdtDateNum%> <%=sdtMonth%>'<%=sdtYear%>,<%=endtDay%> <%=endtDateNum%> <%=endtMonth%>'<%=endtYear%>,<%=vendorName%>";
 		$.post(
 				"TriggerEmail",
 				{
-					actionCode : "confirmationEmail",
-					bookingId :'<%=BODY%>' ,
-					vehicleDetails: '<%=BODY%>',
-					userId : '<%=userName%>'				
+					emailType : "CONFIRM_BOOKING_TO_USER",
+					emailAddress : "<%=userName%>",
+					list : list				
 				},
 				function(responseText) {
 					
 				});
-	});
+		
+		var list = "<%=v.getVhclRegistrationNo()%>,<%=sdtDay%> <%=sdtDateNum%> <%=sdtMonth%>'<%=sdtYear%>,<%=endtDay%> <%=endtDateNum%> <%=endtMonth%>'<%=endtYear%>,<%=realUserName%>";
+		$.post(
+			"TriggerEmail",
+			{
+				emailType : "CONFIRM_BOOKING_TO_VENDOR",
+				emailAddress : "<%=vendorEmail%>",
+				list : list				
+			},
+			function(responseText) {
+				
+			});
+});
 	</script>
 	</body>
 </html>

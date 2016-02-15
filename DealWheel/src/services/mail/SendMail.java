@@ -1,5 +1,6 @@
 package services.mail;
 
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -14,32 +15,20 @@ import org.apache.log4j.Logger;
 public class SendMail {
 	static final Logger logger = Logger.getLogger(SendMail.class);
 	
-	public static void sendEmailNotification(String actionCode,
-			String emailbody, String subject, String uEmail) {
-		// get the vehicle details
-		// EmailBody - Body of Email
-		// uEmail - Sender Email Address
-		// actionCode - Purpose of Email
-
+	public static void sendEmailNotification(EmailType type, String emailAddress, List<String> params) {
 		try {
-			logger.info("Done Email");
+			logger.info("Sending Email to "+emailAddress);
 			String FROM = "admin@dealwheel.in";
-			String TO = uEmail;
+			String TO = emailAddress;
 			// TODO
 			// Need to add disclaimer and phone number details
 
 			// Supply your SMTP credentials below. Note that your SMTP
 			// credentials are different from your AWS credentials.
-			String SMTP_USERNAME = "AKIAIJW5C4MJ3Z4PUWAQ"; // Replace with your
-															// SMTP username.
-			String SMTP_PASSWORD = "AvC6NNet34rYTa2tPAPOFUVCdTty8ddsoswIqkC4ZT9u"; // Replace
-																					// with
-																					// your
-																					// SMTP
-																					// password.
+			String SMTP_USERNAME = "AKIAIJW5C4MJ3Z4PUWAQ"; // Replace with your SMTP username.
+			String SMTP_PASSWORD = "AvC6NNet34rYTa2tPAPOFUVCdTty8ddsoswIqkC4ZT9u"; // Replace with your SMTP password.
 
-			// Amazon SES SMTP host name. This example uses the US West (Oregon)
-			// region.
+			// Amazon SES SMTP host name. This example uses the US West (Oregon) region.
 			String HOST = "email-smtp.us-west-2.amazonaws.com";
 
 			// Port we will connect to on the Amazon SES SMTP endpoint. We are
@@ -71,8 +60,8 @@ public class SendMail {
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(FROM));
 			msg.setRecipient(Message.RecipientType.TO, new InternetAddress(TO));
-			msg.setSubject(subject);
-			msg.setContent(emailbody, "text/html; charset=utf-8");
+			msg.setSubject(GetMailInformation.getSubjectForMail(type));
+			msg.setContent(GetMailInformation.getBodyForMailType(type, params), "text/html; charset=utf-8");
 
 			// Create a transport.
 			Transport transport = session.getTransport();
