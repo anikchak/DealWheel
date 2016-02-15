@@ -30,10 +30,7 @@ $(document).ready(function() {
 	               return false;
 	    }
 	   });
-	$("#vendorOTPPopup").modal({
-		backdrop: 'static',
-		   keyboard: false
-	});
+	
 	$('[data-toggle="tooltip"]').tooltip();
 
 });
@@ -117,7 +114,10 @@ function checkRequiredFieldsCondition() {
 		emptyField = 'Y';
 	}
 	if (emptyField == 'N') {
-		alert("OTP POP-UP TO VERIFY;On Ok submit form else logout");
+		$("#vendorOTPPopup").modal({
+			backdrop: 'static',
+			   keyboard: false
+		});
 		//$("#registrationFormId").submit();
 	}
 }

@@ -79,15 +79,36 @@ CREATE TABLE 'bookingshistory'
   );
   
   DROP TABLE payment;
-  CREATE TABLE 'payment'
-  (
-    'PYMT_ID' bigint(20) NOT NULL AUTO_INCREMENT,
-    'PYMT_TXN_ID' VARCHAR(100) NOT NULL,
-    'PYMT_TYPE'   VARCHAR(20) NOT NULL,
-    'PYMT_AMOUNT' INT(11) NOT NULL,
-    'PYMT_STATUS' VARCHAR(20) NOT NULL,
-    PRIMARY KEY ('PYMT_ID')
-  );
+ CREATE TABLE `payment` (
+   `paymentseq` bigint(20) NOT NULL AUTO_INCREMENT,
+   `bookingId` varchar(50) NOT NULL,
+   `mihpayid` varchar(50) NOT NULL,
+   `payment_mode` varchar(10) NOT NULL,
+   `status` varchar(10) NOT NULL,
+   `unmappedstatus` varchar(20) NOT NULL,
+   `txnid` varchar(50) NOT NULL,
+   `amount` varchar(10) NOT NULL,
+   `cardcategory` varchar(20) NOT NULL,
+   `discount` varchar(10) NOT NULL,
+   `net_amount_debit` varchar(10) NOT NULL,
+   `addedon` varchar(10) NOT NULL,
+   `productinfo` varchar(100) NOT NULL,
+   `firstname` varchar(20) NOT NULL,
+   `email` varchar(80) NOT NULL,
+   `phone` varchar(20) NOT NULL,
+   `paymentsource` varchar(10) NOT NULL,
+   `pg_type` varchar(10) NOT NULL,
+   `bank_ref_num` varchar(30) NOT NULL,
+   `bankcode` varchar(10) NOT NULL,
+   `errorcode` varchar(10) NOT NULL,
+   `error_message` varchar(30) NOT NULL,
+   `name_on_card` varchar(100) NOT NULL,
+   `cardnum` varchar(30) NOT NULL,
+   `issuing_bank` varchar(20) NOT NULL,
+   `card_type` varchar(10) NOT NULL,
+   PRIMARY KEY (`paymentseq`),
+   UNIQUE KEY `bookingId` (`bookingId`)
+ );
   
   
   DROP TABLE vehicles;
