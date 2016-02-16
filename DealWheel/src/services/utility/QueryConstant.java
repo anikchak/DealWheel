@@ -11,7 +11,7 @@ public class QueryConstant {
 			+ "AND vProvider.userId = a.userId "
 			+ "AND b.bkngStatus IN (:UPCOMING,:COMPLETED,:CANCELLED,:VENDORCANCELLED) "
 			+ "AND b.userId = :USERID";
-	public static String CLEAN_BOOKINGS = "update bookingshistory b set b.BKNG_STATUS = ? where TIME_TO_SEC(TIMEDIFF(NOW(),b.LAST_UPDATED))> ? and b.BKNG_STATUS in (?)";
+	public static String CLEAN_BOOKINGS = "update bookingshistory b set b.BKNG_STATUS = ? where TIMESTAMPDIFF(SECOND,b.LAST_UPDATED,NOW())> ? and b.BKNG_STATUS in (?)";
 	public static String LIST_AVAILABLE_VEHICLES = "SELECT v, a, u, lv "
 			+ "FROM Vehicle v ,  Address a , User u , ListedVehicle lv WHERE v.vhclId NOT IN "
 			+ "(SELECT bh.bkngVehicle FROM Bookingshistory bh WHERE bh.bkngFromDate <= :toDate AND bh.bkngToDate >= :fromDate "

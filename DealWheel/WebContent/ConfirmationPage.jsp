@@ -30,14 +30,14 @@ var pageContext = '<%=request.getContextPath()%>';
 
 <body>
 	<% session.setAttribute("currentPage","ConfirmationPage");
-	new CustomerControllerService().cleanBookings();
+	//new CustomerControllerService().cleanBookings();
 	String userName = null;
 	Vehicle v = null; 
 	Bookingshistory bh = null;
 	String sessionID = null;
 	String vendorName = null;
 	String vendorEmail = null;
-	String realUserName = null;
+	String emailUserName = null;
 	long tempBookingId = 0;
 	session.setAttribute("currentPage", "ConfirmationPage");
 	if(session.getAttribute("LoggedInUserDetailsObject")!=null){
@@ -45,7 +45,7 @@ var pageContext = '<%=request.getContextPath()%>';
 	if(validUserDetails!=null & validUserDetails.size()>0){
 		for(User usr : validUserDetails){
 			userName = usr.getUserEmail();
-			realUserName = usr.getUserName();
+			emailUserName = usr.getUserName();
 		}
 	}
 	}
@@ -94,8 +94,8 @@ var pageContext = '<%=request.getContextPath()%>';
 				Address a = (Address)((Object)vehicleDetailsList.get(0)[3]);
 				User u = (User)((Object)vehicleDetailsList.get(0)[4]);
 				bookingSequence = bh.getBkngSeq();
-				vendorName = ((User)new UserDAOImpl<User>().findById(a.getUserId())).getUserName();
-				vendorEmail =  ((User)new UserDAOImpl<User>().findById(a.getUserId())).getUserEmail();
+				vendorName = ((User)new UserDAOImpl<User>().findById(a.getUserId().toString())).getUserName();
+				vendorEmail =  ((User)new UserDAOImpl<User>().findById(a.getUserId().toString())).getUserEmail();
 			%>
 			 	 <div id="emailSample" style="display:none">
     	 	 <%-- <span style="color:#687074;font-size:14px;" id="emailBody"><%=BODY%></span> --%>
@@ -160,6 +160,9 @@ var pageContext = '<%=request.getContextPath()%>';
 			 </div>
 			</div>
   			</div>	
+  			<div>
+  			<img alt="Booked" src="images/stamp.png" style="width:25%;height:25%;z-index: 1000;position: relative;margin-top: -130px;margin-left: 200px;" />
+  			</div>
   			<%
   			}
   			}else{
@@ -200,7 +203,7 @@ var pageContext = '<%=request.getContextPath()%>';
 					
 				});
 		
-		var list = "<%=v.getVhclRegistrationNo()%>,<%=sdtDay%> <%=sdtDateNum%> <%=sdtMonth%>'<%=sdtYear%>,<%=endtDay%> <%=endtDateNum%> <%=endtMonth%>'<%=endtYear%>,<%=realUserName%>";
+		var list = "<%=v.getVhclRegistrationNo()%>,<%=sdtDay%> <%=sdtDateNum%> <%=sdtMonth%>'<%=sdtYear%>,<%=endtDay%> <%=endtDateNum%> <%=endtMonth%>'<%=endtYear%>,<%=emailUserName%>";
 		$.post(
 			"TriggerEmail",
 			{
