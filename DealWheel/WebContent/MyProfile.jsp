@@ -235,7 +235,8 @@ function ButtonClickHandler(val){
   <div class="col-xs-2"></div>
   <label for="Email" class="col-xs-2 control-label" style="color: #687074;font-size:14.5px; font-weight:600;">Email </label>
    <div class="col-xs-6">
-  <span class="control-label"><%=userdetails.getUserEmail()%></span>
+  <span class="control-label" id = "Email"><%=userdetails.getUserEmail()%></span>
+  <input type="text" class="form-control" id="Email" value = "<%=userdetails.getUserEmail()%>" style="display: none;" name="Email">
   </div>
     <div class="col-xs-2"></div>
 </div>
