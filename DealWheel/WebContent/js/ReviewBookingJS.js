@@ -33,7 +33,3 @@ function modifySearchCriteriaInReview(){
 		$("#logoutFormId").submit();
 	}
 	
-	function proceedWithPayment(){
-		$("#orderLocationId").val($("#locationId").text());
-		$("#confirmationSummaryFormId").submit();
-	}

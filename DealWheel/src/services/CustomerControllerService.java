@@ -9,6 +9,7 @@ import dao.LoginDAOImpl;
 import dao.UserDAOImpl;
 
 
+
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -30,6 +31,7 @@ import model.Address;
 import model.Bookingshistory;
 import model.ListedVehicle;
 import model.LoginDetail;
+import model.Payment;
 import model.User;
 import model.Vehicle;
 import services.mail.SendMail;
@@ -659,6 +661,42 @@ public class CustomerControllerService {
 		    }
 	
 		    
+	public void updatePaymentDetails(Map params){
+		logger.info("Inside updatePaymentDetails");
+		logger.info("Payment Details="+params);
+		try{
+			if(em!=null){
+				et.begin();
+				Payment p  = new Payment();
+				p.setAddedon(params.get("addedon").toString());
+				p.setAmount(params.get("amount").toString());
+				p.setBankcode(params.get("bankcode").toString());
+				p.setBankRefNum(params.get("bank_ref_num").toString());
+				p.setBookingId(params.get("bookingId").toString());
+				p.setCardcategory(params.get("cardcategory").toString());
+				p.setCardType(params.get("card_type").toString());
+				p.setDiscount(params.get("discount").toString());
+				p.setEmail(params.get("email").toString());
+				p.setErrorcode(params.get("errorcode").toString());
+				p.setErrorMessage(params.get("error_message").toString());
+				p.setFirstname(params.get("firstname").toString());
+				p.setMihpayid(params.get("mihpayid").toString());
+				p.setNetAmountDebit(params.get("net_amount_debit").toString());
+				p.setPaymentMode(params.get("mode").toString());
+				p.setPaymentsource(params.get("paymentsource").toString());
+				p.setPgType(params.get("pg_type").toString());
+				p.setPhone(params.get("phone").toString());
+				p.setProductinfo(params.get("productinfo").toString());
+				p.setStatus(params.get("status").toString());
+				p.setTxnid(params.get("txnid").toString());
+				p.setUnmappedstatus(params.get("unmappedstatus").toString());
+				em.persist(p);
+				et.commit();
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 	
 }
 

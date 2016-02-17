@@ -1,13 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ include file="commonResources/CommonViewImports"%>
+<%@ page import="java.util.*" %>
+<%@ page import="java.security.*" %>
 <!DOCTYPE html">
 <html>
 <head>
 <META Http-Equiv="Cache-Control" Content="no-cache"/>
 <META Http-Equiv="Pragma" Content="no-cache"/>
 <META Http-Equiv="Expires" Content="0"/>
-<title>Driveholic: Booking Summary</title>
+<title>DealWheel: Booking Summary</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <%@ include file="commonResources/CommonJSCSSInclude"%>
@@ -18,6 +20,7 @@
 	background-color: #85b213;
 }
 </style>
+
 </head>
 <body>
 <%
@@ -25,6 +28,7 @@
 
 String pagecontext = request.getContextPath();
 String userName = null;
+String primaryContactNo = null;
 String sessionID = null;
 long tempBookingId = 0;
 session.setAttribute("currentPage", "ReviewBooking");
@@ -33,6 +37,7 @@ List<User> validUserDetails = (List<User>)session.getAttribute("LoggedInUserDeta
 if(validUserDetails!=null & validUserDetails.size()>0){
 	for(User u : validUserDetails){
 		userName = u.getUserEmail();
+		primaryContactNo = u.getUserPrimaryContact().toString();
 	}
 }
 }
@@ -78,7 +83,92 @@ if(userName == null){
 				Address a = (Address)((Object)vehicleDetailsList.get(0)[3]);
 				User u = (User)((Object)vehicleDetailsList.get(0)[4]);
 %>
-
+<!-- Payment Changes Start -->
+<%!
+public boolean empty(String s)
+	{
+		if(s== null || s.trim().equals(""))
+			return true;
+		else
+			return false;
+	}
+%>
+<%!
+	public String hashCal(String type,String str){
+		byte[] hashseq=str.getBytes();
+		StringBuffer hexString = new StringBuffer();
+		try{
+		MessageDigest algorithm = MessageDigest.getInstance(type);
+		algorithm.reset();
+		algorithm.update(hashseq);
+		byte messageDigest[] = algorithm.digest();
+            
+		
+		for (int i=0;i<messageDigest.length;i++) {
+			String hex=Integer.toHexString(0xFF & messageDigest[i]);
+			if(hex.length()==1) hexString.append("0");
+			hexString.append(hex);
+		}
+			
+		}catch(NoSuchAlgorithmException nsae){ }
+		
+		return hexString.toString();
+	}
+%>
+<% 	
+	String merchant_key="gtKFFx";
+	String salt="eCwWELxi";
+	String action1 ="";
+	String base_url="https://test.payu.in";
+	int error=0;
+	String hashString="";
+	
+ 	Enumeration paramNames = request.getParameterNames();
+	Map<String,String> params= new HashMap<String,String>();
+    	while(paramNames.hasMoreElements()) 
+	{
+      		String paramName = (String)paramNames.nextElement();
+      
+      		String paramValue = request.getParameter(paramName);
+		params.put(paramName,paramValue);
+	}
+    String txnid=null;
+    if(fetchSelectedVehicle!=null){
+    	txnid=hashCal("SHA-256",fetchSelectedVehicle).substring(0,20);
+    }
+	
+	Long amount  = (noOfDays*v.getVhclPerDayCost());
+	String hash="";
+	String hashSequence = "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10";
+	params.put("key",merchant_key);
+	if(txnid!=null){
+	params.put("txnid",txnid);
+	}
+	params.put("amount",amount.toString());
+	params.put("firstname",userName);
+	params.put("email",u.getUserEmail());
+	params.put("phone",u.getUserPrimaryContact().toString());
+	params.put("productinfo",fetchSelectedVehicle);
+	String surl = "http://"+request.getServerName()+":"+request.getServerPort()+"/DealWheel/"+"ConfirmationSummary";
+	params.put("surl",surl);
+	params.put("furl",pagecontext+"/BookingError.jsp");
+	params.put("udf1",session.getAttribute("selectedLocation").toString());
+	
+	String[] hashVarSeq=hashSequence.split("\\|");
+			
+			for(String part : hashVarSeq)
+			{
+				hashString= (empty(params.get(part)))?hashString.concat(""):hashString.concat(params.get(part));
+				hashString=hashString.concat("|");
+			}
+			hashString=hashString.concat(salt);
+			System.out.println("hasString="+hashString);
+			 hash=hashCal("SHA-512",hashString);
+			action1=base_url.concat("/_payment");
+		
+	System.out.println(action1);
+%>
+<!-- Payment Changes end -->
 	<!-- Begin page content -->
 		<div class="container" id="bookingSummaryMainBlockId">
 			
@@ -149,8 +239,9 @@ if(userName == null){
     				<hr style="border-color:#85b213;width:50%;">
     			</div>
     			<div class="row text-center" >
-    				<button type="button" class="btn btn-info btn-md" id="paymentBtnId" onclick="proceedWithPayment()">Proceed to Payment</button>
-    				<button type="button" class="btn btn-info btn-md" id="modifyBtnId" style="background-color: rgba(217, 83, 79, 1);" onclick="modifySearchCriteriaInReview()">+ Modify Search</button>
+    		
+					<button type="submit" class="btn btn-info btn-md" id="paymentBtnId" onclick="submitPayuForm()">Proceed to Payment</button>
+					<button type="button" class="btn btn-info btn-md" id="modifyBtnId" style="background-color: rgba(217, 83, 79, 1);" onclick="modifySearchCriteriaInReview()">+ Modify Search</button>
     				<hr style="border-color:#fff;width:50%;">
     			</div>
 			</div>
@@ -162,6 +253,21 @@ if(userName == null){
 			</div>
 			<!-- Modify Search Criteria ends -->
 		</div>
+	<!-- Payment Changes Start -->	
+	<form action="https://test.payu.in/_payment" method="post" name="payuForm" style="display:none;">
+	  <input type="" name="key" value="<%= merchant_key %>" />
+      <input type="" name="hash" value="<%= hash %>"/>
+      <input type="" name="txnid" value="<%= txnid %>" />
+      <input name="amount" value="<%= (empty(params.get("amount"))) ? "" : params.get("amount") %>" />
+      <input name="firstname" id="firstname" value="<%= (empty(params.get("firstname"))) ? "" : params.get("firstname") %>" />
+      <input name="email" id="email" value="<%= (empty(params.get("email"))) ? "" : params.get("email") %>" />
+      <input name="phone" value="<%= (empty(params.get("phone"))) ? "" : params.get("phone") %>" />
+      <input name="productinfo" value="<%= (empty(params.get("productinfo"))) ? "" : params.get("productinfo") %>" size="64" />
+      <input name="surl" value="<%= (empty(params.get("surl"))) ? "" : params.get("surl") %>" size="64" />
+      <input name="furl" value="<%= (empty(params.get("furl"))) ? "" : params.get("furl") %>" size="64" />
+      <input name="udf1" value="<%= (empty(params.get("udf1"))) ? "" : params.get("udf1") %>" size="64" />
+	</form>
+	<!-- Payment Changes end -->
 		
 <%			   }
 		}
@@ -195,13 +301,8 @@ if(userName == null){
     </div>
   </div>
   <!-- Time out Modal ends -->
-  <!-- Navigate to confirmation page starts -->
-  <form method="post" id="confirmationSummaryFormId" action="${pageContext.request.contextPath}/ConfirmationSummary">
-	<!-- <input type="hidden" name="vehicleDetail" id="vehicleDetailId"></input> -->
-		<input type="hidden" value="<%=fetchSelectedVehicle%>" name="tempSelectedVehicle" id="tempSelectedVehicleId"></input>
-		<input type="hidden" name="orderLocationName" id="orderLocationId"></input>
-  </form>
-  <!-- Navigate to confirmation page ends -->
+
+ 
   <!-- Logout form -->
 	<form method="post" id="logoutFormId" action="${pageContext.request.contextPath}/Logout">
 		<input type="hidden" value="<%=fetchSelectedVehicle%>" name="fetchSelectedVehicle" id="fetchSelectedVehicleId"></input>
@@ -213,6 +314,11 @@ if(userName == null){
 
 	<script>
 	var propCities = '<%= CommonUtility.getValuesFromProperties("activeCities")%>';
+	function submitPayuForm(){
+		alert("READ THIS...!!! Use Debit Card only Cardno: 5123456789012346 CVV: 123 expiry date: may-2017 and you can provide");
+		var payuForm = document.forms.payuForm;
+		payuForm.submit();
+	}
 	</script>
 	<script src="js/ReviewBookingJS.js" type="text/javascript"></script>
 	<!-- Including Common JS -->
