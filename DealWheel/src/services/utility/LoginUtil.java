@@ -81,6 +81,8 @@ public class LoginUtil {
 		for (int i = 0; i < PW_LENGTH; i++)
 			pass.append(chars.charAt(rnd.nextInt(chars.length())));
 		otp = new BigInteger(pass.toString());
+		if(otp.compareTo(new BigInteger("100000")) == -1)
+			otp = generateOTP();
 		return otp;
 	}
 }

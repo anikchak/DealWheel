@@ -2,12 +2,14 @@ package servlet;
 
 import static services.utility.GenericConstant.ADDRESS_MODEL;
 import static services.utility.GenericConstant.NAV_TO_VENDOR_HOME_PAGE;
+import static services.utility.GenericConstant.NAV_TO_VENDORREGISTRATION_PAGE;
 import static services.utility.GenericConstant.USER_MODEL;
 import static services.utility.GenericConstant.ADDRESS_TYPE_VENDOR_OFFICE_LOCATION;
 
 import java.io.IOException;
 import java.math.BigInteger;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,6 +42,9 @@ public class VerifyOTP extends HttpServlet{
 				req.getSession().setAttribute(ADDRESS_MODEL, addr);
 				resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_HOME_PAGE);
 			}
+		}else{
+			RequestDispatcher rd = req.getRequestDispatcher(NAV_TO_VENDORREGISTRATION_PAGE);
+			rd.forward(req, resp);
 		}
 	}
 	

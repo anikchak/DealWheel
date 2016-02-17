@@ -156,7 +156,6 @@ function verifyVendorOTP(){
 		$('#vendorOTPFormat').show();
 	}else{
 		$("#verifyOTPForm").submit();
-		$('#vendorOTPIncorrect').show();
 	}
 }
 
