@@ -51,7 +51,6 @@ var pageContext = '<%=request.getContextPath()%>';
 		<% 
 		User user = (User)session.getAttribute(GenericConstant.USER_MODEL);
 		Address address = (Address)session.getAttribute(GenericConstant.ADDRESS_MODEL);
-		System.out.println(("0".equalsIgnoreCase(user.getUserSecondaryContact().toString())));
 		%>
 		<div class="container">
 		<br>

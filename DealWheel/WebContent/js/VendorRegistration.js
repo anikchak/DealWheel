@@ -114,23 +114,49 @@ function checkRequiredFieldsCondition() {
 		emptyField = 'Y';
 	}
 	if (emptyField == 'N') {
-		$("#vendorOTPPopup").modal({
+		submitForm();
+		 $("#vendorOTPPopup").modal({
 			backdrop: 'static',
 			   keyboard: false
 		});
-		//$("#registrationFormId").submit();
 	}
+}
+
+function submitForm(){
+	var formData = $("#registrationFormId").serialize();
+	$.ajax({
+        url: "VendorRegistration" ,
+        type: "post",
+        data : formData,
+        success: function(response){
+        	
+        	var list = response.split(",");
+        	$.post("TriggerEmail",
+        			{
+        				emailType : "VERIFY_VENDOR",
+        				emailAddress : list[0],
+        				list : response				
+        			},
+        			function(responseText) {});
+        }
+      });
 }
 
 function verifyVendorOTP(){
 	$("#vendorOTPMandate").hide();
+	$('#vendorOTPFormat').hide();
+	$('#vendorOTPIncorrect').hide();
+	$("#otpVendor").css("border-color", "");
+	
 	if ( $("#otpVendor").val() == '' || $("#otpVendor").val() == null ) {
 		$("#otpVendor").css("border-color", "red");
 		$('#vendorOTPMandate').show();
+	}else if ( $("#otpVendor").val().length > 0 && $("#otpVendor").val().length < 6){
+		$("#otpVendor").css("border-color", "red");
+		$('#vendorOTPFormat').show();
 	}else{
-		//Trigger AJAX to verify OTP : if successful then execute $("#registrationFormId").submit();
-		$("#otpVendor").css("border-color", "");
-		$('#vendorOTPMandate').hide();
+		$("#verifyOTPForm").submit();
+		$('#vendorOTPIncorrect').show();
 	}
 }
 

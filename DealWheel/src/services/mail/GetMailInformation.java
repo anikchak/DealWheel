@@ -9,12 +9,17 @@ public class GetMailInformation {
 		
 		switch(type){
 		
-		case VERIFY:
+		case VERIFY_VENDOR:
+			body = "Welcome "+params.get(0)+" to DealWheel.in "
+					+ " Your OTP to verify your email is "+params.get(1)+" "
+							+ " Please verify your email to register a vehicle with us.";
+			break;
+			
+		case VERIFY_USER:
 			body = "Welcome "+params.get(0)+" to DealWheel.in "
 					+ " Your OTP to verify your email is "+params.get(1)+" "
 							+ " Please verify your email to book a vehicle with us.";
 			break;
-							
 			
 		case CANCEL_BOOKING_BY_USER:
 			body = "You have cancelled the booking For Vehicle number "+params.get(0)+" "
@@ -65,7 +70,11 @@ public class GetMailInformation {
 		
 		switch(type){
 		
-		case VERIFY:
+		case VERIFY_VENDOR:
+			subject = "DealWheel | OTP to verify email address";
+			break;
+		
+		case VERIFY_USER:
 			subject = "DealWheel | OTP to verify email address";
 			break;
 			

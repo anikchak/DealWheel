@@ -48,8 +48,11 @@ public class TriggerEmail extends HttpServlet {
 		else if(EmailType.FORGOT_PASSWORD.toString().equals(emailType)){
 			SendMail.sendEmailNotification(EmailType.FORGOT_PASSWORD,emailAddress, params);
 		}
-		else if(EmailType.VERIFY.toString().equals(emailType)){
-			SendMail.sendEmailNotification(EmailType.VERIFY,emailAddress, params);
+		else if(EmailType.VERIFY_VENDOR.toString().equals(emailType)){
+			SendMail.sendEmailNotification(EmailType.VERIFY_VENDOR,emailAddress, params);
+		}
+		else if(EmailType.VERIFY_USER.toString().equals(emailType)){
+			SendMail.sendEmailNotification(EmailType.VERIFY_USER,emailAddress, params);
 		}
 	}
 }

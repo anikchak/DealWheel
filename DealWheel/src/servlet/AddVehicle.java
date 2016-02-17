@@ -67,7 +67,7 @@ public class AddVehicle extends HttpServlet {
 			
 			AddVehicleController controller = new AddVehicleController();
 			Vehicle addedVehicle = controller.addNewVehicle(params);
-			
+			resp.setContentType("text/html;charset=UTF-8");
 			if(addedVehicle.getVhclId() != null){
 				resp.getWriter().write(NAV_TO_VENDOR_HOME_PAGE);
 			}else{

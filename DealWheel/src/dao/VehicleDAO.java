@@ -11,7 +11,7 @@ public interface VehicleDAO  extends BaseDAO<Vehicle>{
 	
 	public List<String> getNames();
 	
-	public List<Object[]> getVehicleDetailsForUserId(BigInteger userId);
+	public List<Object[]> getVehicleDetailsForUserId(String userId);
 	
 	//public void disable(List<BigInteger> listIds);
 	

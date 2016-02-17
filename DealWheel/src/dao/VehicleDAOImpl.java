@@ -33,7 +33,7 @@ public class VehicleDAOImpl<T>  extends  BaseDAOImpl<Vehicle> implements Vehicle
 	}
 
 	@Override
-	public List<Object[]> getVehicleDetailsForUserId(BigInteger userId) {
+	public List<Object[]> getVehicleDetailsForUserId(String userId) {
 		logger.debug("Fetching all the Vehicle detail for userId "+userId);
 		Query q = em.createNamedQuery(VEHICLE_GET_VEHICLE_DETAILS_FOR_USER);
 		q.setParameter("vendorId", userId);

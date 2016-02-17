@@ -1,0 +1,52 @@
+package servlet;
+
+import static services.utility.GenericConstant.ADDRESS_MODEL;
+import static services.utility.GenericConstant.NAV_TO_VENDOR_HOME_PAGE;
+import static services.utility.GenericConstant.USER_MODEL;
+import static services.utility.GenericConstant.ADDRESS_TYPE_VENDOR_OFFICE_LOCATION;
+
+import java.io.IOException;
+import java.math.BigInteger;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import model.Address;
+import model.User;
+import dao.AddressDAOImpl;
+import dao.UserDAOImpl;
+
+@WebServlet("/VerifyOTP")
+public class VerifyOTP extends HttpServlet{
+	private static final long serialVersionUID = -2225196584227042213L;
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		
+		String otp = req.getParameter("otpVendor");
+		String email = (String) req.getSession().getAttribute("email");
+		User usr = new UserDAOImpl<User>().findUserByEmailAddress(email);
+		if(otp.equals(usr.getUserEmailOtp().toString())){
+			BigInteger usrId = new BigInteger(usr.getUserId());
+			Address addr = new AddressDAOImpl<Address>().findAddressByUserIdAndType(usrId, ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);
+			HttpSession session = req.getSession();
+			if(session !=null){
+				req.getSession().setAttribute(USER_MODEL, usr);
+				req.getSession().setAttribute(ADDRESS_MODEL, addr);
+				resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_HOME_PAGE);
+			}
+		}
+	}
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		doPost(req, resp);
+	}
+
+}

@@ -272,7 +272,7 @@ var pageContext = '<%=request.getContextPath()%>';
       <div class="modal-body">
         <p><span style="color:#687074;font-size:13.5px;">We have sent One-Time Password (OTP) to <span style="color:rgba(217, 83, 79, 1); font-weight: bold; font-size:15px;text-transform: uppercase;"><%= session.getAttribute("email") %></span>. Kindly enter the same below to verify your email id.</span></p>
       	<br>
-      	<form action="">
+      	<form action="${pageContext.request.contextPath}/VerifyOTP" method="post" role="form" id="verifyOTPForm">
       	<div class="row form-group">
       	<div class="col-sm-5 " style="padding-top:5px;">
       	<label for="vendorOTP" style="color: rgba(217, 83, 79, 1);font-size:14px;">One-Time Password(OTP):</label>
@@ -283,6 +283,8 @@ var pageContext = '<%=request.getContextPath()%>';
 			<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" id="otpVendor" name="otpVendor" placeholder="One-Time Password">
 		</div>
 			<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="vendorOTPMandate">Field cannot be empty</span>
+			<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="vendorOTPFormat">You entered incorrect OTP. It should be a 6 digit number.</span>
+			<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="vendorOTPIncorrect">OTP incorrect. Please check again.</span>
 		</div>
 		</div>
 		

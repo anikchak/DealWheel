@@ -203,7 +203,7 @@ var pageContext = '<%=request.getContextPath()%>';
 					
 				});
 		
-		var list = "<%=v.getVhclRegistrationNo()%>,<%=sdtDay%> <%=sdtDateNum%> <%=sdtMonth%>'<%=sdtYear%>,<%=endtDay%> <%=endtDateNum%> <%=endtMonth%>'<%=endtYear%>,<%=emailUserName%>";
+		list = "<%=v.getVhclRegistrationNo()%>,<%=sdtDay%> <%=sdtDateNum%> <%=sdtMonth%>'<%=sdtYear%>,<%=endtDay%> <%=endtDateNum%> <%=endtMonth%>'<%=endtYear%>,<%=emailUserName%>";
 		$.post(
 			"TriggerEmail",
 			{

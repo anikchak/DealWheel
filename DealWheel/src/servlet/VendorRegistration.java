@@ -2,7 +2,6 @@
 package servlet;
 
 import static services.utility.GenericConstant.ADDRESS_MODEL;
-import static services.utility.GenericConstant.NAV_TO_VENDOR_HOME_PAGE;
 import static services.utility.GenericConstant.USER_MODEL;
 
 import java.io.IOException;
@@ -74,7 +73,8 @@ public class VendorRegistration extends HttpServlet {
 			if(session !=null){
 				req.getSession().setAttribute(USER_MODEL, (User)entities.get(0));
 				req.getSession().setAttribute(ADDRESS_MODEL, (Address)entities.get(1));
-				resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_HOME_PAGE);
+				resp.setContentType("text/html;charset=UTF-8");
+				resp.getWriter().write(((User)entities.get(0)).getUserEmail()+","+((User)entities.get(0)).getUserEmailOtp().toString());
 			}
 		}
 	}

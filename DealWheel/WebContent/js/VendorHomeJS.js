@@ -575,6 +575,18 @@ function vendorCancellation(bookingId){
 function cancelVendorBooking(val){
 	if(val=='YES'){
 		$("#vendorBookingCancelForm").submit();
+		//TODO - mails
+		var list = "<%=v.getVhclRegistrationNo()%>,<%=sdtDay%> <%=sdtDateNum%> <%=sdtMonth%>'<%=sdtYear%>,<%=endtDay%> <%=endtDateNum%> <%=endtMonth%>'<%=endtYear%>,<%=realUserName%>";
+		$.post(
+			"TriggerEmail",
+			{
+				emailType : "CONFIRM_BOOKING_TO_VENDOR",
+				emailAddress : "<%=vendorEmail%>",
+				list : list				
+			},
+			function(responseText) {
+				
+			});
 	}else{
 		$("#confirmVendorCancelId").hide();
 	}
