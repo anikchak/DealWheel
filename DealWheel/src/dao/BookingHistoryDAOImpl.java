@@ -28,7 +28,7 @@ public class BookingHistoryDAOImpl<T>  extends  BaseDAOImpl<Bookingshistory> imp
 		bookingStatusList.add("CANCELLED");
 		bookingStatusList.add("VENDORCANCELLED");
 		Query q = em.createNamedQuery(BOOKING_HISTORY_FOR_VENDOR);
-		q.setParameter("vendorId", vendorId);
+		q.setParameter("vendorId", vendorId.toString());
 		q.setParameter("bookingstatus", bookingStatusList);
 		List<Object[]> bookingDetails = q.getResultList();
 		return bookingDetails;
