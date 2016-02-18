@@ -33,9 +33,9 @@ public class VerifyOTP extends HttpServlet{
 		String otp = req.getParameter("otpVendor");
 		String email = (String) req.getSession().getAttribute("email");
 		User usr = new UserDAOImpl<User>().findUserByEmailAddress(email);
+		BigInteger usrId = new BigInteger(usr.getUserId());
+		Address addr = new AddressDAOImpl<Address>().findAddressByUserIdAndType(usrId, ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);
 		if(otp.equals(usr.getUserEmailOtp().toString())){
-			BigInteger usrId = new BigInteger(usr.getUserId());
-			Address addr = new AddressDAOImpl<Address>().findAddressByUserIdAndType(usrId, ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);
 			HttpSession session = req.getSession();
 			if(session !=null){
 				req.getSession().setAttribute(USER_MODEL, usr);
@@ -43,6 +43,8 @@ public class VerifyOTP extends HttpServlet{
 				resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_HOME_PAGE);
 			}
 		}else{
+			new UserDAOImpl<User>().delete(usr);
+			new AddressDAOImpl<Address>().delete(addr);
 			RequestDispatcher rd = req.getRequestDispatcher(NAV_TO_VENDORREGISTRATION_PAGE);
 			rd.forward(req, resp);
 		}
