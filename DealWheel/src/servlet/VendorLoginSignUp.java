@@ -63,7 +63,7 @@ public class VendorLoginSignUp extends HttpServlet {
 			else{
 				if(vlc.userNamexists(req.getParameter("loginEmail"))){
 					User user= vlc.validateVendor(req.getParameter("loginEmail"), req.getParameter("loginPassword"));
-					if(user!=null && user.getUserEmailOtp() == null){
+					if(user!=null){
 						logger.info("User "+ req.getParameter("loginEmail")+" exists..");
 						Address address = new AddressDAOImpl<Address>().findAddressByUserIdAndType(new BigInteger(user.getUserId()), ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);//Aniket: Location for this line changed as if the validation fails the user object will be null and this line will give NPE
 						logger.info("Address for User "+ req.getParameter("loginEmail")+" exists with Id "+ address.getAddrId());
@@ -76,8 +76,6 @@ public class VendorLoginSignUp extends HttpServlet {
 							output = NAV_TO_VENDOR_HOME_PAGE;
 						}
 						
-					}else if(user!=null && user.getUserEmailOtp() != null){
-						output = "NOTVERIFIED";
 					}else
 						output = "WRONGPASSWORD";
 				}else{
