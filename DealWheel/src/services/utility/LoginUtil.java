@@ -53,8 +53,9 @@ public class LoginUtil {
 			LoginDAOImpl<LoginDetail> loginDAOImpl = new LoginDAOImpl<LoginDetail>();
 			LoginDetail detail = loginDAOImpl.validateUserName(userName, userType);
 			isUserValid = securePwd.validatePassword(password, detail.getLognPassword());
+			System.out.println("isUserValid="+isUserValid);
 			if(isUserValid){
-				user = new UserDAOImpl<User>().findById(detail.getLognUserId());
+				user = new UserDAOImpl<User>().findById(detail.getLognUserId().toString());
 				return user;
 			}
 		}catch(Exception e){
