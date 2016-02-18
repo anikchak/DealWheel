@@ -1,14 +1,13 @@
 package dao;
 
-import static services.utility.GenericConstant.*;
-
-import java.math.BigInteger;
+import static services.utility.GenericConstant.USER_FIND_BY_EMAIL;
+import static services.utility.GenericConstant.USER_FIND_BY_ID;
 
 import javax.persistence.Query;
 
-import org.apache.log4j.Logger;
-
 import model.User;
+
+import org.apache.log4j.Logger;
 
 public class UserDAOImpl<T>  extends  BaseDAOImpl<User> implements UserDAO {
 
@@ -22,7 +21,7 @@ public class UserDAOImpl<T>  extends  BaseDAOImpl<User> implements UserDAO {
 	}
 
 	@Override
-	public User findByUserId(BigInteger lognUserId) {
+	public User findByUserId(String lognUserId) {
 		logger.debug("Finding User with ID: "+lognUserId);
 		Query q = em.createNamedQuery(USER_FIND_BY_ID);
 		q.setParameter("userId", lognUserId);

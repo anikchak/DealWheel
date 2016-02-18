@@ -9,12 +9,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import model.Address;
 import model.LoginDetail;
 import model.User;
-import services.mail.SendMail;
+
+import org.apache.log4j.Logger;
+
 import services.utility.LoginUtil;
 import dao.AddressDAOImpl;
 import dao.LoginDAOImpl;
@@ -57,7 +57,7 @@ public class VendorRegistrationController {
 		addr.setAddrState(params.get("state"));
 		addr.setAddrCountry(params.get("country"));
 		addr.setAddrPinCode(Integer.parseInt(params.get("pinCode")));
-		addr.setUserId(new BigInteger(userNew.getUserId()));
+		addr.setUserId(userNew.getUserId());
 		addr.setAddrType(ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);
 		addr.setLastUpdated(new Date());
 		addr.setLastUpdatedBy(params.get("fullName"));
@@ -65,7 +65,7 @@ public class VendorRegistrationController {
 		committedEntities.add(addrNew);
 		
 		LoginDetail login = new LoginDetail();
-		login.setLognUserId(new BigInteger(userNew.getUserId()));
+		login.setLognUserId(userNew.getUserId());
 		login.setLognUserName(params.get("email"));
 		login.setLognPassword(LoginUtil.CreateEncryptedPassword(params.get("password")));
 		login.setLognLastLoginDetail(new Date());
@@ -97,7 +97,7 @@ public class VendorRegistrationController {
 		User userUpdated = new UserDAOImpl<User>().update(user);
 		committedEntities.add(userUpdated);
 		
-		Address addr = new AddressDAOImpl<Address>().findAddressByUserIdAndType(new BigInteger(user.getUserId()), ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);
+		Address addr = new AddressDAOImpl<Address>().findAddressByUserIdAndType(user.getUserId(), ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);
 		addr.setAddrLine1(params.get("addrLine1"));
 		addr.setAddrLine2(params.get("addrLine2"));
 		addr.setAddrLine3(params.get("addrLine3"));

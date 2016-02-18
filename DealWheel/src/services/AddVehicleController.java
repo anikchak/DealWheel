@@ -39,7 +39,7 @@ public class AddVehicleController {
 				addr.setAddrState(params.get("state"));
 				addr.setAddrCountry(params.get("country"));
 				addr.setAddrPinCode(Integer.parseInt(params.get("pinCode")));
-				addr.setUserId(new BigInteger(params.get("userId")));
+				addr.setUserId(params.get("userId"));
 				addr.setAddrType(ADDRESS_TYPE_PICKUP_LOCAION);
 				addr.setLastUpdated(new Date());
 				addr.setLastUpdatedBy(params.get("userName"));

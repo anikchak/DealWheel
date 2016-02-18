@@ -53,7 +53,7 @@ public class CommonUtility {
 		logger.info("VehicleDetails="
 				+ (String) request.getSession().getAttribute(
 						"selectedVehicleDetails"));
-		long loggedInUserId = 0L;
+		String loggedInUserId = null;
 		// Logged in user details
 		logger.info(request.getSession().getAttribute("LoggedInUserDetailsObject"));
 
@@ -61,7 +61,7 @@ public class CommonUtility {
 			List<User> validUserDetails = (List<User>) request.getSession().getAttribute("LoggedInUserDetailsObject");
 			if (validUserDetails != null & validUserDetails.size() > 0) {
 				for (User u : validUserDetails) {
-					loggedInUserId =Long.parseLong(u.getUserId());
+					loggedInUserId =u.getUserId();
 				}
 			}
 		}
@@ -71,7 +71,7 @@ public class CommonUtility {
 
 		SimpleDateFormat sdf = new SimpleDateFormat(GenericConstant.DATEFORMAT);
 		long tempBookingId = 0L;
-		if (loggedInUserId > 0L) {
+		if (loggedInUserId!= null && !loggedInUserId.equals("")) {
 			if (request.getSession().getAttribute("fromDateString") != null
 					&& request.getSession().getAttribute("toDateString") != null) {
 				try {

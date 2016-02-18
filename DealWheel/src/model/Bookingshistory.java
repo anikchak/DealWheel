@@ -69,7 +69,7 @@ public class Bookingshistory implements Serializable {
 	private String lastUpdatedBy;
 
 	@Column(name="USER_ID")
-	private int userId;
+	private String userId;
 
 	public Bookingshistory() {
 	}
@@ -154,11 +154,11 @@ public class Bookingshistory implements Serializable {
 		this.lastUpdatedBy = lastUpdatedBy;
 	}
 
-	public int getUserId() {
+	public String getUserId() {
 		return this.userId;
 	}
 
-	public void setUserId(int userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 

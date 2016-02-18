@@ -1,6 +1,5 @@
 package model;
 
-import static services.utility.GenericConstant.BOOKING_HISTORY_UPDATE;
 import static services.utility.GenericConstant.USER_FIND_ALL;
 import static services.utility.GenericConstant.USER_FIND_BY_EMAIL;
 import static services.utility.GenericConstant.USER_FIND_BY_ID;

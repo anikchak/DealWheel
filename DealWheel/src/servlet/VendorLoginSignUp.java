@@ -1,9 +1,12 @@
 package servlet;
 
-import static services.utility.GenericConstant.*;
+import static services.utility.GenericConstant.ADDRESS_MODEL;
+import static services.utility.GenericConstant.ADDRESS_TYPE_VENDOR_OFFICE_LOCATION;
+import static services.utility.GenericConstant.NAV_TO_VENDORREGISTRATION_PAGE;
+import static services.utility.GenericConstant.NAV_TO_VENDOR_HOME_PAGE;
+import static services.utility.GenericConstant.USER_MODEL;
 
 import java.io.IOException;
-import java.math.BigInteger;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -14,10 +17,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Logger;
-
 import model.Address;
 import model.User;
+
+import org.apache.log4j.Logger;
+
 import services.VendorLoginController;
 import dao.AddressDAOImpl;
 
@@ -65,7 +69,7 @@ public class VendorLoginSignUp extends HttpServlet {
 					User user= vlc.validateVendor(req.getParameter("loginEmail"), req.getParameter("loginPassword"));
 					if(user!=null){
 						logger.info("User "+ req.getParameter("loginEmail")+" exists..");
-						Address address = new AddressDAOImpl<Address>().findAddressByUserIdAndType(new BigInteger(user.getUserId()), ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);//Aniket: Location for this line changed as if the validation fails the user object will be null and this line will give NPE
+						Address address = new AddressDAOImpl<Address>().findAddressByUserIdAndType(user.getUserId(), ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);//Aniket: Location for this line changed as if the validation fails the user object will be null and this line will give NPE
 						logger.info("Address for User "+ req.getParameter("loginEmail")+" exists with Id "+ address.getAddrId());
 						HttpSession session = req.getSession();
 						if(session !=null){

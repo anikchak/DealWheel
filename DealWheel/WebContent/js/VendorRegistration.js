@@ -146,6 +146,8 @@ function verifyVendorOTP(){
 	$("#vendorOTPMandate").hide();
 	$('#vendorOTPFormat').hide();
 	$('#vendorOTPIncorrect').hide();
+	$('#vendorOTPWait').hide();
+	$('#vendorOTPResend').hide();
 	$("#otpVendor").css("border-color", "");
 	
 	if ( $("#otpVendor").val() == '' || $("#otpVendor").val() == null ) {
@@ -155,13 +157,63 @@ function verifyVendorOTP(){
 		$("#otpVendor").css("border-color", "red");
 		$('#vendorOTPFormat').show();
 	}else{
-		$("#verifyOTPForm").submit();
+		$('#vendorOTPWait').show();
+		var formData = $("#verifyOTPForm").serialize();
+		$.ajax({
+	        url: "VerifyOTP" ,
+	        type: "post",
+	        data : formData,
+	        success: function(response){
+	        	if(response == "OTPWRONG"){
+	        		$('#vendorOTPWait').hide();
+	        		$('#vendorOTPIncorrect').show();
+	        		$("#otpVendor").css("border-color", "red");
+	        	}else{
+	        		$(location).attr('href', pageContext + "/VendorHome.jsp");
+	        		$('#vendorOTPWait').hide();
+	        	}
+	        }
+	      });
+		
 	}
 }
 
-function cancelOTPVerify(pageContext){
-	$("#vendorOTPPopup").hide();
-	$(location).attr('href', pageContext + "/VendorLoginSignUp.jsp?invoke=vendorFlow");
+function resendOTP(email){
+	$('#vendorOTPWait').show();
+	$.ajax({
+        url: "VerifyOTP" ,
+        type: "post",
+        data : {identifier:"ResendOTP",email:email},
+        success: function(response){
+        	var list = response.split(",");
+        	$.post("TriggerEmail",
+        			{
+        				emailType : "VERIFY_VENDOR",
+        				emailAddress : list[0],
+        				list : response				
+        			},
+        			function(responseText) {
+        				$('#vendorOTPWait').hide();
+        				$('#vendorOTPResend').show();
+        			});
+        }
+	});
+	$('#vendorOTPResend').show();
+}
+
+function cancelOTPVerify(email){
+	$('#vendorOTPWait').show();
+	$.ajax({
+        url: "VerifyOTP" ,
+        type: "post",
+        data : {identifier:"Cancel",email:email},
+        success: function(response){
+        	$("#vendorOTPPopup").hide();
+        }
+        
+	});
+	
+	
 }
 function resetFields() {
 	$("#fullName").val('');

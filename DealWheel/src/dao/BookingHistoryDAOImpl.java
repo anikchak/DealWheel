@@ -1,9 +1,8 @@
 package dao;
 
-import static services.utility.GenericConstant.BOOKING_HISTORY_FOR_VENDOR;
 import static services.utility.GenericConstant.BOOKING_HISTORY_BY_ID;
-import static services.utility.GenericConstant.CANCELLED;
 import static services.utility.GenericConstant.BOOKING_HISTORY_FOR_ID_BY_DATE;
+import static services.utility.GenericConstant.BOOKING_HISTORY_FOR_VENDOR;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -21,7 +20,7 @@ public class BookingHistoryDAOImpl<T>  extends  BaseDAOImpl<Bookingshistory> imp
 	private static Logger logger = Logger.getLogger(BookingHistoryDAOImpl.class);
 
 	@Override
-	public List<Object[]> getBookingDetailsForVendorId(BigInteger vendorId) {
+	public List<Object[]> getBookingDetailsForVendorId(String vendorId) {
 		logger.debug("Fetching all the Booking detail for Vendor Id "+vendorId);
 		List<String> bookingStatusList = new ArrayList<String>();
 		bookingStatusList.add("UPCOMING");

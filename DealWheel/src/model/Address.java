@@ -62,7 +62,7 @@ public class Address implements Serializable {
 	private String lastUpdatedBy;
 
 	@Column(name="USER_ID")
-	private BigInteger userId;
+	private String userId;
 
 	public Address() {
 	}
@@ -163,11 +163,11 @@ public class Address implements Serializable {
 		this.lastUpdatedBy = lastUpdatedBy;
 	}
 
-	public BigInteger getUserId() {
+	public String getUserId() {
 		return this.userId;
 	}
 
-	public void setUserId(BigInteger userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 

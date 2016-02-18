@@ -15,7 +15,7 @@
 <%@ include file="commonResources/CommonJSCSSInclude"%>
 <script type="text/javascript">
 var pageContext = '<%=request.getContextPath()%>';
-
+var email = '<%= session.getAttribute("email")%>';
 </script>
 <script src="js/LandingPageJS.js" type="text/javascript"></script>
 <script src="js/VendorRegistration.js" type="text/javascript"></script>
@@ -283,8 +283,10 @@ var pageContext = '<%=request.getContextPath()%>';
 			<input class="form-control" style= "font-size: 12px; color: #687074;text-transform: uppercase;" type="text" id="otpVendor" name="otpVendor" placeholder="One-Time Password">
 		</div>
 			<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="vendorOTPMandate">Field cannot be empty</span>
-			<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="vendorOTPFormat">You entered incorrect OTP. It should be a 6 digit number.</span>
+			<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="vendorOTPFormat">You entered an incorrect OTP. It should be a 6 digit number.</span>
 			<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="vendorOTPIncorrect">OTP incorrect. Please check again.</span>
+			<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="vendorOTPWait">Please wait...</span>
+			<span style="color: rgba(217, 83, 79, 1);font-size:12px;display:none;" id="vendorOTPResend">OTP sent to your mail.</span>
 		</div>
 		</div>
 		
@@ -292,7 +294,8 @@ var pageContext = '<%=request.getContextPath()%>';
       </div>
       <div class="modal-footer">
        <button type="button" class="btn btn-info btn-md" id="" onclick="verifyVendorOTP()"><span class="glyphicon glyphicon-ok"></span> Verify</button>
-       <button type="button" class="btn btn-info btn-md" id="" style="background-color: rgba(217, 83, 79, 1);" onclick="cancelOTPVerify(pageContext)"><span class="glyphicon glyphicon-remove"></span> Close</button>
+       <button type="button" class="btn btn-info btn-md" id="" style="background-color: rgba(217, 83, 79, 1);" onclick="cancelOTPVerify(email)"><span class="glyphicon glyphicon-remove"></span> Close</button>
+       <button type="button" class="btn btn-info btn-md" id="" onclick="resendOTP(email)"><span class="glyphicon glyphicon-ok"></span> Resend</button>
       </div>
     </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

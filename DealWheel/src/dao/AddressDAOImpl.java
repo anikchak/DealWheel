@@ -2,8 +2,6 @@ package dao;
 
 import static services.utility.GenericConstant.ADDRESS_FIND_FOR_USER_ID_AND_TYPE;
 
-import java.math.BigInteger;
-
 import javax.persistence.Query;
 
 import model.Address;
@@ -22,7 +20,7 @@ public class AddressDAOImpl<T>  extends  BaseDAOImpl<Address> implements Address
 	}
 
 	@Override
-	public Address findAddressByUserIdAndType(BigInteger userId, String userType) {
+	public Address findAddressByUserIdAndType(String userId, String userType) {
 		logger.debug("Getting Address for "+userType+"  with ID:"+userId+" and userType value="+userType);
 		Query q = em.createNamedQuery(ADDRESS_FIND_FOR_USER_ID_AND_TYPE);
 		q.setParameter("userId", userId);

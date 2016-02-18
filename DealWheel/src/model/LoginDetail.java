@@ -1,13 +1,23 @@
 package model;
 
+import static services.utility.GenericConstant.LOGIN_DETAIL_FIND_ALL;
+import static services.utility.GenericConstant.LOGIN_DETAIL_FIND_USING_USER_NAME_AND_TYPE;
+import static services.utility.GenericConstant.LOGIN_DETAIL_UPDATE_LAST_LOGIN;
+
 import java.io.Serializable;
-
-import static services.utility.GenericConstant.*;
-
-import javax.persistence.*;
-
 import java.util.Date;
-import java.math.BigInteger;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -46,7 +56,7 @@ public class LoginDetail implements Serializable {
 	private String lognPassword;
 
 	@Column(name="LOGN_USER_ID")
-	private BigInteger lognUserId;
+	private String lognUserId;
 
 	@Column(name="LOGN_USER_NAME")
 	private String lognUserName;
@@ -94,11 +104,11 @@ public class LoginDetail implements Serializable {
 		this.lognPassword = lognPassword;
 	}
 
-	public BigInteger getLognUserId() {
+	public String getLognUserId() {
 		return this.lognUserId;
 	}
 
-	public void setLognUserId(BigInteger lognUserId) {
+	public void setLognUserId(String lognUserId) {
 		this.lognUserId = lognUserId;
 	}
 

@@ -1,18 +1,28 @@
 package services;
-import java.math.BigInteger;
-
-import static services.utility.GenericConstant.*;
-
-import org.apache.log4j.Logger;
-
-import dao.LoginDAOImpl;
-import dao.UserDAOImpl;
-
-
+import static services.utility.GenericConstant.BKNG_NUMBER;
+import static services.utility.GenericConstant.BKNG_SEQ;
+import static services.utility.GenericConstant.BKNG_STATUS;
+import static services.utility.GenericConstant.BKNG_STATUS_WHERE_CLAUSE;
+import static services.utility.GenericConstant.BOOKING_HISTORY_FIND_BOOKING_BY_SEQ;
+import static services.utility.GenericConstant.BOOKING_HISTORY_UPDATE;
+import static services.utility.GenericConstant.CANCELLED;
+import static services.utility.GenericConstant.FROMDATE;
+import static services.utility.GenericConstant.LAST_LOGIN_DETAIL;
+import static services.utility.GenericConstant.LOGIN_DETAIL_FIND_USING_USER_NAME_AND_TYPE;
+import static services.utility.GenericConstant.LOGIN_DETAIL_UPDATE_LAST_LOGIN;
+import static services.utility.GenericConstant.LOGIN_USER_NAME;
+import static services.utility.GenericConstant.LOGIN_USER_TYPE;
+import static services.utility.GenericConstant.TIMEDOUT;
+import static services.utility.GenericConstant.TODATE;
+import static services.utility.GenericConstant.UPCOMING;
+import static services.utility.GenericConstant.USERID;
+import static services.utility.GenericConstant.USER_FIND_BY_ID;
+import static services.utility.GenericConstant.USER_TYPE_CUSTOMER;
+import static services.utility.GenericConstant.USER_UPDATE_QUERY;
+import static services.utility.GenericConstant.VIEWING;
 
 import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,7 +35,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.Query; 
+import javax.persistence.Query;
 
 import model.Address;
 import model.Bookingshistory;
@@ -34,12 +44,16 @@ import model.LoginDetail;
 import model.Payment;
 import model.User;
 import model.Vehicle;
-import services.mail.SendMail;
+
+import org.apache.log4j.Logger;
+
 import services.security.SecurePassword;
 import services.utility.CommonUtility;
 import services.utility.GenericConstant;
 import services.utility.MessageBundle;
 import services.utility.QueryConstant;
+import dao.LoginDAOImpl;
+import dao.UserDAOImpl;
 
 public class CustomerControllerService {
 	EntityManagerFactory emf = Persistence.createEntityManagerFactory("DealWheel");
@@ -110,7 +124,7 @@ public class CustomerControllerService {
 					// Beginning txn for LoginDetail table record
 					// et.begin();
 					LoginDetail l = new LoginDetail();
-					l.setLognUserId(new BigInteger(insertedUser.getUserId()));
+					l.setLognUserId(insertedUser.getUserId());
 					l.setLognUserName(usr);
 					l.setLognPassword(pwd);
 					l.setLastUpdatedBy(usr);
@@ -123,7 +137,7 @@ public class CustomerControllerService {
 
 					logger.info("User ID=" + insertedUser.getUserId());
 					if (insertedUser.getUserId() != null) {
-						returnUserList = getValidUserDetails(new BigInteger(insertedUser.getUserId()));
+						returnUserList = getValidUserDetails(insertedUser.getUserId());
 					}
 				}
 			}
@@ -146,7 +160,7 @@ public class CustomerControllerService {
 		SecurePassword securePwd = new SecurePassword();
 		List<User> validatedUserDetails = null;
 		boolean validationStatus = false;
-		BigInteger loginUserId = null;
+		String loginUserId = null;
 		// Query to fetch hashed password and salt
 		try {
 			if (em != null) {
@@ -203,14 +217,14 @@ public class CustomerControllerService {
 		return null;
 	}
 	
-	public List getValidUserDetails(BigInteger loginUserId) {
+	public List getValidUserDetails(String loginUserId) {
 		logger.info("Update Successfull..fetching user details for ="
 				+ loginUserId);
 		Query fetchUserDetails = null;
 		try {
 			if (em != null) {
 				fetchUserDetails = em.createNamedQuery(USER_FIND_BY_ID);
-				fetchUserDetails.setParameter(USERID, loginUserId.toString());
+				fetchUserDetails.setParameter(USERID, loginUserId);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -312,7 +326,7 @@ public class CustomerControllerService {
 	  * @return temporary booking id
 	  */
 	public long updateBooking(String lockingcode, Date fromDate, Date toDate,
-			String vehicleAddress, String listedVehicleId, String usernm, long userId) {
+			String vehicleAddress, String listedVehicleId, String usernm, String userId) {
 			logger.info("lockingcode=" + lockingcode + "\nfromDate="
 				+ fromDate + "\ntoDate=" + toDate + "\nlistedVehicleId="
 				+ listedVehicleId + "\nvehicleAddress="+vehicleAddress+"\nusernm=" + usernm);
@@ -346,7 +360,7 @@ public class CustomerControllerService {
 						bh.setBkngCreationDate(new Date());
 						bh.setLastUpdatedBy(usernm);
 						bh.setLastUpdated(new Date());
-						bh.setUserId((int)userId);
+						bh.setUserId(userId);
 						em.persist(bh);
 						et.commit();
 					}

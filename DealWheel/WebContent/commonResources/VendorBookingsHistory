@@ -1,6 +1,6 @@
 <br>
      	 <% 
-     		List<Object[]> bookingDetailList = new BookingHistoryDAOImpl<Bookingshistory>().getBookingDetailsForVendorId(new BigInteger(user.getUserId()));
+     		List<Object[]> bookingDetailList = new BookingHistoryDAOImpl<Bookingshistory>().getBookingDetailsForVendorId(user.getUserId());
      		if(bookingDetailList!=null && bookingDetailList.size()>0){
      	%>
     	<div class="table-responsive">

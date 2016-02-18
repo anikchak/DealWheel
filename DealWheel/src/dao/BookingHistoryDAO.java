@@ -7,7 +7,7 @@ import model.Bookingshistory;
 
 public interface BookingHistoryDAO  extends BaseDAO<Bookingshistory>{
 
-	public List<Object[]> getBookingDetailsForVendorId(BigInteger userId);
+	public List<Object[]> getBookingDetailsForVendorId(String userId);
 	
 	public void cancelBooking(String bookingId);
 	
