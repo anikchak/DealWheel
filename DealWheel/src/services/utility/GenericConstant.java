@@ -26,6 +26,8 @@ public class GenericConstant {
 	public static final String TODATE = "toDate";
 	public static final String DATEFORMAT = "dd/MM/yyyy";
 	public static final String CANCELLED = "CANCELLED";
+	public static final String VENDOR_CANCELLED = "VENDORCANCELLED";
+	public static final String USER_CANCELLED = "USERCANCELLED";
 	public static final String UPCOMING = "UPCOMING";
 	public static final String VIEWING = "VIEWING";
 	public static final String PICKUP = "PICKUP";

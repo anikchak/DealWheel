@@ -3,6 +3,9 @@ package dao;
 import static services.utility.GenericConstant.BOOKING_HISTORY_BY_ID;
 import static services.utility.GenericConstant.BOOKING_HISTORY_FOR_ID_BY_DATE;
 import static services.utility.GenericConstant.BOOKING_HISTORY_FOR_VENDOR;
+import static services.utility.GenericConstant.VENDOR_CANCELLED;
+import static services.utility.GenericConstant.UPCOMING;
+import static services.utility.GenericConstant.VIEWING;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -11,9 +14,9 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import model.Bookingshistory;
-
 import org.apache.log4j.Logger;
+
+import model.Bookingshistory;
 
 public class BookingHistoryDAOImpl<T>  extends  BaseDAOImpl<Bookingshistory> implements BookingHistoryDAO {
 
@@ -45,19 +48,23 @@ public class BookingHistoryDAOImpl<T>  extends  BaseDAOImpl<Bookingshistory> imp
 	public void cancelBooking(String bookingId){
 		logger.debug("Cancelling booking with Id "+bookingId);
 		Bookingshistory bkngHistory = findBookingHistoryById(bookingId);
-		bkngHistory.setBkngStatus("VENDORCANCELLED");
+		bkngHistory.setBkngStatus(VENDOR_CANCELLED);
 		update(bkngHistory);
 	}
 
 	public boolean checkFutureBookingAvailable(BigInteger vehicleId) {
-		boolean isAvailable = true;
+		boolean isAvailable = false;
 		logger.debug("Checking if booking for Vehicle Id "+vehicleId+" is available after "+new Date());
 			Query q = em.createNamedQuery(BOOKING_HISTORY_FOR_ID_BY_DATE);
 			q.setParameter("vehicleId", vehicleId);
 			q.setParameter("today", new Date());
-			Bookingshistory bookingDetail = (Bookingshistory)(q.getResultList().size()!=0?q.getResultList().get(0):null);
-			if(bookingDetail == null || bookingDetail.getBkngSeq().isEmpty())
-				isAvailable = false;
+			List<Object> list = q.getResultList();
+			for(Object bh : list){
+				if(((Bookingshistory)bh).getBkngStatus() == UPCOMING || ((Bookingshistory)bh).getBkngStatus() == VIEWING){
+					isAvailable = true;
+					break;
+				}
+			}
 			return isAvailable;
 	}
 }

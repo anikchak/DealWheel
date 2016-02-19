@@ -142,7 +142,7 @@
           <h4 class="modal-title"><img class="logo" src="https://s3-us-west-2.amazonaws.com/dealwheel/dealwheel+logo.png" alt="Logo" style="width:80%;height:80%;"></h4>
         </div>
         <div class="modal-body text-center">
-          <p style="color: #687074;"><span style="color:rgba(217, 83, 79, 1);font-weight:bold;font-size:14px;">Oops..!! </span>We could not figure out your city. Kindly select the city where vehicle is needed.</p>
+          <p style="color: #687074;"><span style="color:rgba(217, 83, 79, 1);font-weight:bold;font-size:14px;">Oops..!! </span>We could not figure out your city. Kindly select the city where you want to use our service.</p>
           <br>
           <%
           	String availableCities[] = CommonUtility.activeCities();
