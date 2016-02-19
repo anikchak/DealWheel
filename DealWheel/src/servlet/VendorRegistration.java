@@ -74,7 +74,8 @@ public class VendorRegistration extends HttpServlet {
 				req.getSession().setAttribute(USER_MODEL, (User)entities.get(0));
 				req.getSession().setAttribute(ADDRESS_MODEL, (Address)entities.get(1));
 				resp.setContentType("text/html;charset=UTF-8");
-				resp.getWriter().write(((User)entities.get(0)).getUserEmail()+","+((User)entities.get(0)).getUserEmailOtp().toString());
+				String userEmailOTP = ((User)entities.get(0)).getUserEmailOtp() !=null ? ((User)entities.get(0)).getUserEmailOtp().toString() : "";
+				resp.getWriter().write(((User)entities.get(0)).getUserEmail()+","+userEmailOTP);
 			}
 		}
 	}

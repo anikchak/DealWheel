@@ -502,7 +502,7 @@ public class CustomerControllerService {
 		try{
 		em.getEntityManagerFactory().getCache().evictAll();
 		Query q = em.createQuery(QueryConstant.GET_BOOKING_DETAILS);
-		q.setParameter("USERID", userId);
+		q.setParameter("USERID", userId.toString());
 		q.setParameter(UPCOMING, UPCOMING);
 		q.setParameter("COMPLETED", "COMPLETED");
 		q.setParameter("CANCELLED", "CANCELLED");
