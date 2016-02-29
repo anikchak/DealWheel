@@ -3,6 +3,7 @@ package servlet;
 
 import static services.utility.GenericConstant.ADDRESS_MODEL;
 import static services.utility.GenericConstant.USER_MODEL;
+import static services.utility.GenericConstant.NAV_TO_VENDOR_HOME_PAGE;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -71,11 +72,17 @@ public class VendorRegistration extends HttpServlet {
 		if(entities!=null && entities.size() > 0){
 			HttpSession session = req.getSession();
 			if(session !=null){
+				String comingFromPage = (String)session.getAttribute("currentPage");
 				req.getSession().setAttribute(USER_MODEL, (User)entities.get(0));
 				req.getSession().setAttribute(ADDRESS_MODEL, (Address)entities.get(1));
 				resp.setContentType("text/html;charset=UTF-8");
-				String userEmailOTP = ((User)entities.get(0)).getUserEmailOtp() !=null ? ((User)entities.get(0)).getUserEmailOtp().toString() : "";
-				resp.getWriter().write(((User)entities.get(0)).getUserEmail()+","+userEmailOTP);
+				if("VendorRegistration".equals(comingFromPage)){
+					String userEmailOTP = ((User)entities.get(0)).getUserEmailOtp() !=null ? ((User)entities.get(0)).getUserEmailOtp().toString() : "";
+					resp.getWriter().write(((User)entities.get(0)).getUserEmail()+","+userEmailOTP);
+				}else{
+					resp.sendRedirect(req.getContextPath()+NAV_TO_VENDOR_HOME_PAGE);	
+				}
+				
 			}
 		}
 	}

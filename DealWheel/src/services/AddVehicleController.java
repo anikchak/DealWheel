@@ -29,7 +29,7 @@ public class AddVehicleController {
 		Address addrNew = null;
 		logger.info("AddVehicleController:addNewVehicle");
 		try{
-			if("Yes".equals(params.get("useDifferentAddress"))){
+			if("true".equals(params.get("useDifferentAddress"))){
 				Address addr = new Address();
 				addr.setAddrLine1(params.get("addrLine1"));
 				addr.setAddrLine2(params.get("addrLine2"));

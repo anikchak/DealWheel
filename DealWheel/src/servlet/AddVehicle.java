@@ -48,8 +48,8 @@ public class AddVehicle extends HttpServlet {
 			params.put("perDayCost",req.getParameter("perDayCost"));
 			params.put("securityDeposit",req.getParameter("securityDeposit"));
 			
-			if("Yes".equals(req.getParameter("useDifferentAddress"))){
-				params.put("useDifferentAddress", "Yes");
+			if("true".equals(req.getParameter("useDifferentAddress"))){
+				params.put("useDifferentAddress", "true");
 				params.put("addrLine1", req.getParameter("addr1Add"));
 				params.put("addrLine2", req.getParameter("addr2Add")!=null?req.getParameter("addr2Add"):"");
 				params.put("addrLine3", req.getParameter("addr3Add")!=null?req.getParameter("addr3Add"):"");
