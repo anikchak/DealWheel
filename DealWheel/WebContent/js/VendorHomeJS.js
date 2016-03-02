@@ -28,6 +28,8 @@ $(document).ready(function() {
 			return false;
 		}
 	});
+	
+	$(".saveButton").hide();
 });
 
 //Changes for My Profile tab starts
@@ -200,9 +202,62 @@ function vehicleAction(vehId, action) {
 		});
 	} else if (action == 'Enable') {
 		submitVehicleForm();
+	} else if(action == 'ChangeCost'){
+		
+	} else if(action == 'ChangeDeposit'){
+		
 	}
-
 }
+
+function changeCostAndDepositButtons(vehicleId){
+	$("#save"+vehicleId).show();
+	$("#edit"+vehicleId).hide();
+	$("#cost"+vehicleId).hide();
+	$("#deposit"+vehicleId).hide();
+	$("#changedCost"+vehicleId).val($("#cost"+vehicleId).text()).show();
+	$("#changedDeposit"+vehicleId).val($("#deposit"+vehicleId).text()).show();
+}
+
+function changeCostAndDeposit(vehicleId){
+	$("#save"+vehicleId).hide();
+	$("#edit"+vehicleId).show();
+	var formData = {};
+	var cost = $("#changedCost"+vehicleId).val();
+	var deposit = $("#changedDeposit"+vehicleId).val();
+	var opCode = "Change";
+	var  originalCost = $("#cost"+vehicleId).text();
+	var originalDeposit = $("#deposit"+vehicleId).text();
+	$("#changedCost"+vehicleId).hide();
+	$("#changedDeposit"+vehicleId).hide();
+	$("#cost"+vehicleId).text(cost).show();
+	$("#deposit"+vehicleId).text(deposit).show();
+	formData["changedCost"+vehicleId] = cost;
+	formData["changedDeposit"+vehicleId] = deposit;
+	formData["selectedVehicleRecordId"] = vehicleId;
+	formData["opCode"] = opCode;
+	$.ajax({url : 'DeleteVehicle',
+		data : formData,
+		type : 'POST',
+		dataType : 'html',
+		success : function(response) {
+			if(response == "CHANGED"){
+				$('#delete_disable_error').hide();
+				$('#cannotDeleteDisableMsg').text("Cost & Deposit of the Vehicle edited successfully");
+				$('#delete_disable_error').show();
+			}else if(response == "NOTCHANGED"){
+				$('#delete_disable_error').hide();
+				$('#cannotDeleteDisableMsg').text("Cost & Deposit could not be updated. Please try again.");
+				$('#delete_disable_error').show();
+				$("#cost"+vehicleId).text(originalCost).show();
+				$("#deposit"+vehicleId).text(originalDeposit).show();
+			}else{
+				$(location).attr('href',pageContext + response);
+			}
+		}
+	});
+}
+
+
 function submitVehicleForm() {
 	var selectedVehicleRecordId = $("#selectedVehicleRecordId").val();
 	var opCode = $("#opCode").val();

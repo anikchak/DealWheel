@@ -31,8 +31,12 @@
       	 			<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%= (String)vehicleDetail[1] %><br><%= (String)vehicleDetail[0] %></span></td>
       	 			<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%= (String)vehicleDetail[2] %></span></td>
       	 			<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%= (String)vehicleDetail[3] %></span></td>
-      	 			<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%= (Integer)vehicleDetail[4] %></span></td>
-      	 			<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%= (Integer)vehicleDetail[5] %></span></td>
+      	 			<td><span id="cost<%=(BigInteger)vehicleDetail[14] %>" style="color:#687074;font-size:11px;text-transform:uppercase;"><%= (Integer)vehicleDetail[4] %></span>
+      	 				<input type="text" id="changedCost<%=(BigInteger)vehicleDetail[14] %>" size="2" style="display:none;" value=""/>
+      	 			</td>
+      	 			<td><span id="deposit<%=(BigInteger)vehicleDetail[14] %>" style="color:#687074;font-size:11px;text-transform:uppercase;"><%= (Integer)vehicleDetail[5] %></span>
+      	 				<input type="text" id="changedDeposit<%=(BigInteger)vehicleDetail[14] %>" size="2" 	style="display:none;" value=""/>
+      	 			</td>
       	 			<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><%=(String)vehicleDetail[6]+", " %><%=(String)vehicleDetail[7]+", " %><br><%=(String)vehicleDetail[8]+", " %>
       	 				<%=(String)vehicleDetail[9]+", " %><br><%=(String)vehicleDetail[10]+", " %><%=(String)vehicleDetail[11]+", " %><br><%=(String)vehicleDetail[12]+" - " %><%=(Integer)vehicleDetail[13] %>
       	 				</span>
@@ -60,6 +64,12 @@
       	 				<button class="btn btn-xs btn-success" data-toggle="tooltip" title="Use this to show the vehicle to the customer." onclick="vehicleAction('<%=(BigInteger)vehicleDetail[14] %>','Enable')">Enable</button>
       	 				<div class="row" style="padding:3px;">
       	 				<button type="button" class="btn btn-xs btn-danger"  data-toggle="tooltip" title="Use this to completely remove the vehicle record." onclick="vehicleAction('<%=(BigInteger)vehicleDetail[14] %>','Delete')">Remove</button>
+						<div class="row" style="padding:3px;">
+      	 				<button type="button" id="edit<%=(BigInteger)vehicleDetail[14] %>" class="btn btn-xs btn-success"  data-toggle="tooltip" title="Use this to change Cost and Deposit of Vehicle" onclick="changeCostAndDepositButtons('<%=(BigInteger)vehicleDetail[14] %>')">Edit</button>
+						<div class="row" style="padding:3px;">
+      	 				<button type="button" id="save<%=(BigInteger)vehicleDetail[14] %>" class="btn btn-xs btn-success saveButton"  onclick="changeCostAndDeposit('<%=(BigInteger)vehicleDetail[14] %>')">Save</button>
+      	 				</div>
+      	 				</div>
       	 				</div>
       	 				</div>
       	 				<%
@@ -70,6 +80,12 @@
       	 				</div>
       	 				<div class="row" style="padding:3px;">
       	 				<button type="button" class="btn btn-xs btn-danger"  data-toggle="tooltip" title="Use this to completely remove the vehicle record." onclick="vehicleAction('<%=(BigInteger)vehicleDetail[14] %>','Delete')">Remove</button>
+      	 				</div>
+      	 				<div class="row" style="padding:3px;">
+      	 				<button type="button" id="edit<%=(BigInteger)vehicleDetail[14] %>" class="btn btn-xs btn-success"  data-toggle="tooltip" title="Use this to change Cost and Deposit of Vehicle" onclick="changeCostAndDepositButtons('<%=(BigInteger)vehicleDetail[14] %>')">Edit</button>
+						<div class="row" style="padding:3px;">
+      	 				<button type="button" id="save<%=(BigInteger)vehicleDetail[14] %>" class="btn btn-xs btn-success saveButton"  onclick="changeCostAndDeposit('<%=(BigInteger)vehicleDetail[14] %>')">Save</button>
+      	 				</div>
       	 				</div>
       	 				<%
       	 				}

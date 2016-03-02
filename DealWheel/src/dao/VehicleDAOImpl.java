@@ -2,11 +2,9 @@ package dao;
 
 import static services.utility.GenericConstant.LISTED_VEHICLE_GET_NAMES;
 import static services.utility.GenericConstant.VEHICLE_GET_VEHICLE_DETAILS_FOR_USER;
-import static services.utility.GenericConstant.VEHICLE_SEARCH_WITH_IDS;
 import static services.utility.GenericConstant.VEHICLE_SEARCH_WITH_ID;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Query;
@@ -25,6 +23,7 @@ public class VehicleDAOImpl<T>  extends  BaseDAOImpl<Vehicle> implements Vehicle
 		return vehicle;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<String> getNames() {
 		logger.debug("Fetching all the names of Vehicles");
 		Query q = em.createNamedQuery(LISTED_VEHICLE_GET_NAMES);
@@ -32,6 +31,7 @@ public class VehicleDAOImpl<T>  extends  BaseDAOImpl<Vehicle> implements Vehicle
 		return nameList;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object[]> getVehicleDetailsForUserId(String userId) {
 		logger.debug("Fetching all the Vehicle detail for userId "+userId);
@@ -41,31 +41,34 @@ public class VehicleDAOImpl<T>  extends  BaseDAOImpl<Vehicle> implements Vehicle
 		return vehicleDetails;
 	}
 
-	public void disable(BigInteger vehId) {
-		logger.debug("Disabling all the Vehicles with Ids "+vehId);
-		Query q = em.createNamedQuery(VEHICLE_SEARCH_WITH_IDS);
-		q.setParameter("vehicleId", vehId);
-		List<Object[]> vehicleDetails = q.getResultList();
-		List<Vehicle> vList = new ArrayList<Vehicle>();
-		for(Object o : vehicleDetails){
-			((Vehicle)o).setVehicleDisabled(true);
-			vList.add(update(((Vehicle)o)));
-		}
-		
-		logger.debug(vList.size()+" rows disabled");
+	public void disable(BigInteger vehicleId) {
+		logger.debug("Disabling all the Vehicles with Ids "+vehicleId);
+		Query q = em.createNamedQuery(VEHICLE_SEARCH_WITH_ID);
+		q.setParameter("vehicleId", vehicleId);
+		Vehicle vehicleDetail = (Vehicle) q.getSingleResult();
+		vehicleDetail.setVehicleDisabled(true);
+		update(vehicleDetail);
+		logger.debug("Vehicle with ID "+vehicleId+" disabled");
 	}
 
 	public void enable(BigInteger vehicleId) {
 		logger.debug("Enabling the Vehicle with Id "+vehicleId);
 		Query q = em.createNamedQuery(VEHICLE_SEARCH_WITH_ID);
 		q.setParameter("vehicleId", vehicleId);
-		List<Object[]> vehicleDetails = q.getResultList();
-		List<Vehicle> vList = new ArrayList<Vehicle>();
-		for(Object o : vehicleDetails){
-			((Vehicle)o).setVehicleDisabled(false);
-			vList.add(update(((Vehicle)o)));
-		}
-		
-		logger.debug(vList.size()+" vehicle enabled");
+		Vehicle vehicleDetail = (Vehicle) q.getSingleResult();
+		vehicleDetail.setVehicleDisabled(false);
+		update(vehicleDetail);
+		logger.debug("Vehicle with ID "+vehicleId+" enabled");
+	}
+
+	public void changeCostAndDeposit(BigInteger vehicleId,String changedCost, String changedDeposit) {
+		logger.debug("Changing cost for the Vehicle with Id "+vehicleId);
+		Query q = em.createNamedQuery(VEHICLE_SEARCH_WITH_ID);
+		q.setParameter("vehicleId", vehicleId);
+		Vehicle vehicleDetail = (Vehicle) q.getSingleResult();
+		vehicleDetail.setVhclPerDayCost(Integer.parseInt(changedCost));
+		vehicleDetail.setVhclSecurityDeposit(Integer.parseInt(changedDeposit));
+		update(vehicleDetail);
+		logger.debug("Vehicle ID "+vehicleId+"'s cost changed to "+changedCost+" and deposit changed to "+changedDeposit);
 	}
 }

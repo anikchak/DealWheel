@@ -29,7 +29,6 @@ public class DeleteVehicle extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
 		String output= NAV_TO_VENDOR_HOME_PAGE;
-		try{
 			VehicleDAOImpl<Vehicle> vDAO = new VehicleDAOImpl<Vehicle>();
 			BookingHistoryDAOImpl<Bookingshistory> bhDAO = new BookingHistoryDAOImpl<Bookingshistory>();
 			logger.info("VehicleId="+req.getParameter("selectedVehicleRecordId")+" opCode="+req.getParameter("opCode"));
@@ -49,13 +48,25 @@ public class DeleteVehicle extends HttpServlet {
 				}
 			}
 			else if("Enable".equals(req.getParameter("opCode"))){
-				vDAO.enable(vehicleId);
+					vDAO.enable(vehicleId);
+			}else if("Change".equals(req.getParameter("opCode"))){
+				String changedCost = req.getParameter("changedCost"+vehicleId);
+				String changedDeposit = req.getParameter("changedDeposit"+vehicleId);
+				if(changedCost != null && !changedCost.equals("") && changedCost!=""
+						&& changedDeposit != null && !changedDeposit.equals("") && changedDeposit!=""){
+					vDAO.changeCostAndDeposit(vehicleId,changedCost,changedDeposit);
+					output = "CHANGED";
+				}else{
+					output="NOTCHANGED";
+				}
 			}
-			resp.getWriter().write(output);
-		}catch(Exception e){
-//			throw new SomeThingNotRightException();
+			resp.setContentType("text/html;charset=UTF-8");
+			try {
+				resp.getWriter().write(output);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-	}
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
