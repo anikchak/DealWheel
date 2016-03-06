@@ -9,6 +9,7 @@ public enum EmailType {
 	CONFIRM_BOOKING_TO_VENDOR("CONFIRM_BOOKING_TO_VENDOR"), 
 	FORGOT_PASSWORD("FORGOT_PASSWORD");
 	
+	
 	private final String value;       
 
     private EmailType(String s) {

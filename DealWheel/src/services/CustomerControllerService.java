@@ -47,6 +47,8 @@ import model.Vehicle;
 
 import org.apache.log4j.Logger;
 
+import services.mail.EmailType;
+import services.mail.SendMail;
 import services.security.SecurePassword;
 import services.utility.CommonUtility;
 import services.utility.GenericConstant;
@@ -69,7 +71,7 @@ public class CustomerControllerService {
 	 * 			false - if there is any exception while entering user record 
 	 */
 	@SuppressWarnings("unchecked")
-	public List<User> inserNewUser(String usr, String pwd,BigInteger mobileNo) {
+	public List<User> inserNewUser(String usr, String pwd,BigInteger mobileNo,String serverName,String serverPort) {
 
 		logger.info("ControllerService: inserting new user through insertNewUser");
 		List returnUserList = null;
@@ -109,12 +111,16 @@ public class CustomerControllerService {
 					u.setLastUpdated(new Date());
 					u.setLastUpdatedBy(usr);
 					String randString = generateRandomString();
-					u.setUserEmailOtp(null);
-				//	SendMail s = new SendMail();
-				//	String emailbody = "<h4>Hi "+usr+"</h4><br><br>Welcome to Deal Wheel"
-				//			+ "<br><br>Complete your registeration by clicking on this link<br><br>"
-				//			+ "http://localhost:8081/DealWheel/UserConfirmation";
-				//	s.sendEmailNotification("RegisterationEmail", emailbody, subject, uEmail);
+					u.setUserEmailOtp(randString);
+					List<String> params = new ArrayList<String>();
+					params.add(0,usr);
+					String url = "http://"+serverName+":"+serverPort+"/DealWheel/UserRegisterationConfirmation.jsp?confirmationurl="+randString;
+					params.add(1,url);
+					SendMail s = new SendMail();
+					String emailbody = "<h4>Hi "+usr+"</h4><br><br>Welcome to Deal Wheel"
+							+ "<br><br>Complete your registeration by clicking on this link<br><br>"
+							+ "http://localhost:8081/DealWheel/UserConfirmation";
+					s.sendEmailNotification(EmailType.VERIFY_USER, usr, params);
 					//SecureRandom rands = new SecureRandom();
 					//String s = BigInteger(130, rands).toString(32);
 					User insertedUser = new UserDAOImpl<User>().addNewUser(u);
@@ -641,9 +647,43 @@ public class CustomerControllerService {
 		return null;
 	}
 	
+	public String ConfirmationUserRegisteration(String param){
+		logger.info("Confirm registeration : confirm String = "+param);
+		try{
+		if(em!=null){
+			System.out.println(param);
+			Query q = em.createNativeQuery("select user_id from users where user_email_otp = ?");
+			q.setParameter(1, param);
+			int resetStatus = 0; 
+			Long validUserDetail = (Long) q.getSingleResult();
+			System.out.println(validUserDetail);
+			if (validUserDetail != null){
+				et.begin();
+				q = em.createNativeQuery("Update users set user_email_otp = null where user_id = ?");
+				q.setParameter(1,validUserDetail);
+				 resetStatus = q.executeUpdate();
+				et.commit();
+				if(resetStatus > 0){
+					return "Success";
+				}
+				else
+					return "Failure";
+			}
+			
+			
+		}
+		
+	}
+	catch (Exception e){
+		e.printStackTrace();
+	}
+	
+		return null;
+	}
+	
 	 private static final String CHAR_LIST =
 		        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-		    private static final int RANDOM_STRING_LENGTH = 16;
+		    private static final int RANDOM_STRING_LENGTH = 64;
 		     
 		    /**
 		     * This method generates random string

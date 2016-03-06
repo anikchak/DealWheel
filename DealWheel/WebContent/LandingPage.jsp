@@ -57,7 +57,7 @@ var pageContext = '<%=request.getContextPath()%>';
   				<div>
   				<%@ include file="commonResources/SearchCriteriaLayout"%>
   				</div>
-  				<div >
+  				<div>
   				<br><br><br><br><br>
   				<img alt="How we work" src="https://s3-us-west-2.amazonaws.com/dealwheel/How+we+work.png" style="width:40%;margin-left:28%;">
   				</div>

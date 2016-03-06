@@ -37,7 +37,7 @@ public class VendorRegistrationController {
 		User user = new User();
 		user.setUserName(params.get("fullName"));
 		user.setUserEmail(params.get("email"));
-		user.setUserEmailOtp(LoginUtil.generateOTP());
+		user.setUserEmailOtp((String.valueOf(LoginUtil.generateOTP())));
 		user.setUserPrimaryContact(pNum);
 		user.setUserSecondaryContact(sNum);
 		user.setUserType(USER_TYPE_VENDOR);

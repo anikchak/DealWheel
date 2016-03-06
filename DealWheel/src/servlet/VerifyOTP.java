@@ -30,7 +30,7 @@ public class VerifyOTP extends HttpServlet{
 		String identifier = req.getParameter("identifier");
 		if("ResendOTP".equals(identifier)){
 			User usr = new UserDAOImpl<User>().findUserByEmailAddress(req.getParameter("email"));
-			usr.setUserEmailOtp(LoginUtil.generateOTP());
+			usr.setUserEmailOtp(String.valueOf(LoginUtil.generateOTP()));
 			new UserDAOImpl<User>().update(usr);
 			resp.setContentType("text/html;charset=UTF-8");
 			resp.getWriter().write(usr.getUserEmail()+","+usr.getUserEmailOtp());

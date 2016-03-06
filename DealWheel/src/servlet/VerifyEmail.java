@@ -35,7 +35,7 @@ public class VerifyEmail extends HttpServlet  {
 				u = (User) req.getSession().getAttribute(USER_MODEL);
 			}
 			
-			if(u.getUserEmailOtp()== otp){
+			if(u.getUserEmailOtp()== String.valueOf(otp)){
 				output = "SUCCESS";
 			}else{
 				output = "FAILURE";

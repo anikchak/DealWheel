@@ -149,9 +149,9 @@ public boolean empty(String s)
 	params.put("email",u.getUserEmail());
 	params.put("phone",u.getUserPrimaryContact().toString());
 	params.put("productinfo",fetchSelectedVehicle);
-	String surl = "http://"+request.getServerName()+":"+request.getServerPort()+"/"+"ConfirmationSummary";
+	//String surl = "http://"+request.getServerName()+":"+request.getServerPort()+"/"+"ConfirmationSummary";
 	//Uncomment the below line when testing the flow from local
-	//String surl = "http://"+request.getServerName()+":"+request.getServerPort()+"/DealWheel/ConfirmationSummary";
+	String surl = "http://"+request.getServerName()+":"+request.getServerPort()+"/DealWheel/ConfirmationSummary";
 	params.put("surl",surl);
 	params.put("furl",pagecontext+"/BookingError.jsp");
 	params.put("udf1",session.getAttribute("selectedLocation").toString());
