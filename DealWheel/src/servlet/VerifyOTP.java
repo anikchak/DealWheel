@@ -40,7 +40,7 @@ public class VerifyOTP extends HttpServlet{
 		}else if("Cancel".equals(identifier)){
 			User usr = new UserDAOImpl<User>().findUserByEmailAddress(req.getParameter("email"));
 			Address addr = new AddressDAOImpl<Address>().findAddressByUserIdAndType(usr.getUserId(), ADDRESS_TYPE_VENDOR_OFFICE_LOCATION);
-			LoginDetail ld = new LoginDAOImpl<LoginDetail>().findLoginDetailForUserNameAndType(usr.getUserId(),USER_TYPE_VENDOR);
+			LoginDetail ld = new LoginDAOImpl<LoginDetail>().findLoginDetailForUserNameAndType(usr.getUserEmail(),USER_TYPE_VENDOR);
 			new UserDAOImpl<User>().delete(usr.getUserId());
 			new AddressDAOImpl<Address>().delete(addr.getAddrId());
 			new LoginDAOImpl<LoginDetail>().delete(ld.getLognId());
