@@ -42,8 +42,14 @@ public class TriggerEmail extends HttpServlet {
 		else if(EmailType.CANCEL_BOOKING_BY_USER.toString().equals(emailType)){
 			SendMail.sendEmailNotification(EmailType.CANCEL_BOOKING_BY_USER,emailAddress, params);
 		}
+		else if(EmailType.CANCEL_BOOKING_TO_USER.toString().equals(emailType)){
+			SendMail.sendEmailNotification(EmailType.CANCEL_BOOKING_TO_USER,emailAddress, params);
+		}
 		else if(EmailType.CANCEL_BOOKING_BY_VENDOR.toString().equals(emailType)){
 			SendMail.sendEmailNotification(EmailType.CANCEL_BOOKING_BY_VENDOR,emailAddress, params);
+		}
+		else if(EmailType.CANCEL_BOOKING_TO_VENDOR.toString().equals(emailType)){
+			SendMail.sendEmailNotification(EmailType.CANCEL_BOOKING_TO_VENDOR,emailAddress, params);
 		}
 		else if(EmailType.FORGOT_PASSWORD.toString().equals(emailType)){
 			SendMail.sendEmailNotification(EmailType.FORGOT_PASSWORD,emailAddress, params);

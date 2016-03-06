@@ -6,5 +6,6 @@ public interface LoginDAO  extends BaseDAO<LoginDetail>{
 
 	public LoginDetail addNewLogin(LoginDetail login);
 	
-	public LoginDetail validateUserName(String userName, String userType);
+	public LoginDetail findLoginDetailForUserNameAndType(String userName, String userType);
+	
 }

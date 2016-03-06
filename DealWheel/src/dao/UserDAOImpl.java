@@ -3,9 +3,13 @@ package dao;
 import static services.utility.GenericConstant.USER_FIND_BY_EMAIL;
 import static services.utility.GenericConstant.USER_FIND_BY_ID;
 
+import java.math.BigInteger;
+
 import javax.persistence.Query;
 
+import model.Address;
 import model.User;
+import model.Vehicle;
 
 import org.apache.log4j.Logger;
 
@@ -36,5 +40,12 @@ public class UserDAOImpl<T>  extends  BaseDAOImpl<User> implements UserDAO {
 		q.setParameter("email", email);
 		User user = (User) q.getSingleResult();
 		return user;
+	}
+
+	public User findVendorForVehicle(BigInteger bkngVehicle) {
+		Vehicle v = new VehicleDAOImpl<Vehicle>().findById(bkngVehicle);
+		Address a = new AddressDAOImpl<Address>().findById(v.getVhclAddressId().toString());
+		User u = new UserDAOImpl<User>().findById(a.getUserId());
+		return u;
 	}
 }

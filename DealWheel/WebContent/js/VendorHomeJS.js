@@ -629,19 +629,29 @@ function vendorCancellation(bookingId){
 }
 function cancelVendorBooking(val){
 	if(val=='YES'){
-		$("#vendorBookingCancelForm").submit();
-		//TODO - mails
-		var list = "<%=v.getVhclRegistrationNo()%>,<%=sdtDay%> <%=sdtDateNum%> <%=sdtMonth%>'<%=sdtYear%>,<%=endtDay%> <%=endtDateNum%> <%=endtMonth%>'<%=endtYear%>,<%=realUserName%>";
-		$.post(
-			"TriggerEmail",
-			{
-				emailType : "CONFIRM_BOOKING_TO_VENDOR",
-				emailAddress : "<%=vendorEmail%>",
-				list : list				
-			},
-			function(responseText) {
-				
-			});
+		var formData = $("#vendorBookingCancelForm").serialize();
+		$.ajax({
+	        url: "CancelBookingForVendor" ,
+	        type: "post",
+	        data : formData,
+	        success: function(response){
+	        	var respList = response.split(",");
+	        	$.post("TriggerEmail",
+	        			{
+	        				emailType : "CANCEL_BOOKING_BY_VENDOR",
+	        				emailAddress : respList[0],
+	        				list : respList[1]+","+respList[2]+","+respList[3]+","+respList[4]				
+	        			},
+	        			function(responseText) {
+	        				$.post("TriggerEmail",
+	        	        			{
+	        	        				emailType : "CANCEL_BOOKING_TO_USER",
+	        	        				emailAddress : respList[5],
+	        	        				list : respList[1]+","+respList[2]+","+respList[3]+","+respList[0]				
+	        	        			});
+	        			});
+	        }
+	      });
 	}else{
 		$("#confirmVendorCancelId").hide();
 	}

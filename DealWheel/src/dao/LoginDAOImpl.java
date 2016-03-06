@@ -18,7 +18,7 @@ public class LoginDAOImpl<T> extends BaseDAOImpl<LoginDetail> implements LoginDA
 		return l;
 	}
 
-	public LoginDetail validateUserName(String userName, String userType) {
+	public LoginDetail findLoginDetailForUserNameAndType(String userName, String userType) {
 		logger.debug("Validating User Name for "+userName);
 		Query q = em.createNamedQuery(LOGIN_DETAIL_FIND_USING_USER_NAME_AND_TYPE);
 		q.setParameter("loginUserName", userName);
