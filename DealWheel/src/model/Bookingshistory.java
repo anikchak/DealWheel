@@ -51,6 +51,12 @@ public class Bookingshistory implements Serializable {
 	@Column(name="BKNG_PAYMENT_ID")
 	private BigInteger bkngPaymentId;
 
+	@Column(name="BKNG_PER_DAY_COST")
+	private int bkngPerDayCost;
+
+	@Column(name="BKNG_SECURITY_DEPOSIT")
+	private int bkngSecurityDeposit;
+
 	@Column(name="BKNG_STATUS")
 	private String bkngStatus;
 
@@ -112,6 +118,22 @@ public class Bookingshistory implements Serializable {
 
 	public void setBkngPaymentId(BigInteger bkngPaymentId) {
 		this.bkngPaymentId = bkngPaymentId;
+	}
+
+	public int getBkngPerDayCost() {
+		return this.bkngPerDayCost;
+	}
+
+	public void setBkngPerDayCost(int bkngPerDayCost) {
+		this.bkngPerDayCost = bkngPerDayCost;
+	}
+
+	public int getBkngSecurityDeposit() {
+		return this.bkngSecurityDeposit;
+	}
+
+	public void setBkngSecurityDeposit(int bkngSecurityDeposit) {
+		this.bkngSecurityDeposit = bkngSecurityDeposit;
 	}
 
 	public String getBkngStatus() {
