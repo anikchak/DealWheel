@@ -357,6 +357,8 @@ public class CustomerControllerService {
 						bh.setBkngFromDate(fromDate);
 						bh.setBkngToDate(toDate);
 						bh.setBkngVehicle(v.getVhclId());
+						bh.setBkngPerDayCost(v.getVhclPerDayCost());
+						bh.setBkngSecurityDeposit(v.getVhclSecurityDeposit());
 						bh.setBkngCreationDate(new Date());
 						bh.setLastUpdatedBy(usernm);
 						bh.setLastUpdated(new Date());

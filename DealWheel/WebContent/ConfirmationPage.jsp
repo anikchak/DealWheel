@@ -153,10 +153,10 @@ var pageContext = '<%=request.getContextPath()%>';
 			</div>
 			<div class="row">
 			 <div class="row">
-			    <span style="float:right;padding-right:5%;"><span style="color:#687074;font-size:12px;text-transform:uppercase;">Amount Paid = </span><span id="payableAmount" style="color:#687074;font-size:16px;font-weight:bold;"><span style='font-family:Arial;'>&#8377;</span><%=(noOfDays*v.getVhclPerDayCost())%></span></span><br>
+			    <span style="float:right;padding-right:5%;"><span style="color:#687074;font-size:12px;text-transform:uppercase;">Amount Paid = </span><span id="payableAmount" style="color:#687074;font-size:16px;font-weight:bold;"><span style='font-family:Arial;'>&#8377;</span><%=(noOfDays*bh.getBkngPerDayCost())%></span></span><br>
 			 </div>
 			 <div class="row">
-				<span style="float:right;padding-right:5%;"><span style="color:#687074;font-size:12px;text-transform:uppercase;">Refundable Security Deposit <span style="color:rgba(217, 83, 79, 1);font-size:10px;">(to be paid during vehicle pick-up)</span> = </span><span id="securityDepositId" style="color:#687074;font-size:16px;font-weight:bold;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclSecurityDeposit() %></span></span><br>
+				<span style="float:right;padding-right:5%;"><span style="color:#687074;font-size:12px;text-transform:uppercase;">Refundable Security Deposit <span style="color:rgba(217, 83, 79, 1);font-size:10px;">(to be paid during vehicle pick-up)</span> = </span><span id="securityDepositId" style="color:#687074;font-size:16px;font-weight:bold;"><span style='font-family:Arial;'>&#8377;</span><%=bh.getBkngSecurityDeposit() %></span></span><br>
 			 </div>
 			</div>
   			</div>	

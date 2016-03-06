@@ -151,8 +151,8 @@ var pageContext = '<%=request.getContextPath()%>';
     					<%=a.getAddrLocality() %>, <%=a.getAddrCity() %>, <%=a.getAddrPinCode() %>, <%=a.getAddrState() %>, <%=a.getAddrCountry() %>
     				</span>
          		</td>
-         		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclPerDayCost()*noOfDays %></span></td>
-         		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclSecurityDeposit() %></span></td>
+         		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=bh.getBkngPerDayCost()*noOfDays %></span></td>
+         		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=bh.getBkngSecurityDeposit() %></span></td>
          		<td><span class="label label-success">UPCOMING</span></td>
          		<td><button type="button" class="btn btn-info btn-xs" data-dismiss="modal" style="background-color: rgba(217, 83, 79, 1);" onclick="confirmCancellation('<%=bh.getBkngSeq()%>')">CANCEL</button></td>
          	</tr>
@@ -217,8 +217,8 @@ var pageContext = '<%=request.getContextPath()%>';
     					<%=a.getAddrLocality() %>, <%=a.getAddrCity() %>, <%=a.getAddrPinCode() %>, <%=a.getAddrState() %>, <%=a.getAddrCountry() %>
     				</span>
          		</td>
-         		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclPerDayCost()*noOfDays %></span></td>
-         		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclSecurityDeposit() %></span></td>
+         		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=bh.getBkngPerDayCost()*noOfDays %></span></td>
+         		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=bh.getBkngSecurityDeposit() %></span></td>
          		<td><span class="label label-success">COMPLETED</span></td>
          	</tr>
          <%
@@ -279,7 +279,7 @@ var pageContext = '<%=request.getContextPath()%>';
     					<%=a.getAddrLocality() %>, <%=a.getAddrCity() %>, <%=a.getAddrPinCode() %>, <%=a.getAddrState() %>, <%=a.getAddrCountry() %>
     				</span>
          		</td>
-         		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclPerDayCost()*noOfDays %></span></td>
+         		<td><span style="color:#687074;font-size:11px;text-transform:uppercase;"><span style='font-family:Arial;'>&#8377;</span><%=bh.getBkngPerDayCost()*noOfDays %></span></td>
          		<td>
          		<%if("CANCELLED".equalsIgnoreCase(bh.getBkngStatus())){ %>
          		<span class="label label-danger">CANCELLED</span>

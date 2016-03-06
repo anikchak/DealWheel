@@ -134,7 +134,7 @@ public boolean empty(String s)
 	}
     String txnid=null;
     if(fetchSelectedVehicle!=null){
-    	txnid=hashCal("SHA-256",fetchSelectedVehicle).substring(0,20);
+    	txnid=hashCal("SHA-256",fetchSelectedVehicle+"-"+(System.currentTimeMillis() / 1000L)).substring(0,20);
     }
 	
 	Long amount  = (noOfDays*v.getVhclPerDayCost());
@@ -149,9 +149,9 @@ public boolean empty(String s)
 	params.put("email",u.getUserEmail());
 	params.put("phone",u.getUserPrimaryContact().toString());
 	params.put("productinfo",fetchSelectedVehicle);
-	String surl = "http://"+request.getServerName()+":"+request.getServerPort()+"/"+"ConfirmationSummary";
+	//String surl = "http://"+request.getServerName()+":"+request.getServerPort()+"/"+"ConfirmationSummary";
 	//Uncomment the below line when testing the flow from local
-	//String surl = "http://"+request.getServerName()+":"+request.getServerPort()+"/DealWheel/ConfirmationSummary";
+	String surl = "http://"+request.getServerName()+":"+request.getServerPort()+"/DealWheel/ConfirmationSummary";
 	params.put("surl",surl);
 	params.put("furl",pagecontext+"/BookingError.jsp");
 	params.put("udf1",session.getAttribute("selectedLocation").toString());
@@ -234,10 +234,10 @@ public boolean empty(String s)
     			  <hr style="border-color:#85b213;width:50%;">
     			</div>
     			<div class="row " style="">
-    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Per Day Cost = </span><span id="perDayCostId" style="color:#687074;font-weight:bold;font-size:15.5px;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclPerDayCost() %></span><br>
-    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Refundable Security Deposit = </span><span id="securityDepositId" style="color:#687074;font-weight:bold;font-size:15.5px;"><span style='font-family:Arial;'>&#8377;</span><%=v.getVhclSecurityDeposit() %></span><br>
+    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Per Day Cost = </span><span id="perDayCostId" style="color:#687074;font-weight:bold;font-size:15.5px;"><span style='font-family:Arial;'>&#8377;</span><%=bh.getBkngPerDayCost() %></span><br>
+    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Refundable Security Deposit = </span><span id="securityDepositId" style="color:#687074;font-weight:bold;font-size:15.5px;"><span style='font-family:Arial;'>&#8377;</span><%=bh.getBkngSecurityDeposit() %></span><br>
     				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Number of Booking Days = </span><span id="noOfDaysId" style="color:#687074;font-weight:bold;font-size:15.5px;"><%=noOfDays %></span><br>
-    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Payable Amount <span style="color: rgba(217, 83, 79, 1);font-size:12px;">(No. of Days * Per Day Cost)</span> = </span><span id="payableAmount" style="color:#687074;font-weight:bold;font-size:15.5px;"><span style='font-family:Arial;'>&#8377;</span><%=(noOfDays*v.getVhclPerDayCost())%></span><br>
+    				<span style="color:#687074;font-weight:500;font-size:13.5px;text-transform:uppercase;margin-left:31%;">Payable Amount <span style="color: rgba(217, 83, 79, 1);font-size:12px;">(No. of Days * Per Day Cost)</span> = </span><span id="payableAmount" style="color:#687074;font-weight:bold;font-size:15.5px;"><span style='font-family:Arial;'>&#8377;</span><%=(noOfDays*bh.getBkngPerDayCost())%></span><br>
     				<hr style="border-color:#85b213;width:50%;">
     			</div>
     			<div class="row text-center" >
