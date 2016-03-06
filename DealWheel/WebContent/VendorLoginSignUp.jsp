@@ -47,10 +47,22 @@ var pageContext = '<%=request.getContextPath()%>';
 		<!-- Begin page content -->
 
 		<div class="container">
+		<!-- Registration Process incomplete starts -->
+		<%
+		String cancelOTP = request.getParameter("cancel");
+		if(cancelOTP != null && "cancel".equals(cancelOTP)){
+		%>
+		<div class="vehicleDisplay text-center" style="width:40%;" id="cancelOTPDiv">
+		<label style="font-weight:bold;font-size:14px;" class="label label-danger "><span id=""> Registration Failed. Kindly register again.</span></label>
+		</div>
+		<%
+		}%>
+		<!-- Registration Process incomplete ends -->
 		<br>
 		<br>
 		<div class="vehicleDisplay" style="border:1px solid #85b213;border-radius:4px; width:40%;">
 		<br>
+		
 		<!-- Vendor Login Div Starts -->
 		
 		 <form role="form" action="${pageContext.request.contextPath}/VendorLoginSignUp" method="post" id="loginFormId" >

@@ -9,6 +9,7 @@ function showVendorLogin(){
 		$("#vendorForgotDiv").hide();
 		$("#vendorSignupDiv").hide();
 		$("#vendorLoginDiv").show();
+		$("#cancelOTPDiv").hide();
 	}
 function showVendorSignup(){
 		$("#email").val("");
@@ -18,12 +19,14 @@ function showVendorSignup(){
 		$("#vendorLoginDiv").hide();
 		$("#vendorForgotDiv").hide();
 		$("#vendorSignupDiv").show();
+		$("#cancelOTPDiv").hide();
 	}
 function showVendorForgotPassword(){
 		$("#emailForgot").val("");
 		$("#login_error_forgot").hide();
 		$("#vendorLoginDiv").hide();
 		$("#vendorForgotDiv").show();
+		$("#cancelOTPDiv").hide();
 	}
 
 $(document).ready(function(){
@@ -46,6 +49,7 @@ $(document).ready(function(){
 	});
 	
 	function validateLogin(){
+		$("#cancelOTPDiv").hide();
 		var loginEmail = $("input[name='loginEmail']").val();
 		var loginPassword = $("input[name='loginPassword']").val();
 		
@@ -73,6 +77,7 @@ $(document).ready(function(){
 		var signupEmail = $("input[name='email']").val();
 		var signupPassword = $("input[name='password']").val();
 		var signupConfirmPassword = $("input[name='confirmPassword']").val();
+		$("#cancelOTPDiv").hide();
 		
 		if(signupEmail == "" || signupPassword == ""  || signupConfirmPassword == "" ){
 			$("#signup_error").hide();
@@ -108,6 +113,7 @@ $(document).ready(function(){
 	}
 	
 	function submitForm(){
+		$("#cancelOTPDiv").hide();
 		if(preventFormSubmit == "N"){
 			$.post("VendorLoginSignUp",
 					{

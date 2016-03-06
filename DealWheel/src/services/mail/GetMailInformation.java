@@ -10,7 +10,7 @@ public class GetMailInformation {
 		switch(type){
 		
 		case VERIFY_VENDOR:
-			body = "Welcome "+params.get(0)+" to DealWheel.in "
+			body = "<h1 style=\"color:Red;\">Welcome </h1>"+params.get(0)+" to DealWheel.in "
 					+ " Your OTP to verify your email is "+params.get(1)+" "
 							+ " Please verify your email to register a vehicle with us.";
 			break;

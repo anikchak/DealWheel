@@ -209,6 +209,7 @@ function cancelOTPVerify(email){
         data : {identifier:"Cancel",email:email},
         success: function(response){
         	$("#vendorOTPPopup").hide();
+        	$(location).attr('href', pageContext + "/VendorLoginSignUp.jsp?invoke=vendorFlow&cancel=cancel");
         }
         
 	});
