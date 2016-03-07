@@ -59,7 +59,7 @@ public class User implements Serializable {
 	private String userEmail;
 
 	@Column(name="USER_EMAIL_OTP")
-	private BigInteger userEmailOtp;
+	private String userEmailOtp;
 
 	@Column(name="USER_GENDER")
 	private String userGender;
@@ -119,11 +119,11 @@ public class User implements Serializable {
 		this.userEmail = userEmail;
 	}
 
-	public BigInteger getUserEmailOtp() {
+	public String getUserEmailOtp() {
 		return this.userEmailOtp;
 	}
 
-	public void setUserEmailOtp(BigInteger userEmailOtp) {
+	public void setUserEmailOtp(String userEmailOtp) {
 		this.userEmailOtp = userEmailOtp;
 	}
 

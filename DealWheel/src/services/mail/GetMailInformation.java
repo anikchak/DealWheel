@@ -17,7 +17,7 @@ public class GetMailInformation {
 			
 		case VERIFY_USER:
 			body = "Welcome "+params.get(0)+" to DealWheel.in "
-					+ " Your OTP to verify your email is "+params.get(1)+" "
+					+ " Confirm your registeration by clicking on the link "+params.get(1)+" "
 							+ " Please verify your email to book a vehicle with us.";
 			break;
 			
@@ -87,7 +87,7 @@ public class GetMailInformation {
 			break;
 		
 		case VERIFY_USER:
-			subject = "DealWheel | OTP to verify email address";
+			subject = "DealWheel | Verify email address";
 			break;
 			
 		case CANCEL_BOOKING_BY_USER:
