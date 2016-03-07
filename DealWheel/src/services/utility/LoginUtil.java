@@ -4,6 +4,8 @@ import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import model.LoginDetail;
@@ -85,5 +87,22 @@ public class LoginUtil {
 		if(otp.compareTo(new BigInteger("100000")) == -1)
 			otp = generateOTP();
 		return otp;
+	}
+	
+	public static Map<String,String> resetPassword(){
+		Map<String,String> passwd = new HashMap<String, String>();
+		String tempPwdGenerated =  Long.toHexString(Double.doubleToLongBits(Math.random()));
+		passwd.put("tempPassword", tempPwdGenerated);
+		logger.info("Generating random password = "+tempPwdGenerated);
+		SecurePassword securePwd = new SecurePassword();
+		byte[] salt = securePwd.createSalt();
+		try {
+			passwd.put("hashPassword",securePwd.createHash(tempPwdGenerated, salt));
+		} catch (NoSuchAlgorithmException excep) {
+			logger.error("Exception in algorithm");
+		} catch (InvalidKeySpecException e) {
+			logger.error("Invalid Key Spec Exception");
+		}
+		return passwd;
 	}
 }

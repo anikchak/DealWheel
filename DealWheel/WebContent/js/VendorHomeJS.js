@@ -300,6 +300,7 @@ function closeAddBlock() {
 	$('#vehNameMandateAdd').hide();
 	$('#registrationNo').val('');
 	$('#registrationNoMandateAdd').hide();
+	$('#registrationNoWrong').hide();
 	$("#registrationNo").css("border-color", "");
 	$('#yearOfManufacture').val('');
 	$('#yearOfManufactureMandateAdd').hide();
@@ -365,6 +366,7 @@ function validateData() {
 	$("#vehicleName").css("border-color", "");
 	$('#vehNameMandateAdd').hide();
 	$('#registrationNoMandateAdd').hide();
+	$('#registrationNoWrong').hide();
 	$("#registrationNo").css("border-color", "");
 	$('#yearOfManufactureMandateAdd').hide();
 	$('#invalidYearAdd').hide();
@@ -387,6 +389,12 @@ function validateData() {
 	if (registrationNo == '' || registrationNo == null) {
 		$("#registrationNo").css("border-color", "red");
 		$('#registrationNoMandateAdd').show();
+		emptyField = 'Y';
+	}
+	var pattern  = new RegExp('^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$');
+	if(!pattern.test(registrationNo)){
+		$("#registrationNo").css("border-color", "red");
+		$('#registrationNoWrong').show();
 		emptyField = 'Y';
 	}
 	if (yearOfManufacture == ''|| yearOfManufacture == null) {

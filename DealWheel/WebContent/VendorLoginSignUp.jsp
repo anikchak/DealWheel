@@ -142,7 +142,7 @@ var pageContext = '<%=request.getContextPath()%>';
 				<input type="text" class="form-control" name="emailForgot" id="emailForgot" placeholder="Enter email">
 			</div>
 			</div>
-            <button type="button" class="btn btn-danger btn-block " onclick="" ><span class="glyphicon glyphicon-log-in"></span> Change Password</button>
+            <button type="button" class="btn btn-danger btn-block " onclick="forgotPasswordMail()" ><span class="glyphicon glyphicon-log-in"></span> Change Password</button>
           	<br>
            <div class="modal-footer" style="border-color: #85b213;">
           	<p><span style="color:#687074;">Already a member? </span><a href="#" onclick="showVendorLogin()" style="color:#d9534f">Login</a></p>
