@@ -502,7 +502,7 @@ public class CustomerControllerService {
 		logger.info("Inside getbookings() where userId passed = "+userId);
 		List<Object[]> searchResultSet= null;
 		try{
-		em.getEntityManagerFactory().getCache().evictAll();
+		//em.getEntityManagerFactory().getCache().evictAll();
 		Query q = em.createQuery(QueryConstant.GET_BOOKING_DETAILS);
 		q.setParameter("USERID", userId.toString());
 		q.setParameter(UPCOMING, UPCOMING);
@@ -522,7 +522,7 @@ public class CustomerControllerService {
 		logger.info("Inside getMyProfile() where userId passed = "+userId);
 		List<Object[]> searchResultSet= null;
 		try{
-		em.getEntityManagerFactory().getCache().evictAll();
+		//em.getEntityManagerFactory().getCache().evictAll();
 		Query q = em.createQuery(QueryConstant.GET_USER_DETAILS);
 		q.setParameter("USERID", userId.toString());
 		searchResultSet = (List<Object[]>) q.getResultList();
