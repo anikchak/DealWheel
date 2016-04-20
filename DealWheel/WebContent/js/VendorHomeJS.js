@@ -300,6 +300,7 @@ function closeAddBlock() {
 	$('#vehNameMandateAdd').hide();
 	$('#registrationNo').val('');
 	$('#registrationNoMandateAdd').hide();
+	$('#registrationNoWrong').hide();
 	$("#registrationNo").css("border-color", "");
 	$('#yearOfManufacture').val('');
 	$('#yearOfManufactureMandateAdd').hide();
@@ -365,6 +366,7 @@ function validateData() {
 	$("#vehicleName").css("border-color", "");
 	$('#vehNameMandateAdd').hide();
 	$('#registrationNoMandateAdd').hide();
+	$('#registrationNoWrong').hide();
 	$("#registrationNo").css("border-color", "");
 	$('#yearOfManufactureMandateAdd').hide();
 	$('#invalidYearAdd').hide();
@@ -387,6 +389,12 @@ function validateData() {
 	if (registrationNo == '' || registrationNo == null) {
 		$("#registrationNo").css("border-color", "red");
 		$('#registrationNoMandateAdd').show();
+		emptyField = 'Y';
+	}
+	var pattern  = new RegExp('^[A-Z]{2}[ -][0-9]{1,2}(?: [A-Z])?(?: [A-Z]*)? [0-9]{4}$');
+	if(!pattern.test(registrationNo)){
+		$("#registrationNo").css("border-color", "red");
+		$('#registrationNoWrong').show();
 		emptyField = 'Y';
 	}
 	if (yearOfManufacture == ''|| yearOfManufacture == null) {
@@ -629,19 +637,29 @@ function vendorCancellation(bookingId){
 }
 function cancelVendorBooking(val){
 	if(val=='YES'){
-		$("#vendorBookingCancelForm").submit();
-		//TODO - mails
-		var list = "<%=v.getVhclRegistrationNo()%>,<%=sdtDay%> <%=sdtDateNum%> <%=sdtMonth%>'<%=sdtYear%>,<%=endtDay%> <%=endtDateNum%> <%=endtMonth%>'<%=endtYear%>,<%=realUserName%>";
-		$.post(
-			"TriggerEmail",
-			{
-				emailType : "CONFIRM_BOOKING_TO_VENDOR",
-				emailAddress : "<%=vendorEmail%>",
-				list : list				
-			},
-			function(responseText) {
-				
-			});
+		var formData = $("#vendorBookingCancelForm").serialize();
+		$.ajax({
+	        url: "CancelBookingForVendor" ,
+	        type: "post",
+	        data : formData,
+	        success: function(response){
+	        	var respList = response.split(",");
+	        	$.post("TriggerEmail",
+	        			{
+	        				emailType : "CANCEL_BOOKING_BY_VENDOR",
+	        				emailAddress : respList[0],
+	        				list : respList[1]+","+respList[2]+","+respList[3]+","+respList[4]				
+	        			},
+	        			function(responseText) {
+	        				$.post("TriggerEmail",
+	        	        			{
+	        	        				emailType : "CANCEL_BOOKING_TO_USER",
+	        	        				emailAddress : respList[5],
+	        	        				list : respList[1]+","+respList[2]+","+respList[3]+","+respList[0]				
+	        	        			});
+	        			});
+	        }
+	      });
 	}else{
 		$("#confirmVendorCancelId").hide();
 	}

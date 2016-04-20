@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,8 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import model.LoginDetail;
+
 import org.apache.log4j.Logger;
 
+import dao.LoginDAOImpl;
 import services.mail.EmailType;
 import services.mail.SendMail;
 
@@ -42,11 +46,20 @@ public class TriggerEmail extends HttpServlet {
 		else if(EmailType.CANCEL_BOOKING_BY_USER.toString().equals(emailType)){
 			SendMail.sendEmailNotification(EmailType.CANCEL_BOOKING_BY_USER,emailAddress, params);
 		}
+		else if(EmailType.CANCEL_BOOKING_TO_USER.toString().equals(emailType)){
+			SendMail.sendEmailNotification(EmailType.CANCEL_BOOKING_TO_USER,emailAddress, params);
+		}
 		else if(EmailType.CANCEL_BOOKING_BY_VENDOR.toString().equals(emailType)){
 			SendMail.sendEmailNotification(EmailType.CANCEL_BOOKING_BY_VENDOR,emailAddress, params);
 		}
+		else if(EmailType.CANCEL_BOOKING_TO_VENDOR.toString().equals(emailType)){
+			SendMail.sendEmailNotification(EmailType.CANCEL_BOOKING_TO_VENDOR,emailAddress, params);
+		}
 		else if(EmailType.FORGOT_PASSWORD.toString().equals(emailType)){
-			SendMail.sendEmailNotification(EmailType.FORGOT_PASSWORD,emailAddress, params);
+			List<String> paramNew = new ArrayList<String>();
+			paramNew.add(params.get(0));
+			paramNew.add(new LoginDAOImpl<LoginDetail>().resetPasswordForEmailId(params.get(0)));
+			SendMail.sendEmailNotification(EmailType.FORGOT_PASSWORD,emailAddress, paramNew);
 		}
 		else if(EmailType.VERIFY_VENDOR.toString().equals(emailType)){
 			SendMail.sendEmailNotification(EmailType.VERIFY_VENDOR,emailAddress, params);

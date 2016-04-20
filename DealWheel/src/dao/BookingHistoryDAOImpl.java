@@ -3,8 +3,8 @@ package dao;
 import static services.utility.GenericConstant.BOOKING_HISTORY_BY_ID;
 import static services.utility.GenericConstant.BOOKING_HISTORY_FOR_ID_BY_DATE;
 import static services.utility.GenericConstant.BOOKING_HISTORY_FOR_VENDOR;
-import static services.utility.GenericConstant.VENDOR_CANCELLED;
 import static services.utility.GenericConstant.UPCOMING;
+import static services.utility.GenericConstant.VENDOR_CANCELLED;
 import static services.utility.GenericConstant.VIEWING;
 
 import java.math.BigInteger;
@@ -14,14 +14,16 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import org.apache.log4j.Logger;
-
 import model.Bookingshistory;
+import model.User;
+
+import org.apache.log4j.Logger;
 
 public class BookingHistoryDAOImpl<T>  extends  BaseDAOImpl<Bookingshistory> implements BookingHistoryDAO {
 
 	private static Logger logger = Logger.getLogger(BookingHistoryDAOImpl.class);
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object[]> getBookingDetailsForVendorId(String vendorId) {
 		logger.debug("Fetching all the Booking detail for Vendor Id "+vendorId);
@@ -45,13 +47,17 @@ public class BookingHistoryDAOImpl<T>  extends  BaseDAOImpl<Bookingshistory> imp
 		return bookingDetail;
 	}
 	
-	public void cancelBooking(String bookingId){
+	public Bookingshistory cancelBooking(String bookingId){
 		logger.debug("Cancelling booking with Id "+bookingId);
 		Bookingshistory bkngHistory = findBookingHistoryById(bookingId);
 		bkngHistory.setBkngStatus(VENDOR_CANCELLED);
-		update(bkngHistory);
+		bkngHistory.setLastUpdated(new Date());
+		bkngHistory.setLastUpdatedBy((new UserDAOImpl<User>().findVendorForVehicle(bkngHistory.getBkngVehicle()).getUserEmail()));
+		bkngHistory = update(bkngHistory);
+		return bkngHistory;
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean checkFutureBookingAvailable(BigInteger vehicleId) {
 		boolean isAvailable = false;
 		logger.debug("Checking if booking for Vehicle Id "+vehicleId+" is available after "+new Date());

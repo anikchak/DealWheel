@@ -9,7 +9,7 @@ public interface BookingHistoryDAO  extends BaseDAO<Bookingshistory>{
 
 	public List<Object[]> getBookingDetailsForVendorId(String userId);
 	
-	public void cancelBooking(String bookingId);
+	public Bookingshistory cancelBooking(String bookingId);
 	
 	public boolean checkFutureBookingAvailable(BigInteger id);	
 }

@@ -10,8 +10,6 @@ import javax.crypto.spec.PBEKeySpec;
 
 import org.apache.log4j.Logger;
 
-import services.VendorRegistrationController;
-
 public class SecurePassword {
 	static final Logger logger = Logger.getLogger(SecurePassword.class);
 	public static final String PBKDF2_ALGORITHM = "PBKDF2WithHmacSHA1";

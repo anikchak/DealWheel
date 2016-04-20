@@ -8,7 +8,7 @@ import java.util.Date;
 import java.math.BigInteger;
 
 import static services.utility.GenericConstant.*;
-
+//b.bkngSeq = :bkngSeq and
 
 /**
  * The persistent class for the bookingshistory database table.

@@ -137,15 +137,24 @@ function submitForAuthentication(authType, pageContext) {
 							function(responseText) {
 								// alert("ResponseText=" + responseText);
 								if (responseText != null && responseText != '') {
-									if (responseText == 'userNameExists') {
+									if (responseText == 'CheckyourMail') {
 										$('#signupErrorMsgSpan').html(
-												'Username already exists.');
+												'Check Mail to Confirm Registration');
 										$('#signupErrorMsgDiv').css('display',
 												'block');
 										$('#signupUsername').val("");
 										$('#signupPassword').val("");
 										$('#signupmobileNumber').val("");
-									} else if (responseText == 'mobileNaN') {
+									}else if (responseText == 'userNameExists') {
+										$('#signupErrorMsgSpan').html(
+										'Username already exists.');
+								        $('#signupErrorMsgDiv').css('display',
+										'block');
+								        $('#signupUsername').val("");
+								        $('#signupPassword').val("");
+								        $('#signupmobileNumber').val("");
+									} 
+								    else if (responseText == 'mobileNaN') {
 										$('#signupErrorMsgSpan').html(
 												'Invalid Mobile Number.');
 										$('#signupErrorMsgDiv').css('display',

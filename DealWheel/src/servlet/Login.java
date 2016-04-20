@@ -86,15 +86,17 @@ public class Login extends HttpServlet {
 			String mobileNumber = "0"+request.getParameter("mobileNumber");
 			String regex = "\\d+";
 			if(pwd!=null && !"".equals(pwd) && (mobileNumber!=null && !"".equals(mobileNumber) && mobileNumber.matches(regex) && mobileNumber.length()==11)){
-			List<User> newUserEntryList = s.inserNewUser(uName, pwd,BigInteger.valueOf(Long.parseLong(mobileNumber)));
+				String contextpath = request.getContextPath();
+			List<User> newUserEntryList = s.inserNewUser(uName, pwd,BigInteger.valueOf(Long.parseLong(mobileNumber)),request.getServerName(),String.valueOf(request.getServerPort()));
 			logger.info("status post registration=" + newUserEntryList);
 			if (newUserEntryList!=null && newUserEntryList.size()==1) {
-				session = generateSession(request, uName);
-				session.setAttribute("LoggedInUserDetailsObject",newUserEntryList );
+				//session = generateSession(request, uName);
+				//session.setAttribute("LoggedInUserDetailsObject",newUserEntryList );
 				//new CommonUtility().pageNavigation(pagecontext, comingFromPage, request, response);
 				//response.setContentType("text/plain");
 		        //response.getWriter().write("/LandingPage.jsp");
-				msg = CommonUtility.getPageName(comingFromPage);
+				msg = "CheckyourMail";
+				//msg = CommonUtility.getPageName(comingFromPage);
 			}else{
 				logger.info("Username already exists. Error..!!");
 				request.getSession().removeAttribute("LoggedInUserDetailsObject");
