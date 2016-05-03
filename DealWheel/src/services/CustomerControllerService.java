@@ -117,10 +117,7 @@ public class CustomerControllerService {
 					String url = "http://"+serverName+":"+serverPort+"/DealWheel/UserRegisterationConfirmation.jsp?confirmationurl="+randString;
 					params.add(1,url);
 					SendMail s = new SendMail();
-					String emailbody = "<h4>Hi "+usr+"</h4><br><br>Welcome to Deal Wheel"
-							+ "<br><br>Complete your registeration by clicking on this link<br><br>"
-							+ "http://localhost:8081/DealWheel/UserConfirmation";
-					s.sendEmailNotification(EmailType.VERIFY_USER, usr, params);
+					SendMail.sendEmailNotification(EmailType.VERIFY_USER, usr, params);
 					//SecureRandom rands = new SecureRandom();
 					//String s = BigInteger(130, rands).toString(32);
 					User insertedUser = new UserDAOImpl<User>().addNewUser(u);

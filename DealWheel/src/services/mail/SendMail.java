@@ -25,8 +25,8 @@ public class SendMail {
 
 			// Supply your SMTP credentials below. Note that your SMTP
 			// credentials are different from your AWS credentials.
-			String SMTP_USERNAME = "AKIAIJW5C4MJ3Z4PUWAQ"; // Replace with your SMTP username.
-			String SMTP_PASSWORD = "AvC6NNet34rYTa2tPAPOFUVCdTty8ddsoswIqkC4ZT9u"; // Replace with your SMTP password.
+			String SMTP_USERNAME = "AKIAIIIQEUDPG6JSMHZA"; // Replace with your SMTP username.
+			String SMTP_PASSWORD = "AqX9xiLD8tEEPknMEew3dHXSDBHIvC6RlgZF4Z2ki1Ca"; // Replace with your SMTP password.
 
 			// Amazon SES SMTP host name. This example uses the US West (Oregon) region.
 			String HOST = "email-smtp.us-west-2.amazonaws.com";
